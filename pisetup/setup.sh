@@ -13,7 +13,7 @@ apt-get install wget
 apt-get install golang
 apt-get install vim
 
-if [ $1 -eq '' ] && [ $2 -eq '' ]
+if [ -z $1] && [ -z $2 ]
 then
 	echo "./setup <ssid> <password>"
 	exit 1
