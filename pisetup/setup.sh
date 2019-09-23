@@ -21,26 +21,36 @@ else
 	wpa_passphrase $1 $2 >> $WPA
 fi
 
+echo Processing...
+sleep 3
+
 mkdir $BASE
 
 touch $WIFI
 echo "#!/bin/bash" >> $WIFI
 echo sudo wpa_supplicant -B -i wlan0 -c ${WPA} >> $WIFI
 echo sudo dhclient >> $WIFI
-chmod +x ${WIFI}
-$WIFI
+chmod +x $WIFI
 
-wget https://raw.githubusercontent.com/crsmith20/mail-sender/master/mail_sender.py --directory-prefix=$BASE
+echo Processing...
+sleep 3
+
+wget https://raw.githubusercontent.com/crsmith20/mail-sender/master/mail_sender.py --directory-prefix=${BASE}
 vim $MAIL
+
+echo Processing...
+sleep 3
 
 touch $GETIP
 echo "#!/bin/bash" >> $GETIP
+echo sleep 30 >> $GETIP
 echo sudo python3 ${MAIL} >> $GETIP
 chmod +x $GETIP
 
 echo Follow these following instructions carefully you will have 15 seconds to read the instructions
 echo
 echo Copy the following two lines
+echo
 echo @reboot ${WIFI}'&'
 echo @reboot ${GETIP}'&'
 echo
@@ -50,4 +60,14 @@ echo Once it opens please paste the 2 above lines into the file
 echo Then write and exit, this will automatically assign the tasks for next startup
 sleep 15
 crontab -e
+
+echo Processing...
+sleep 3
+
+$WIFI
+
+echo Processing...
+
 $GETIP
+
+echo Setup finished
