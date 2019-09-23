@@ -26,7 +26,7 @@ public class EdgeServiceImpl implements EdgeService {
 		Response response = null;
 
 		List<Response> responses = responseRepository.findAll();
-		if (responses != null) {
+		if (responses != null && !responses.isEmpty()) {
 			response = responses.get(responses.size() - 1);
 		}
 

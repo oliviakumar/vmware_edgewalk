@@ -7,16 +7,16 @@ import org.springframework.data.annotation.Id;
 public class Response {
 
 	@Id
-	private long id;
+	private String id;
 	private String identity;
 	private boolean accepted;
 	private Timestamp attempted;
 
-	public long getId() {
+	public String getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

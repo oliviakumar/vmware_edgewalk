@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.edgewalk.service.model.Response;
 
 @Repository
-public interface ResponseRepository extends MongoRepository<Response, Long> {
+public interface ResponseRepository extends MongoRepository<Response, String> {
 
 }
