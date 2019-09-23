@@ -8,16 +8,21 @@ This can be run on a freshly flashed raspberry pi, however, it does require an i
 ## Steps
 ### 1.
 Either clone script into local machine or use wget to just get the script
+
 ```git clone https://github.com/oliviakumar/vmware_edgewalk.git```
+
 ```wget https://raw.githubusercontent.com/oliviakumar/vmware_edgewalk/master/pisetup/setup.sh?token=AHPIDWB5BVQ3FI4FNMLWOM25SFHRS```
 
 ### 2.
 Enter the following command
+
 ```sudo -i```
+
 This allows you to run everything as sudo which is needed.
 
 ### 3.
 Run the script
+
 ```./setup.sh <ssid> <password>```
 
 ### 4.
