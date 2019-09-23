@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASE=/etc/startup2/
+BASE=/etc/startup/
 WPA=/etc/wpa_supplicant/wpa_supplicant.conf
 WIFI=${BASE}wifi
 GETIP=${BASE}getip
@@ -27,7 +27,7 @@ touch $WIFI
 echo "#!/bin/bash" >> $WIFI
 echo sudo wpa_supplicant -B -i wlan0 -c ${WPA} >> $WIFI
 echo sudo dhclient >> $WIFI
-chmod +x $WIFI
+chmod +x ${WIFI}
 $WIFI
 
 wget https://raw.githubusercontent.com/crsmith20/mail-sender/master/mail_sender.py --directory-prefix=$BASE
