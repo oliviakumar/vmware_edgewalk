@@ -43,6 +43,6 @@ These instructions are repeated in the script before you can do the next part in
 
 ## Usage Instructions
 ```
-./nt <ssid> <password>
+./setup.sh <ssid> <password>
     ssid        the name of your wifi network
     password    the password for your wifi network
