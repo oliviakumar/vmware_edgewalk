@@ -14,7 +14,7 @@ public class ResponseFilter {
 	private String identity = "";
 	private String location = "";
 	private String type = "";
-	private Boolean accepted = null;
+	private Boolean identified = null;
 	@JsonFormat(pattern = DATE_FORMAT)
 	private Date startDate;
 	@JsonFormat(pattern = DATE_FORMAT)
@@ -35,12 +35,12 @@ public class ResponseFilter {
 		this.identity = identity;
 	}
 
-	public Boolean isAccepted() {
-		return this.accepted;
+	public Boolean isIdentified() {
+		return this.identified;
 	}
 
-	public void setAccepted(boolean accepted) {
-		this.accepted = accepted;
+	public void setIdentified(boolean identified) {
+		this.identified = identified;
 	}
 
 	public String getLocation() {

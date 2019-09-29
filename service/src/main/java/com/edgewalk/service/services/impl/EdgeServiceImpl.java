@@ -38,38 +38,27 @@ public class EdgeServiceImpl implements EdgeService {
 
 	@Override
 	public List<Response> getResponseFromFilter(ResponseFilter filter) {
-		List<Response> responses = responseRepository.findAllWhereAttempedBetween(filter.getStartDate(), filter.getEndDate());
+		List<Response> responses = responseRepository.findAllWhereAttemptedBetween(filter.getStartDate(), filter.getEndDate());
 		if(responses == null) {
 			responses = new ArrayList<>();
 		}
 
 		responses = responses.stream().filter(r -> {
-			boolean identity;
-			boolean location;
-			boolean type;
-			boolean accepted;
+			boolean identity = true;
+			boolean location = true;
+			boolean type = true;
+			boolean accepted = true;
 			if (!filter.getIdentity().equals("")) {
 				identity = r.getIdentity().equalsIgnoreCase(filter.getIdentity());
-			} else {
-				identity = true;
 			}
-
-			if (filter.isAccepted() != null) {
-				accepted = r.isAccepted() == filter.isAccepted();
-			} else {
-				accepted = true;
+			if (filter.isIdentified() != null) {
+				accepted = r.isIdentified() == filter.isIdentified();
 			}
-
 			if (!filter.getLocation().equals("")) {
 				location = r.getLocation().equalsIgnoreCase(filter.getLocation());
-			} else {
-				location = true;
 			}
-
 			if (!filter.getType().equals("")) {
 				type = r.getType().equalsIgnoreCase(filter.getType());
-			} else {
-				type = true;
 			}
 			return identity && location && type && accepted;
 		}).collect(Collectors.toList());
