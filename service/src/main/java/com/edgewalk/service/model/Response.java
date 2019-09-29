@@ -10,6 +10,8 @@ public class Response {
 	private String id;
 	private String identity;
 	private boolean accepted;
+	private String location;
+	private String type; // I for incoming, O for outgoing
 	private Timestamp attempted;
 
 	public String getId() {
@@ -34,6 +36,22 @@ public class Response {
 
 	public void setAccepted(boolean accepted) {
 		this.accepted = accepted;
+	}
+
+	public String getLocation() {
+		return this.location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getType() {
+		return this.type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public Timestamp getAttempted() {

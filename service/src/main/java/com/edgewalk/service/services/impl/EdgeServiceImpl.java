@@ -1,12 +1,14 @@
 package com.edgewalk.service.services.impl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.edgewalk.service.model.Response;
+import com.edgewalk.service.model.ResponseFilter;
 import com.edgewalk.service.repository.ResponseRepository;
 import com.edgewalk.service.services.EdgeService;
 
@@ -31,5 +33,12 @@ public class EdgeServiceImpl implements EdgeService {
 		}
 
 		return response;
+	}
+
+	@Override
+	public List<Response> getResponseFromFilter(ResponseFilter filter) {
+		List<Response> responses = new ArrayList<>();
+		// TODO
+		return responses;
 	}
 }

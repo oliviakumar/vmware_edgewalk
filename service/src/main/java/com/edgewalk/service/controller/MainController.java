@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.edgewalk.service.model.Response;
 import com.edgewalk.service.services.EdgeService;
@@ -39,5 +40,17 @@ public class MainController {
 		}
 
 		return "content";
+	}
+
+	@GetMapping("/entries")
+	public String entries(Model model) {
+
+		return "entry";
+	}
+
+	@PostMapping("/applyFilter")
+	public String applyFilter(Model model) {
+
+		return "responseTable";
 	}
 }
