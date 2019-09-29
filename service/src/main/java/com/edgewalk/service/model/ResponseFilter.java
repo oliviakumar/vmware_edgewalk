@@ -35,7 +35,7 @@ public class ResponseFilter {
 		this.identity = identity;
 	}
 
-	public boolean isAccepted() {
+	public Boolean isAccepted() {
 		return this.accepted;
 	}
 
