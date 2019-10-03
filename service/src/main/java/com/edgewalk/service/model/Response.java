@@ -2,17 +2,14 @@ package com.edgewalk.service.model;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Entity;
-
 import org.springframework.data.annotation.Id;
 
-@Entity
 public class Response {
 
 	@Id
 	private String id = "";
 	private String identity = "";
-	private boolean identified = false;
+	private boolean accepted = false;
 	private String location = "";
 	private String type = ""; // I for incoming, O for outgoing
 	private Timestamp attempted = null;
@@ -33,12 +30,12 @@ public class Response {
 		this.identity = identity;
 	}
 
-	public boolean isIdentified() {
-		return this.identified;
+	public boolean isAccepted() {
+		return this.accepted;
 	}
 
-	public void setIdentified(boolean identified) {
-		this.identified = identified;
+	public void setAccepted(boolean accepted) {
+		this.accepted = accepted;
 	}
 
 	public String getLocation() {

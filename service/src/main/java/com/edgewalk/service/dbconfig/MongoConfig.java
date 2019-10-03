@@ -1,4 +1,4 @@
-package com.edgewalk.service;
+package com.edgewalk.service.dbconfig;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.edgewalk.service.repository;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -12,6 +12,6 @@ import com.edgewalk.service.model.Response;
 @Repository
 public interface ResponseRepository extends MongoRepository<Response, String> {
 
-	@Query("{ attempted : { $ge : ?1 } , attempted : { $le : ?2 } }")
-	List<Response> findAllWhereAttemptedBetween(Date startDate, Date endDate);
+	@Query("{ '$and' : [ { 'attempted' : { '$lt' : ?1 } } , { 'attempted' : { '$gte' : ?0 } } ] }")
+	List<Response> findAllBetween(Date start, Date end);
 }

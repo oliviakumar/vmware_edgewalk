@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div id="content" th:fragment="table">
+		<table>
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Identity</th>
+					<th>Location</th>
+					<th>Type</th>
+					<th>Time</th>
+					<th>Success</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="response : ${responses}">
+					<td th:text="${response.id}">id</td>
+					<td th:text="${response.identity}">identity</td>
+					<td th:text="${response.location}">id</td>
+					<td th:text="${response.type eq 'O' ? 'Outgoing' : 'Incoming'}">type</td>
+					<td th:text="${response.attempted}">time</td>
+					<td th:text="${response.accepted}">success</td>
+				</tr>
+				<tr th:if="${#lists.isEmpty(responses)}">
+					<td colspan="6" align="center">No Records</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

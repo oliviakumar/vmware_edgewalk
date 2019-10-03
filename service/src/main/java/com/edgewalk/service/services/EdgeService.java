@@ -12,4 +12,8 @@ public interface EdgeService {
 	Response getRecentResponse();
 
 	List<Response> getResponseFromFilter(ResponseFilter filter);
+
+	List<Response> retrieveAll();
+
+	void clear();
 }

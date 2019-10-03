@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +18,13 @@ import com.edgewalk.service.services.EdgeService;
 @Service
 public class EdgeServiceImpl implements EdgeService {
 
+	private final static Logger LOG = LoggerFactory.getLogger(EdgeServiceImpl.class);
+
 	@Autowired private ResponseRepository responseRepository;
 
 	@Override
 	public Response processResponse(Response response) {
+		LOG.info("Received a response");
 		response.setAttempted(new Timestamp(System.currentTimeMillis()));
 		return responseRepository.save(response);
 	}
@@ -38,7 +43,7 @@ public class EdgeServiceImpl implements EdgeService {
 
 	@Override
 	public List<Response> getResponseFromFilter(ResponseFilter filter) {
-		List<Response> responses = responseRepository.findAllWhereAttemptedBetween(filter.getStartDate(), filter.getEndDate());
+		List<Response> responses = responseRepository.findAllBetween(filter.getStartDate(), filter.getEndDate());
 		if(responses == null) {
 			responses = new ArrayList<>();
 		}
@@ -51,8 +56,8 @@ public class EdgeServiceImpl implements EdgeService {
 			if (!filter.getIdentity().equals("")) {
 				identity = r.getIdentity().equalsIgnoreCase(filter.getIdentity());
 			}
-			if (filter.isIdentified() != null) {
-				accepted = r.isIdentified() == filter.isIdentified();
+			if (filter.isAccepted() != null) {
+				accepted = r.isAccepted() == filter.isAccepted();
 			}
 			if (!filter.getLocation().equals("")) {
 				location = r.getLocation().equalsIgnoreCase(filter.getLocation());
@@ -64,5 +69,20 @@ public class EdgeServiceImpl implements EdgeService {
 		}).collect(Collectors.toList());
 
 		return responses;
+	}
+
+	@Override
+	public List<Response> retrieveAll() {
+		List<Response> responses = responseRepository.findAll();
+		if (responses == null) {
+			responses = new ArrayList<>();
+		}
+		return responses;
+	}
+
+	@Override
+	public void clear() {
+		LOG.info("Deleting all database entries");
+		responseRepository.deleteAll();
 	}
 }
