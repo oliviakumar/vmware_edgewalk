@@ -2,23 +2,24 @@ package com.edgewalk.service.model;
 
 import java.sql.Timestamp;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 public class Response {
 
 	@Id
-	private String id = "";
+	private ObjectId id = null;
 	private String identity = "";
 	private boolean accepted = false;
 	private String location = "";
 	private String type = ""; // I for incoming, O for outgoing
 	private Timestamp attempted = null;
 
-	public String getId() {
+	public ObjectId getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 
@@ -27,7 +28,7 @@ public class Response {
 	}
 
 	public void setIdentity(String identity) {
-		this.identity = identity;
+		this.identity = capitalCase(identity);
 	}
 
 	public boolean isAccepted() {
@@ -43,7 +44,7 @@ public class Response {
 	}
 
 	public void setLocation(String location) {
-		this.location = location;
+		this.location = capitalCase(location);
 	}
 
 	public String getType() {
@@ -60,5 +61,14 @@ public class Response {
 
 	public void setAttempted(Timestamp attempted) {
 		this.attempted = attempted;
+	}
+
+	private String capitalCase(String str) {
+		StringBuilder sb = new StringBuilder();
+		String[] strs = str.split(" ");
+		for (String s : strs) {
+			sb.append(s.substring(0, 1).toUpperCase() + s.substring(1) + " ");
+		}
+		return sb.toString().trim();
 	}
 }

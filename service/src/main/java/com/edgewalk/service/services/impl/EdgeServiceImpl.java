@@ -43,6 +43,8 @@ public class EdgeServiceImpl implements EdgeService {
 
 	@Override
 	public List<Response> getResponseFromFilter(ResponseFilter filter) {
+		LOG.info("Retrieving responses from filter");
+
 		List<Response> responses = responseRepository.findAllBetween(filter.getStartDate(), filter.getEndDate());
 		if(responses == null) {
 			responses = new ArrayList<>();
@@ -73,6 +75,7 @@ public class EdgeServiceImpl implements EdgeService {
 
 	@Override
 	public List<Response> retrieveAll() {
+		LOG.info("Loading all responses");
 		List<Response> responses = responseRepository.findAll();
 		if (responses == null) {
 			responses = new ArrayList<>();
