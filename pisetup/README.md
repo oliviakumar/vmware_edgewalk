@@ -11,7 +11,7 @@ Either clone script into local machine or use wget to just get the script
 
 ```git clone https://github.com/oliviakumar/vmware_edgewalk.git```
 
-```wget https://raw.githubusercontent.com/oliviakumar/vmware_edgewalk/master/pisetup/setup.sh?token=AHPIDWB5BVQ3FI4FNMLWOM25SFHRS```
+```wget https://raw.githubusercontent.com/oliviakumar/vmware_edgewalk/master/pisetup/setup.sh?token=AHPIDWCVD6UCW5E2NPDO4S25TEXLK```
 
 ### 2.
 Enter the following command
