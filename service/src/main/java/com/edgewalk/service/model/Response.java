@@ -27,8 +27,12 @@ public class Response {
 		return this.identity;
 	}
 
+	public String getIdentityCapital() {
+		return capitalCase(this.identity);
+	}
+
 	public void setIdentity(String identity) {
-		this.identity = capitalCase(identity);
+		this.identity = identity;
 	}
 
 	public boolean isAccepted() {
@@ -43,12 +47,20 @@ public class Response {
 		return this.location;
 	}
 
+	public String getLocationCapital() {
+		return capitalCase(this.location);
+	}
+
 	public void setLocation(String location) {
-		this.location = capitalCase(location);
+		this.location = location;
 	}
 
 	public String getType() {
 		return this.type;
+	}
+
+	public String getTypeCapital() {
+		return this.type.toUpperCase();
 	}
 
 	public void setType(String type) {
@@ -65,9 +77,15 @@ public class Response {
 
 	private String capitalCase(String str) {
 		StringBuilder sb = new StringBuilder();
-		String[] strs = str.split(" ");
-		for (String s : strs) {
-			sb.append(s.substring(0, 1).toUpperCase() + s.substring(1) + " ");
+		if (!str.isEmpty()) {
+			String[] strs = str.split(" ");
+			for (String s : strs) {
+				sb.append(s.substring(0, 1).toUpperCase());
+				if (s.length() > 1) {
+					sb.append(s.substring(1));
+				}
+				sb.append(" ");
+			}
 		}
 		return sb.toString().trim();
 	}

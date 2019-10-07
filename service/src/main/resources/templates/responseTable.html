@@ -16,11 +16,12 @@
 			<tbody>
 				<tr th:each="response : ${responses}">
 					<td th:text="${response.id}">id</td>
-					<td th:text="${response.identity}">identity</td>
-					<td th:text="${response.location}">id</td>
-					<td th:text="${response.type eq 'O' ? 'Outgoing' : 'Incoming'}">type</td>
+					<td th:text="${response.identityCapital}">identity</td>
+					<td th:text="${response.locationCapital}">id</td>
+					<td th:text="${response.typeCapital eq 'O' ? 'Outgoing' : 'Incoming'}">type</td>
 					<td th:text="${response.attempted}">time</td>
-					<td th:text="${response.accepted}">success</td>
+					<td th:if="${response.accepted}" style="background-color:chartreuse"></td>
+					<td th:unless="${response.accepted}" style="background-color:red"></td>
 				</tr>
 				<tr th:if="${#lists.isEmpty(responses)}">
 					<td colspan="6" align="center">No Records</td>

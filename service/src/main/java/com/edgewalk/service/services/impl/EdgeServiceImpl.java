@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.edgewalk.service.model.Response;
@@ -19,6 +20,8 @@ import com.edgewalk.service.services.EdgeService;
 public class EdgeServiceImpl implements EdgeService {
 
 	private final static Logger LOG = LoggerFactory.getLogger(EdgeServiceImpl.class);
+
+	private final static Sort DEFAULT_SORT = Sort.by(Sort.Direction.DESC, "attempted");
 
 	@Autowired private ResponseRepository responseRepository;
 
@@ -33,9 +36,9 @@ public class EdgeServiceImpl implements EdgeService {
 	public Response getRecentResponse() {
 		Response response = null;
 
-		List<Response> responses = responseRepository.findAll();
+		List<Response> responses = responseRepository.findAll(DEFAULT_SORT);
 		if (responses != null && !responses.isEmpty()) {
-			response = responses.get(responses.size() - 1);
+			response = responses.get(0);
 		}
 
 		return response;
@@ -45,7 +48,7 @@ public class EdgeServiceImpl implements EdgeService {
 	public List<Response> getResponseFromFilter(ResponseFilter filter) {
 		LOG.info("Retrieving responses from filter");
 
-		List<Response> responses = responseRepository.findAllBetween(filter.getStartDate(), filter.getEndDate());
+		List<Response> responses = responseRepository.findAllBetween(filter.getStartDate(), filter.getEndDate(), DEFAULT_SORT);
 		if(responses == null) {
 			responses = new ArrayList<>();
 		}

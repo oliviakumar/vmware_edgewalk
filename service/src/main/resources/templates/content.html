@@ -4,7 +4,7 @@
 	<div id="content" th:fragment="display">
 		<div th:if="${response != null}">
 			<div th:if="${response.accepted}" style="background-color:chartreuse;">
-				<h1 th:text="${'Welcome ' + response.identity}" style="margin:0">Welcome user</h1>
+				<h1 th:text="${'Welcome ' + response.identityCapital}" style="margin:0">Welcome user</h1>
 			</div>
 			<div th:if="${!response.accepted}" style="background-color:red;">
 				<h1 style="margin:0">Identity unknown</h1>

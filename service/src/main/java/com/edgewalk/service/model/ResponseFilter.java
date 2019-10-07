@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ResponseFilter {
 
-	public static final String DATE_FORMAT = "mm/dd/YYYY";
+	public static final String DATE_FORMAT = "MM/dd/yyyy";
 
 	private String identity = "";
 	private String location = "";

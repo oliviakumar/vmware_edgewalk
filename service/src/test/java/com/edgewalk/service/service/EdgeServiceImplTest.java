@@ -52,7 +52,7 @@ public class EdgeServiceImplTest {
 		r5 = new Response();
 		filter = new ResponseFilter();
 		testList.addAll(Arrays.asList(r1, r2, r3, r4, r5));
-		when(responseRepository.findAllBetween(Mockito.any(), Mockito.any())).thenReturn(testList);
+		when(responseRepository.findAllBetween(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(testList);
 	}
 
 	@Test
