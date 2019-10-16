@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<meta charset="UTF-8">
+<title>Entries</title>
+</head>
+<body style="margin:0;">
+	<div id="filters">
+		<form action="/applyFilter">
+		</form>
+	</div>
+	<div id="container" th:include="responseTable :: table" style="width:100%;height:100%;text-align:center;margin:0;"></div>
+<script type="text/javascript">
+$(document).ready(function() {
+		
+})
+</script>
+</body>
+</html>
