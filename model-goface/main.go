@@ -126,6 +126,20 @@ func main () {
     rec.SetSamples(samples, id)
     resetDir()
 
+    //Changing directory and training for Olivia
+    changeDir("Olivia")
+    //Will work on generalizing the rec object
+    rec, err = face.NewRecognizer(dataDir)
+    if (err != nil) {
+        log.Fatalf("Error opening directory.")
+    }
+    defer rec.Close()
+    
+    name = "Olivia Kumar"
+    //Traversing through Olivia directory
+    dirTraverse(dataDir, rec, name)
+    rec.SetSamples(samples, id)
+    resetDir()
 
     //Testing (Can use this as a basic test case for the model training)
     //Uncomment to test using "mushTest.jpg"
