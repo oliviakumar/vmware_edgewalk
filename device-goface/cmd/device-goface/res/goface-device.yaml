@@ -1,0 +1,42 @@
+name: "Goface-Recognizer-Device"
+manufacturer: "Team Edgewalk"
+model: "1"
+labels:
+ - "goface"
+ - "test"
+description: "goface recognizer device"
+
+deviceResources:
+    -   
+        name: "goface"
+        description: "send goface recognizer result into running EdgeX instance"
+ #       attributes:
+ #           { type: "goface" }
+        properties:
+            value:
+                { type: "String", readWrite: "R" }
+            units:
+                { type: "String", readWrite: "R", defaultValue: "" }
+
+# device commands only have a get so far, set will be implemented
+deviceCommands:
+    -
+        name: "goface"
+        get:
+            -
+                { operation: "get", object: "gofaceresult", property: "value", parameter: "Random" }
+
+coreCommands:
+  -
+    name: "goface"
+    get:
+        path: "/api/v1/device/{deviceId}/goface"
+        responses:
+          -
+            code: "200"
+            description: ""
+            expectedValues: ["Goface"]
+          -
+            code: "503"
+            description: "service unavailable"
+            expectedValues: []

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.edgewalk.service.controllers.ResponseControllerTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.045 s - in com.edgewalk.service.controllers.ResponseControllerTest

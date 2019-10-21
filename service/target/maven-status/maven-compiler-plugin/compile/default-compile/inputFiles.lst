@@ -1,0 +1,11 @@
+/home/tanja/IoT/vmware_edgewalk/service/src/main/java/com/edgewalk/service/model/Response.java
+/home/tanja/IoT/vmware_edgewalk/service/src/main/java/com/edgewalk/service/model/ResponseFilter.java
+/home/tanja/IoT/vmware_edgewalk/service/src/main/java/com/edgewalk/service/repository/ResponseRepository.java
+/home/tanja/IoT/vmware_edgewalk/service/src/main/java/com/edgewalk/service/services/EdgeService.java
+/home/tanja/IoT/vmware_edgewalk/service/src/main/java/com/edgewalk/service/util/DateToTimestampConverter.java
+/home/tanja/IoT/vmware_edgewalk/service/src/main/java/com/edgewalk/service/controller/ResponseController.java
+/home/tanja/IoT/vmware_edgewalk/service/src/main/java/com/edgewalk/service/controller/MainController.java
+/home/tanja/IoT/vmware_edgewalk/service/src/main/java/com/edgewalk/service/controller/EdgeController.java
+/home/tanja/IoT/vmware_edgewalk/service/src/main/java/com/edgewalk/service/Application.java
+/home/tanja/IoT/vmware_edgewalk/service/src/main/java/com/edgewalk/service/services/impl/EdgeServiceImpl.java
+/home/tanja/IoT/vmware_edgewalk/service/src/main/java/com/edgewalk/service/dbconfig/MongoConfig.java
