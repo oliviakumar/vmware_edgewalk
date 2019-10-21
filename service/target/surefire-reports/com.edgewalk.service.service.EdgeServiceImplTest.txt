@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.edgewalk.service.service.EdgeServiceImplTest
--------------------------------------------------------------------------------
-Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 22.36 s - in com.edgewalk.service.service.EdgeServiceImplTest
