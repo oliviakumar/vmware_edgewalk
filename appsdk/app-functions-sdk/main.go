@@ -44,7 +44,7 @@ func main() {
 	if err := edgexSdk.SetFunctionsPipeline(
 			transforms.NewFilter(deviceNames).FilterByDeviceName,
 			transforms.NewConversion().TransformJSON,
-			transforms.NewHttpSender("localhost:8080/edge/api", "application/json", true),
+			transforms.NewHttpSender("localhost:8080/edge/api", "application/json", false).HTTPPost,
 			printJSONToConsole
 		); err != nil {
 			edgexSdk.LoggingClient.Error(fmt.Sprintf("SDK SetPipeline failed: %v\n", err))
