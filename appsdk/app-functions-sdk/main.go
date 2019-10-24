@@ -72,10 +72,11 @@ func main() {
 }
 
 func printJSONToConsole(edgexcontext *appcontext.Context, params ...interface{}) (bool,interface{}) {
-  if len(params) < 1 { 
-  	// We didn't receive a result
-  	return false, errors.New("No Data Received")
-  }
-  println(params[0].(string))
-  return true, nil
+	if len(params) < 1 { 
+		// We didn't receive a result
+		return false, errors.New("No Data Received")
+	}
+	println(params[0].(string))
+	return true, nil
 }
+
