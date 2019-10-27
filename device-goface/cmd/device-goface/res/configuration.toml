@@ -1,0 +1,72 @@
+[Writable]
+LogLevel = 'INFO'
+
+[Service]
+Host = "localhost"
+Port = 49990
+ConnectRetries = 20
+Labels = []
+OpenMsg = "device goface started"
+MaxResultCount = 50000
+Timeout = 5000
+EnableAsyncReadings = true
+AsyncBufferSize = 16
+
+[Registry]
+Host = "localhost"
+Port = 8500
+CheckInterval = "10s"
+FailLimit = 3
+FailWaitTime = 10
+
+# Calls to other EdgeX components
+[Clients]
+  [Clients.Data]
+  Name = "edgex-core-data"
+  Protocol = "http"
+  Host = "localhost"
+  Port = 48080
+  Timeout = 5000
+
+  [Clients.Metadata]
+  Name = "edgex-core-metadata"
+  Protocol = "http"
+  Host = "localhost"
+  Port = 48081
+  Timeout = 5000
+
+  [Clients.Logging]
+  Name = "edgex-support-logging"
+  Protocol = "http"
+  Host = "localhost"
+  Port = 48061
+
+[Device]
+  DataTransform = true
+  InitCmd = ""
+  InitCmdArgs = ""
+  MaxCmdOps = 128
+  MaxCmdValueLen = 256
+  RemoveCmd = ""
+  RemoveCmdArgs = ""
+  ProfilesDir = "./res"
+
+# enable the logging and define the level
+[Logging]
+EnableRemote = false
+File = "./device-goface.log"
+
+# Pre-define Devices - use Name for API calls
+[[DeviceList]]
+  Name = "device-goface-01"
+  Profile = "device-goface"
+  Description = "Goface Recognizer Device"
+  Labels = [ "IoT" ]
+  [DeviceList.Protocols]
+    [DeviceList.Protocols.Other]
+      Address = "goface01"
+      Port = "300"
+  [[DeviceList.AutoEvents]]
+    Frequency = "1s"
+    OnChange = false
+    Resource = "goface"
