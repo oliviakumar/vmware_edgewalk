@@ -15,7 +15,7 @@ import  (
 //Struct for storing individual samples, id, and name
 type Train struct {
     data []face.Descriptor
-    index int
+    index []int32
     name string
 }
 
@@ -28,6 +28,7 @@ var model map[int]Train
 var samples []face.Descriptor
 var indSamples []face.Descriptor
 var tracker []int32
+var indTracker []int32
 var count int = 0
 var indCount int = 0
 
@@ -44,6 +45,7 @@ func changeDir(folder string) {
 func update() {
     dataDir = "images"
     indSamples = nil
+    indTracker = nil
     indCount = indCount + 1
 }
 
@@ -77,7 +79,6 @@ func dirTraverse(file string, rec *face.Recognizer, name string) {
         //Checks if the file is a jpg or png
         if (strings.HasSuffix(file, ".jpg") == true || strings.HasSuffix(file, ".jpeg") == true || strings.HasSuffix(file, ".png") == true) {
             faces, err := rec.RecognizeFile(file)
-
             if (err != nil) {
                 log.Fatalf("Can't recognize image")
             }
@@ -88,6 +89,7 @@ func dirTraverse(file string, rec *face.Recognizer, name string) {
                 samples = append(samples, faces[0].Descriptor)
                 indSamples = append(indSamples, faces[0].Descriptor)
                 tracker = append(tracker, int32(count))
+                indTracker = append(indTracker, int32(count))
                 count = count + 1
             }
         }
@@ -98,7 +100,7 @@ func dirTraverse(file string, rec *face.Recognizer, name string) {
 func populateDescriptor(name string) {
     var entry Train
     entry.data = indSamples    
-    entry.index = indCount
+    entry.index = indTracker
     entry.name = name
 
     model[indCount] = entry
@@ -200,7 +202,15 @@ func test(rec *face.Recognizer, picName string) {
 
     approved = true
     fmt.Println("Picture Match: ", approved)
-    fmt.Println("ID that matches the pic: ", picID)
+
+    for i := 0; i < len(model); i++ {
+        var arr []int32 = model[i].index
+        if (int32(picID) >= arr[0] && int32(picID) <= arr[(len(arr) - 1)]) {
+            fmt.Println("ID that matches the pic: ", i)
+            fmt.Println("Name that matches the pic: ", model[i].name)
+            break
+        }
+    }
 
     update()    
     findPic(dataDir, rec, samples[picID])
@@ -265,6 +275,6 @@ func main () {
     dirTraverse(dataDir, rec, name)
     rec.SetSamples(samples, tracker)
     update()
-
-    test(rec, "test3.jpg")
+    
+    test(rec, "test1.jpg")
 }
