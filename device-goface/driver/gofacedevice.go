@@ -45,6 +45,10 @@ type GofaceDevice struct {
 	gofacedata string
 }
 
+func (s *GofaceDevice) DisconnectDevice(deviceName string, protocols map[string]contract.ProtocolProperties) error {
+	return nil
+}
+
 // Initialize performs protocol-specific initialization for the device
 // service.
 func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsModels.AsyncValues) error {
@@ -53,13 +57,14 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 
 	// routine for reading the goface data and saving it to s.gofacedata
 	go func() {
-		// open device or file with sample output
-		s.device, _ = os.Open("goface-test.txt")
+		// open device / mock file
+		s.device, _ = os.Open("/home/tanja/go/src/github.com/edgexfoundry/device-goface/cmd/goface-test.txt")
+		// don't close until done
 		defer s.device.Close()
 
 		s.scanner = bufio.NewScanner(s.device)
 
-		//scanning line by line, checkinf if it starts with $GF, indicating new goface reading
+		//scanning line by line, checking if it starts with $GF, indicating new goface reading
 		for s.scanner.Scan() {
 			// split lines and split line data points at comma
 			splitLine := strings.Split(s.scanner.Text(), ",")
@@ -112,10 +117,6 @@ func parseGofaceLine(data []string) string {
 
 	// return the JSON-parsed response as a string
 	return string(resp)
-}
-
-func (s *GofaceDevice) DisconnectDevice(deviceName string, protocols map[string]contract.ProtocolProperties) error {
-	return nil
 }
 
 // HandleReadCommands triggers a protocol Read operation for the specified device.
