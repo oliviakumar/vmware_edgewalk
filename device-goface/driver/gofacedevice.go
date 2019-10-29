@@ -27,10 +27,10 @@ import (
 
 // external data struct
 type GofaceData struct {
-	identity  string
-	accepted  bool
-	location  string
-	entrytype string
+	Identity  string `json:"identity"`
+	Accepted  bool `json:"accepted"`
+	Location  string `json:"location"`
+	Entrytype string `json:"type"`
 }
 
 // internal data struct
@@ -58,7 +58,7 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	// routine for reading the goface data and saving it to s.gofacedata
 	go func() {
 		// open device / mock file
-		s.device, _ = os.Open("/home/tanja/go/src/github.com/edgexfoundry/device-goface/cmd/goface-test.txt")
+		s.device, _ = os.Open("/Users/romankasel/git/vmware_edgewalk/device-goface/cmd/goface-test.txt")
 		// don't close until done
 		defer s.device.Close()
 
@@ -92,19 +92,17 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 func parseGofaceLine(data []string) string {
 
 	// parsing data from file
-	identityName := data[1]
+	identityName := strings.TrimSpace(data[1])
 	acceptedStatus, _ := strconv.ParseBool(data[2])
-	//acceptedStatus := data[2]
-	location := data[3]
-	entrytype := data[4]
+	location := strings.TrimSpace(data[3])
+	entrytype := strings.TrimSpace(data[4])
 
 	// creating struct containing data extracted from line
 	gofaceDataPoint := GofaceData{
-		identity: identityName,
-		// @TODO: fix bool/string error
-		accepted:  acceptedStatus,
-		location:  location,
-		entrytype: entrytype,
+		Identity: identityName,
+		Accepted:  acceptedStatus,
+		Location:  location,
+		Entrytype: entrytype,
 	}
 
 	// convert to JSON
