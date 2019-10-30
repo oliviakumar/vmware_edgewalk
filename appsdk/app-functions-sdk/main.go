@@ -28,14 +28,14 @@ func main() {
 
 	// 3) Since our FilterByDeviceName Function requires the list of Device Names we would
 	// like to search for, we'll go ahead and define that now.
-	deviceNames := []string{"randBoolGenerator"}
+	deviceNames := []string{"device-goface-01"}
 
 	// 4) This is our pipeline configuration, the collection of functions to
 	// execute every time an event is triggered.
 	edgexSdk.SetFunctionsPipeline(
 		transforms.NewFilter(deviceNames).FilterByDeviceName,
 		transforms.NewConversion().TransformToJSON,
-		transforms.NewHTTPSender("localhost:8080/edge/api", "application/json", false).HTTPPost,
+		//transforms.NewHTTPSender("localhost:8080/edge/api", "application/json", false).HTTPPost,
 		printJSONToConsole,
 	)
 
