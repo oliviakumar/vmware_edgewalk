@@ -35,7 +35,7 @@ func main() {
 	edgexSdk.SetFunctionsPipeline(
 		transforms.NewFilter(deviceNames).FilterByDeviceName,
 		transforms.NewConversion().TransformToJSON,
-		//transforms.NewHTTPSender("localhost:8080/edge/api", "application/json", false).HTTPPost,
+		transforms.NewHTTPSender("localhost:8080/edge/api", "application/json", false).HTTPPost,
 		printJSONToConsole,
 	)
 
