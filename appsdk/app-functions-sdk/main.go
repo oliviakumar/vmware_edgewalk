@@ -4,15 +4,37 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"encoding/json"
+	"net/http"
+	"bytes"
+	"image"
+	"image/jpeg"
 
 	"github.com/edgexfoundry/app-functions-sdk-go/pkg/transforms"
 	"github.com/edgexfoundry/app-functions-sdk-go/appcontext"
 	"github.com/edgexfoundry/app-functions-sdk-go/appsdk"
+	"github.com/edgexfoundry/go-mod-core-contracts/models"
+	"github.com/edgexfoundry/device-goface/driver"
 )
 
 const (
 	serviceKey = "imageWebService"
 )
+
+type ImageData struct {
+	Img []byte `json:"image"`
+	Edgexid string `json:"edgexId"`
+}
+
+type SendingData struct {
+	Identity  string `json:"identity"`
+    Accepted  bool `json:"accepted"`
+	Location  string `json:"location"`
+    Entrytype string `json:"type"`
+	Device string `json:"device"`
+	Edgexid string `json:"edgexId"`
+	Imagepath string
+}
 
 func main() {
 
@@ -35,8 +57,9 @@ func main() {
 	edgexSdk.SetFunctionsPipeline(
 		transforms.NewFilter(deviceNames).FilterByDeviceName,
 		transforms.NewConversion().TransformToJSON,
-		transforms.NewHTTPSender("localhost:8080/edge/api", "application/json", false).HTTPPost,
-		printJSONToConsole,
+		getDataFromJSON,
+		sendData,
+		sendImage,
 	)
 
 	// 5) shows how to access the application's specific configuration settings.
@@ -69,6 +92,99 @@ func printJSONToConsole(edgexcontext *appcontext.Context, params ...interface{})
 		return false, errors.New("No Data Received")
 	}
 	println(params[0].(string))
-	return true, nil
+	return true, params[0].(string)
+}
+
+func getDataFromJSON(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
+	if len(params) < 1 {
+		return false, errors.New("No data received")
+	}
+	b := []byte(params[0].(string))
+	model := models.Event{}
+	err := json.Unmarshal(b, &model)
+	if err != nil {
+		fmt.Println(err)
+		return false, errors.New("Could not unpack model")
+	}
+	for _, reading := range model.Readings {
+		b = []byte(reading.Value)
+		data := driver.NewData()
+		err = json.Unmarshal(b, &data)
+		if err != nil {
+			fmt.Println(err)
+			return false, errors.New("Could not unpack data")
+		}
+		send := SendingData{
+			Identity: data.Identity,
+			Accepted: data.Accepted,
+			Location: data.Location,
+			Entrytype: data.Entrytype,
+			Device: reading.Device,
+			Edgexid: reading.Id,
+			Imagepath: data.Imagepath,
+		}
+		return true, send;
+	}
+	return false, errors.New("No readings received")
+}
+
+func sendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
+	if len(params) < 1 {
+		return false, errors.New("No data recevied")
+	}
+	send := params[0].(SendingData)
+	data, err := json.Marshal(send)
+	if err != nil {
+		fmt.Println(err)
+		return false, errors.New("Could not convert to json")
+	}
+	resp, err := http.Post("http://localhost:8080/edge/api", "application/json", bytes.NewReader(data))
+	if err != nil {
+		fmt.Println(err)
+		return false, errors.New("Error posting data")
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return false, fmt.Errorf("export failed with %d HTTP status code", resp.StatusCode)
+	}
+	return true, send
+}
+
+func sendImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
+	if len(params) < 1 {
+		return false, errors.New("No data recevied")
+	}
+	send := params[0].(SendingData)
+	if send.Imagepath != "" {
+		fImg, err := os.Open(send.Imagepath)
+		if err != nil {
+			fmt.Println(err)
+			return false, errors.New("Image could not be opened")
+		}
+		img, _, _ := image.Decode(fImg)
+		buf := new(bytes.Buffer)
+		err = jpeg.Encode(buf, img, nil)
+		imageData := ImageData{
+			Img: buf.Bytes(),
+			Edgexid: send.Edgexid,
+		}
+		data, err := json.Marshal(imageData)
+		if err != nil {
+			fmt.Println(err)
+			return false, errors.New("Could not convert to JSON")
+		}
+		resp, err := http.Post("https://localhost:8080/edge/image", "image/jpeg", bytes.NewReader(data))
+		if err != nil {
+			fmt.Println(err)
+			return false, errors.New("Error posting data")
+		}
+		defer resp.Body.Close()
+		if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+			return false, fmt.Errorf("export failed with %d HTTP status code", resp.StatusCode)
+		}
+		return true, imageData
+	} else {
+		return true, "No image path was given"
+	}
 }
 
