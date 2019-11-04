@@ -31,6 +31,7 @@ type GofaceData struct {
 	Accepted  bool `json:"accepted"`
 	Location  string `json:"location"`
 	Entrytype string `json:"type"`
+	Imagepath string `json:"imagePath"`
 }
 
 // internal data struct
@@ -43,6 +44,10 @@ type GofaceDevice struct {
 	device     *os.File
 	scanner    *bufio.Scanner
 	gofacedata string
+}
+
+func NewData() GofaceData {
+	return GofaceData{}
 }
 
 func (s *GofaceDevice) DisconnectDevice(deviceName string, protocols map[string]contract.ProtocolProperties) error {
