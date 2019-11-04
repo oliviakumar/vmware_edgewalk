@@ -57,9 +57,9 @@ func main() {
 	edgexSdk.SetFunctionsPipeline(
 		transforms.NewFilter(deviceNames).FilterByDeviceName,
 		transforms.NewConversion().TransformToJSON,
-		getDataFromJSON,
-		sendData,
-		sendImage,
+		GetDataFromJSON,
+		SendData,
+		SendImage,
 	)
 
 	// 5) shows how to access the application's specific configuration settings.
@@ -95,7 +95,7 @@ func printJSONToConsole(edgexcontext *appcontext.Context, params ...interface{})
 	return true, params[0].(string)
 }
 
-func getDataFromJSON(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
+func GetDataFromJSON(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
 	if len(params) < 1 {
 		return false, errors.New("No data received")
 	}
@@ -128,7 +128,7 @@ func getDataFromJSON(edgexcontext *appcontext.Context, params ...interface{}) (b
 	return false, errors.New("No readings received")
 }
 
-func sendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
+func SendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
 	if len(params) < 1 {
 		return false, errors.New("No data recevied")
 	}
@@ -150,7 +150,7 @@ func sendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, in
 	return true, send
 }
 
-func sendImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
+func SendImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
 	if len(params) < 1 {
 		return false, errors.New("No data recevied")
 	}
