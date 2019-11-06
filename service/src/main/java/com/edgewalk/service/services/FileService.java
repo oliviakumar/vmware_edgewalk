@@ -5,19 +5,20 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import com.edgewalk.service.model.Response;
-import com.edgewalk.service.model.ResponseFilter;
 
 import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
 
-	Response processResponse(Response response);
-
-	Response getRecentResponse();
-
-	List<Response> getResponseFromFilter(ResponseFilter filter);
-
+	// Response processResponse(Response response);
+	// Response getRecentResponse();
+	// List<Response> getResponseFromFilter(ResponseFilter filter);
 	List<Response> retrieveAll();
+
+	void init();
+
+    void store(MultipartFile file);
 
     Stream<Path> loadAll();
 
@@ -25,5 +26,5 @@ public interface FileService {
 
 	Resource loadAsResource(String filename);
 
-	void clear();
+	// serve()?
 }

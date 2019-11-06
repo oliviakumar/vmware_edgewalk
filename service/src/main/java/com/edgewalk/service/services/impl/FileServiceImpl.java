@@ -1,20 +1,26 @@
 package com.edgewalk.service.services.impl;
 
-import java.sql.Timestamp;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.edgewalk.service.model.Response;
-import com.edgewalk.service.model.ResponseFilter;
 import com.edgewalk.service.repository.ResponseRepository;
 import com.edgewalk.service.services.FileService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -24,56 +30,86 @@ public class FileServiceImpl implements FileService {
 	private final static Sort DEFAULT_SORT = Sort.by(Sort.Direction.DESC, "attempted");
 
 	@Autowired private ResponseRepository responseRepository;
+	@Autowired private final Path path;
+	
+	// @Autowired
+    // public FileServiceImpl(StorageProperties properties) {
+    //     this.path = Paths.get(properties.getLocation());
+    // }
 
-	@Override
-	public Response processResponse(Response response) {
-		LOG.info("Received a response");
-		response.setAttempted(new Timestamp(System.currentTimeMillis()));
-		return responseRepository.save(response);
-	}
+    @Override
+    public void store(MultipartFile file) {
+        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+        try {
+            if (file.isEmpty()) {
+                throw new StorageException("Failed to store empty file " + filename);
+            }
+            if (filename.contains("..")) {
+                // This is a security check
+                throw new StorageException(
+                        "Cannot store file with relative path outside current directory "
+                                + filename);
+            }
+            try (InputStream inputStream = file.getInputStream()) {
+                Files.copy(inputStream, this.rootLocation.resolve(filename),
+                    StandardCopyOption.REPLACE_EXISTING);
+            }
+        }
+        catch (IOException e) {
+            throw new StorageException("Failed to store file " + filename, e);
+        }
+    }
 
-	@Override
-	public Response getRecentResponse() {
-		Response response = null;
+    @Override
+    public Stream<Path> loadAll() {
+        try {
+            return Files.walk(this.rootLocation, 1)
+                .filter(path -> !path.equals(this.rootLocation))
+                .map(this.rootLocation::relativize);
+        }
+        catch (IOException e) {
+            throw new StorageException("Failed to read stored files", e);
+        }
 
-		List<Response> responses = responseRepository.findAll(DEFAULT_SORT);
-		if (responses != null && !responses.isEmpty()) {
-			response = responses.get(0);
-		}
+    }
 
-		return response;
-	}
+    @Override
+    public Path load(String filename) {
+        return rootLocation.resolve(filename);
+    }
 
-	@Override
-	public List<Response> getResponseFromFilter(ResponseFilter filter) {
-		LOG.info("Retrieving responses from filter");
+    @Override
+    public Resource loadAsResource(String filename) {
+        try {
+            Path file = load(filename);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            }
+            else {
+                throw new StorageFileNotFoundException(
+                        "Could not read file: " + filename);
 
-		List<Response> responses = responseRepository.findAllBetween(filter.getStartDate(), filter.getEndDate(), DEFAULT_SORT);
-		if(responses == null) {
-			responses = new ArrayList<>();
-		}
+            }
+        }
+        catch (MalformedURLException e) {
+            throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+        }
+    }
 
-		responses = responses.stream().filter(r -> {
-			boolean identity = true;
-			boolean location = true;
-			boolean type = true;
-			boolean accepted = true;
-			if (!filter.getIdentity().equals("")) {
-				identity = r.getIdentity().equalsIgnoreCase(filter.getIdentity());
-			}
-			if (filter.isAccepted() != null) {
-				accepted = r.isAccepted() == filter.isAccepted();
-			}
-			if (!filter.getLocation().equals("")) {
-				location = r.getLocation().equalsIgnoreCase(filter.getLocation());
-			}
-			if (!filter.getType().equals("")) {
-				type = r.getType().equalsIgnoreCase(filter.getType());
-			}
-			return identity && location && type && accepted;
-		}).collect(Collectors.toList());
+    @Override
+    public void deleteAll() {
+        FileSystemUtils.deleteRecursively(rootLocation.toFile());
+    }
 
-		return responses;
+    @Override
+    public void init() {
+        try {
+            Files.createDirectories(rootLocation);
+        }
+        catch (IOException e) {
+            throw new StorageException("Could not initialize storage", e);
+        }
 	}
 
 	@Override
@@ -84,11 +120,5 @@ public class FileServiceImpl implements FileService {
 			responses = new ArrayList<>();
 		}
 		return responses;
-	}
-
-	@Override
-	public void clear() {
-		LOG.info("Deleting all database entries");
-		responseRepository.deleteAll();
 	}
 }
