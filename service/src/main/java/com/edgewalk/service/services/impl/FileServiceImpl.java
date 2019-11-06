@@ -38,8 +38,9 @@ public class FileServiceImpl implements FileService {
     // }
 
     @Override
-    public void store(MultipartFile file) {
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+    public void store(MultipartFile file, String edgexId) {
+		String filename = StringUtils.cleanPath(file.getOriginalFilename());
+		/* ignore if file is empty or return false - no need for exceptions */
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + filename);
@@ -51,7 +52,7 @@ public class FileServiceImpl implements FileService {
                                 + filename);
             }
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, this.rootLocation.resolve(filename),
+                Files.copy(inputStream, this.path.resolve(filename),
                     StandardCopyOption.REPLACE_EXISTING);
             }
         }

@@ -59,6 +59,8 @@ public class ResponseController {
 	@ResponseBody
 	@PostMapping("/filter")
 	public List<Response> filter(@RequestBody ResponseFilter filter) {
-		return fileService.getResponseFromFilter(filter);
+		return edgeService.getResponseFromFilter(filter);
 	}
+
+	// TODO getmapping --> image
 }

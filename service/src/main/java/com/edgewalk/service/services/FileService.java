@@ -18,7 +18,7 @@ public interface FileService {
 
 	void init();
 
-    void store(MultipartFile file);
+    void store(MultipartFile file, String edgexId);
 
     Stream<Path> loadAll();
 
