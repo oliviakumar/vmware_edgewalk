@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/edge")
 @RestController
 public class EdgeController {
-
+	
 	@Autowired private EdgeService edgeService;
 
 	@PostMapping("/api")
