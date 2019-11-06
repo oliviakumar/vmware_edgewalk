@@ -70,6 +70,7 @@ public class EdgeServiceImpl implements EdgeService {
 			if (!filter.getType().equals("")) {
 				type = r.getType().equalsIgnoreCase(filter.getType());
 			}
+			/* device and edgexId fields */
 			if (!filter.getType().equals("device")) {
 				type = r.getType().equalsIgnoreCase(filter.getType());
 			}
