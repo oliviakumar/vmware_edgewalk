@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.edgewalk.service.model.Response;
+import com.edgewalk.service.model.ResponseFilter;
+import com.edgewalk.service.repository.ResponseRepository;
+import com.edgewalk.service.services.EdgeService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import com.edgewalk.service.model.Response;
-import com.edgewalk.service.model.ResponseFilter;
-import com.edgewalk.service.repository.ResponseRepository;
-import com.edgewalk.service.services.EdgeService;
 
 @Service
 public class EdgeServiceImpl implements EdgeService {
@@ -68,6 +68,12 @@ public class EdgeServiceImpl implements EdgeService {
 				location = r.getLocation().equalsIgnoreCase(filter.getLocation());
 			}
 			if (!filter.getType().equals("")) {
+				type = r.getType().equalsIgnoreCase(filter.getType());
+			}
+			if (!filter.getType().equals("device")) {
+				type = r.getType().equalsIgnoreCase(filter.getType());
+			}
+			if (!filter.getType().equals("edgexId")) {
 				type = r.getType().equalsIgnoreCase(filter.getType());
 			}
 			return identity && location && type && accepted;
