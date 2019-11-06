@@ -1,21 +1,21 @@
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 // import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("storage")
-public class StorageProperties {
+// // import org.springframework.boot.context.properties.ConfigurationProperties;
 
-    /**
-     * Folder location for storing files
-     */
-    private String location = "approved-images-dir";
+// @ConfigurationProperties("storage")
+// public class StorageProperties {
 
-    public String getLocation() {
-        return location;
-    }
+//     /**
+//      * Folder location for storing files
+//      */
+//     private String location = "approved-images-dir";
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
+//     public String getLocation() {
+//         return location;
+//     }
 
-}
+//     public void setLocation(String location) {
+//         this.location = location;
+//     }
+
+// }
