@@ -3,6 +3,10 @@ package com.edgewalk.service.controller;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.edgewalk.service.model.Response;
+import com.edgewalk.service.model.ResponseFilter;
+import com.edgewalk.service.services.FileService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,15 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.edgewalk.service.model.Response;
-import com.edgewalk.service.model.ResponseFilter;
-import com.edgewalk.service.services.EdgeService;
-
 @RestController
 public class ResponseController {
 
 	@Autowired
-	private EdgeService edgeService;
+	private FileService fileService;
 
 	@Value("${second.delay}")
 	private int delay;
@@ -27,7 +27,7 @@ public class ResponseController {
 	@ResponseBody
 	@GetMapping("/recent")
 	public Response recent() {
-		return edgeService.getRecentResponse();
+		return fileService.getRecentResponse();
 	}
 
 	@ResponseBody
@@ -47,7 +47,7 @@ public class ResponseController {
 	@ResponseBody
 	@GetMapping("/all")
 	public List<Response> all() {
-		return edgeService.retrieveAll();
+		return fileService.retrieveAll();
 	}
 
 	@ResponseBody
@@ -59,6 +59,6 @@ public class ResponseController {
 	@ResponseBody
 	@PostMapping("/filter")
 	public List<Response> filter(@RequestBody ResponseFilter filter) {
-		return edgeService.getResponseFromFilter(filter);
+		return fileService.getResponseFromFilter(filter);
 	}
 }
