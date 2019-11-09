@@ -19,6 +19,8 @@ public class ResponseFilter {
 	private Date startDate;
 	@JsonFormat(pattern = DATE_FORMAT)
 	private Date endDate;
+	private String device = "";
+	private String edgexId = "";
 
 	public ResponseFilter() {
 		this.endDate = new Date(System.currentTimeMillis());
@@ -86,5 +88,21 @@ public class ResponseFilter {
 	private Date setDateString(String date) throws ParseException {
 		SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
 		return new Date(format.parse(date).getTime());
+	}
+
+	public String getDevice() {
+		return this.device;
+	}
+
+	public void setDevice(String device) {
+		this.device = device;
+	}
+
+	public String getEdgexId() {
+		return this.edgexId;
+	}
+
+	public void setEdgexId(String edgexId) {
+		this.edgexId = edgexId;
 	}
 }
