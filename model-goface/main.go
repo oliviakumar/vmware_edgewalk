@@ -9,6 +9,7 @@ import  (
     "os/exec"
     "strings"
     "path/filepath"
+    "time"
     "github.com/Kagami/go-face"
 )
 
@@ -46,6 +47,7 @@ func update() {
     dataDir = "images"
     indSamples = nil
     indTracker = nil
+    valid = false
     indCount = indCount + 1
 }
 
@@ -77,7 +79,7 @@ func dirTraverse(file string, rec *face.Recognizer, name string) {
     //If the file given is a regular file
     case mode.IsRegular():
         //Checks if the file is a jpg or png
-        if (strings.HasSuffix(file, ".jpg") == true || strings.HasSuffix(file, ".jpeg") == true || strings.HasSuffix(file, ".png") == true) {
+        if (strings.HasSuffix(file, ".jpg") == true || strings.HasSuffix(file, ".jpeg") == true) {
             faces, err := rec.RecognizeFile(file)
             if (err != nil) {
                 log.Fatalf("Can't recognize image")
@@ -145,6 +147,7 @@ func findPic(file string, rec *face.Recognizer, pic face.Descriptor) {
         
         for _, f2 := range files {
             if (found) {
+                found = false
                 break
             }
             newDir := filepath.Join(file, f2.Name())
@@ -185,43 +188,63 @@ func findPic(file string, rec *face.Recognizer, pic face.Descriptor) {
 }
 
 //Testing to see if the face resembles that of a trained individual
-func test(rec *face.Recognizer, picName string) (status bool, person string) {
-    dataDir = "images/testImages"
-    testPath := filepath.Join(dataDir, picName)
-    testPic, err := rec.RecognizeSingleFile(testPath)
-    
+func test(rec *face.Recognizer, images map[string]bool) (person string, approved bool, location string, entryType string, path string) {
+    files, err := ioutil.ReadDir(dataDir)
     if err != nil {
-        log.Fatalf("Can't recognize: %v", err)
-    }
-    
-    if testPic == nil {
-        approved = false
-        log.Fatalf("Picture Match: %t", approved)
-    }
-    
-    picID := rec.Classify(testPic.Descriptor)
-    if picID < 0 {
-        log.Fatalf("Can't classify")
+        log.Fatal(err)
     }
 
-    approved = true
-    // fmt.Println("Picture Match: ", approved)
-
-    for i := 0; i < len(model); i++ {
-        var arr []int32 = model[i].index
-        if (int32(picID) >= arr[0] && int32(picID) <= arr[(len(arr) - 1)]) {
-            // fmt.Println("ID that matches the pic: ", i)
-            // fmt.Println("Name that matches the pic: ", model[i].name)
-            person = model[i].name
-            break
+    var testPath string
+    var execute bool
+    for _, file := range files {
+        if (strings.HasSuffix(file.Name(), ".jpg") == true || strings.HasSuffix(file.Name(), ".jpeg") == true) {
+            if (images[file.Name()] == false) {
+                images[file.Name()] = true
+                execute = true
+                testPath = filepath.Join(dataDir, file.Name())
+                break
+            }
         }
     }
-
-    update()    
-    //Uncomment if you want to pull up the most accurate match with picture that was used to train
-    //findPic(dataDir, rec, samples[picID])
     
-    return approved, person
+    if (execute) {
+        testPic, err := rec.RecognizeSingleFile(testPath)
+        if err != nil {
+            log.Fatalf("Can't recognize: %v", err)
+        }
+        
+        if testPic == nil {
+            approved = false
+            log.Fatalf("Picture Match: %t", approved)
+        }
+        
+        picID := rec.Classify(testPic.Descriptor)
+        if picID < 0 {
+            log.Fatalf("Can't classify")
+        }
+
+        approved = true
+        for i := 0; i < len(model); i++ {
+            var arr []int32 = model[i].index
+            if (int32(picID) >= arr[0] && int32(picID) <= arr[(len(arr) - 1)]) {
+                person = model[i].name
+                break
+            }
+        }
+
+        location = "Front Door"
+        entryType = "I"
+        path = testPath
+
+        update()    
+        //Uncomment if you want to pull up the most accurate match with picture that was used to train
+        // findPic(dataDir, rec, samples[picID])
+
+        return person, approved, location, entryType, path
+    } else { 
+        return "", false, "", "", ""
+    }
+
 }
 
 func main () {
@@ -284,13 +307,29 @@ func main () {
     rec.SetSamples(samples, tracker)
     update()
     
-    //Testing using the command line argument
-    arg := os.Args[1]
-    status, person := test(rec, arg)
-    if (status) {
-        fmt.Println("Approved");
-        fmt.Println("Welcome, ", person);
-    } else {
-        fmt.Println("Denied, Anonymous");
+    images := make(map[string]bool)
+    for {
+        dataDir = "images/testImages"
+        fmt.Println("\n")
+        fmt.Println(images)
+        start := time.Now()
+
+        Identity, Accepted, Location, Entrytype, Imagepath := test(rec, images)
+        if (Identity != "") {
+            if (Accepted) {
+                fmt.Println(Identity)
+                fmt.Println(Accepted)
+                fmt.Println(Location)
+                fmt.Println(Entrytype)
+                fmt.Println(Imagepath)
+            } else {
+                fmt.Println("Denied, Anonymous");
+            }
+        }
+        elapsed := time.Since(start)
+        fmt.Println("Binomial took %s", elapsed)
+        approved = false
+
+        time.Sleep(5 * time.Second)
     }
 }
