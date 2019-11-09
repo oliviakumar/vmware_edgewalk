@@ -1,0 +1,21 @@
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+# Don't track thes folders
+service/target/
+*/logs/
+
+# Don't track these files
+*.class
+.DS_Store
+.settings
+.project
+*.logs
+*.log
+

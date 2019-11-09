@@ -63,7 +63,7 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	// routine for reading the goface data and saving it to s.gofacedata
 	go func() {
 		// open device / mock file
-		s.device, _ = os.Open("/Users/romankasel/git/vmware_edgewalk/device-goface/cmd/goface-test.txt")
+		s.device, _ = os.Open("../goface-test.txt")
 		// don't close until done
 		defer s.device.Close()
 
