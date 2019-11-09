@@ -1,5 +1,6 @@
 package com.edgewalk.service.services;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
@@ -18,13 +19,13 @@ public interface FileService {
 
 	void init();
 
-    void store(MultipartFile file, String edgexId);
+    boolean store(MultipartFile file, String edgexId) throws IOException;
 
-    Stream<Path> loadAll();
+    Stream<Path> loadAll() throws IOException;
 
     Path load(String filename);
 
-	Resource loadAsResource(String filename);
+	Resource loadAsResource(String filename) throws IOException;
 
-	// serve()?
+	void deleteAll();
 }
