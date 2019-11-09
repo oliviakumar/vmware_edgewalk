@@ -3,7 +3,7 @@ LogLevel = 'INFO'
 
 [Service]
 Host = "localhost"
-Port = 49990
+Port = 591
 ConnectRetries = 20
 Labels = []
 OpenMsg = "device goface started"
