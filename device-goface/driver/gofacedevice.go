@@ -28,7 +28,7 @@ import (
 // external data struct
 type GofaceData struct {
 	Identity  string `json:"identity"`
-	Accepted  bool `json:"accepted"`
+	Accepted  bool   `json:"accepted"`
 	Location  string `json:"location"`
 	Entrytype string `json:"type"`
 	Imagepath string `json:"imagePath"`
@@ -63,7 +63,7 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	// routine for reading the goface data and saving it to s.gofacedata
 	go func() {
 		// open device / mock file
-		s.device, _ = os.Open("/Users/romankasel/git/vmware_edgewalk/device-goface/cmd/goface-test.txt")
+		s.device, _ = os.Open("/Users/oliviakumar/Documents/Fall19/Senior Team/vmware_edgewalk/device-goface/driver/goface-test.txt")
 		// don't close until done
 		defer s.device.Close()
 
@@ -104,7 +104,7 @@ func parseGofaceLine(data []string) string {
 
 	// creating struct containing data extracted from line
 	gofaceDataPoint := GofaceData{
-		Identity: identityName,
+		Identity:  identityName,
 		Accepted:  acceptedStatus,
 		Location:  location,
 		Entrytype: entrytype,
@@ -152,7 +152,7 @@ func (s *GofaceDevice) HandleWriteCommands(deviceName string, protocols map[stri
 	params []*dsModels.CommandValue) error {
 	err := fmt.Errorf("GofaceDevice.HandleWriteCommands; no write commands supported")
 	return err
-	}
+}
 
 // Stop the protocol-specific DS code to shutdown gracefully, or
 // if the force parameter is 'true', immediately. The driver is responsible
