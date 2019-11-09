@@ -30,14 +30,11 @@ public class FileServiceImpl implements FileService {
 
 	@Autowired private ResponseRepository responseRepository;
 	@Autowired private Path path;
-	
-	// @Autowired
-    // public FileServiceImpl(StorageProperties properties) {
-    //     this.path = Paths.get(properties.getLocation());
-    // }
 
-    @Override
-    public boolean store(MultipartFile file, String edgexId) throws IOException {
+
+
+	@Override
+	public boolean store(MultipartFile file, String edgexId) throws IOException {
 		String filename = file.getOriginalFilename();
 		if (!file.isEmpty()) {
 			Files.copy(file.getInputStream(), this.path.resolve(filename),
@@ -47,23 +44,23 @@ public class FileServiceImpl implements FileService {
 		}
 		return false;
 		/* ignore if file is empty or return false - no need for exceptions atm */
-    }
+	}
 
-    @Override
-    public Stream<Path> loadAll() throws IOException {
+	@Override
+	public Stream<Path> loadAll() throws IOException {
 		return Files.walk(this.path, 1)
 			.filter(path -> !path.equals(this.path))
 			.map(this.path::relativize);
 
-    }
+	}
 
-    @Override
-    public Path load(String filename) {
-        return path.resolve(filename);
-    }
+	@Override
+	public Path load(String filename) {
+		return path.resolve(filename);
+	}
 
-    @Override
-    public Resource loadAsResource(String filename) throws FileNotFoundException, MalformedURLException {
+	@Override
+	public Resource loadAsResource(String filename) throws FileNotFoundException, MalformedURLException {
 		Path file = load(filename);
 		Resource resource = new UrlResource(file.toUri());
 		if (resource.exists() || resource.isReadable()) {
@@ -73,10 +70,10 @@ public class FileServiceImpl implements FileService {
 		// ("Error. The file " + filename + " was not found.");
 	}
 
-    @Override
-    public void deleteAll() {
-        FileSystemUtils.deleteRecursively(path.toFile());
-    }
+	@Override
+	public void deleteAll() {
+		FileSystemUtils.deleteRecursively(path.toFile());
+	}
 
 	@Override
 	public List<Response> retrieveAll() {

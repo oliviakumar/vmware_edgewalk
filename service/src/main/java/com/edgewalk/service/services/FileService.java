@@ -19,11 +19,11 @@ public interface FileService {
 
 	void init();
 
-    boolean store(MultipartFile file, String edgexId) throws IOException;
+   	boolean store(MultipartFile file, String edgexId) throws IOException;
 
-    Stream<Path> loadAll() throws IOException;
+	Stream<Path> loadAll() throws IOException;
 
-    Path load(String filename);
+	Path load(String filename);
 
 	Resource loadAsResource(String filename) throws IOException;
 
