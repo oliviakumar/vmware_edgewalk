@@ -1,0 +1,10 @@
+# do not track the following folders:
+target/
+
+# do not track the following files:
+*.class
+.DS_Store
+.setting
+.project
+*.logs
+*.log
