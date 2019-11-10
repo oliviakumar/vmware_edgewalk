@@ -1,50 +1,39 @@
 package com.edgewalk.service.controller;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
 
-import com.edgewalk.service.services.FileService;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.edgewalk.service.services.FileService;
 
 @RequestMapping("/files")
-@Controller
+@RestController
 public class FileController {
 
-    @Autowired
-    private FileService fileService;
+	private final static Logger LOG = LoggerFactory.getLogger(FileController.class);
 
-    @GetMapping
-    public String listUploadedFiles(Model model) throws IOException {
+	@Autowired
+	private FileService fileService;
 
-        model.addAttribute("files", fileService.loadAll().map(
-                path -> MvcUriComponentsBuilder.fromMethodName(FileController.class,
-                        "serveFile", path.getFileName().toString()).build().toString())
-                .collect(Collectors.toList()));
-
-        return "uploadForm";
-    }
-
-    // @GetMapping("/image")
-    // @PathVariable String path - our id
-    @GetMapping("/{path}")
-    @ResponseBody
-    // can call from front end and can load image
-    public ResponseEntity<Resource> receiveFile(@PathVariable String path) {
-        /*
-        Resource file = fileService.loadAsResource(path);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; path=\"" + file.getFilename() + "\"").body(file);
-        */
-        return null;
+	@GetMapping("/{id}")
+	public ResponseEntity<Resource> receiveFile(@PathVariable String id) {
+		ResponseEntity<Resource> response;
+		try {
+			response = new ResponseEntity<>(fileService.loadAsResource(id + ".jpg"), new HttpHeaders(), HttpStatus.OK);
+		} catch (IOException e) {
+			LOG.error("Error retrieving file {}", id, e);
+			response = new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
     }
 }

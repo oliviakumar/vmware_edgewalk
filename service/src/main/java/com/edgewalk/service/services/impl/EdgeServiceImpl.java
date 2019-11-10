@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.edgewalk.service.model.Response;
-import com.edgewalk.service.model.ResponseFilter;
-import com.edgewalk.service.repository.ResponseRepository;
-import com.edgewalk.service.services.EdgeService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import com.edgewalk.service.model.Response;
+import com.edgewalk.service.model.ResponseFilter;
+import com.edgewalk.service.repository.ResponseRepository;
+import com.edgewalk.service.services.EdgeService;
 
 @Service
 public class EdgeServiceImpl implements EdgeService {
@@ -23,7 +23,8 @@ public class EdgeServiceImpl implements EdgeService {
 
 	private final static Sort DEFAULT_SORT = Sort.by(Sort.Direction.DESC, "attempted");
 
-	@Autowired private ResponseRepository responseRepository;
+	@Autowired
+	private ResponseRepository responseRepository;
 
 	@Override
 	public Response processResponse(Response response) {
@@ -58,6 +59,8 @@ public class EdgeServiceImpl implements EdgeService {
 			boolean location = true;
 			boolean type = true;
 			boolean accepted = true;
+			boolean device = true;
+			boolean edgexId = true;
 			if (!filter.getIdentity().equals("")) {
 				identity = r.getIdentity().equalsIgnoreCase(filter.getIdentity());
 			}
@@ -70,14 +73,13 @@ public class EdgeServiceImpl implements EdgeService {
 			if (!filter.getType().equals("")) {
 				type = r.getType().equalsIgnoreCase(filter.getType());
 			}
-			/* device and edgexId fields */
-			if (!filter.getType().equals("device")) {
-				type = r.getType().equalsIgnoreCase(filter.getType());
+			if (!filter.getDevice().equals("")) {
+				device = r.getType().equalsIgnoreCase(filter.getType());
 			}
-			if (!filter.getType().equals("edgexId")) {
-				type = r.getType().equalsIgnoreCase(filter.getType());
+			if (!filter.getEdgexId().equals("")) {
+				edgexId = r.getType().equalsIgnoreCase(filter.getType());
 			}
-			return identity && location && type && accepted;
+			return identity && location && type && accepted && device && edgexId;
 		}).collect(Collectors.toList());
 
 		return responses;

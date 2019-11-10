@@ -6,13 +6,8 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
 
-import com.edgewalk.service.model.Response;
-import com.edgewalk.service.repository.ResponseRepository;
-import com.edgewalk.service.services.FileService;
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,35 +18,44 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.edgewalk.service.config.FileConfig;
+import com.edgewalk.service.model.Response;
+import com.edgewalk.service.repository.ResponseRepository;
+import com.edgewalk.service.services.FileService;
+
 @Service
 public class FileServiceImpl implements FileService {
 
 	private final static Logger LOG = LoggerFactory.getLogger(FileServiceImpl.class);
 
-	@Autowired private ResponseRepository responseRepository;
-	@Autowired private Path path;
+	private Path path;
 
+	@Autowired
+	private FileConfig fileConfig;
 
+	@Autowired
+	private ResponseRepository responseRepository;
 
-	@Override
-	public boolean store(MultipartFile file, String edgexId) throws IOException {
-		String filename = file.getOriginalFilename();
-		if (!file.isEmpty()) {
-			Files.copy(file.getInputStream(), this.path.resolve(filename),
-			StandardCopyOption.REPLACE_EXISTING);
-			
-			return true;
-		}
-		return false;
-		/* ignore if file is empty or return false - no need for exceptions atm */
+	@PostConstruct
+	private void init() {
+		path = fileConfig.getImagePath();
 	}
 
 	@Override
-	public Stream<Path> loadAll() throws IOException {
-		return Files.walk(this.path, 1)
-			.filter(path -> !path.equals(this.path))
-			.map(this.path::relativize);
+	public boolean store(MultipartFile file, String edgexId) throws IOException {
+		if (!file.isEmpty()) {
+			Response response = responseRepository.findByEdgexId(edgexId);
+			if (response == null) {
+				LOG.info("Received file to store but no response under edgexId: {}", edgexId);
+				return false;
+			}
+			String id = response.getId().toHexString() + ".jpg";
+			Files.copy(file.getInputStream(), this.path.resolve(id),
+			StandardCopyOption.REPLACE_EXISTING);
 
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -67,21 +71,10 @@ public class FileServiceImpl implements FileService {
 			return resource;
 		}
 		return null;
-		// ("Error. The file " + filename + " was not found.");
 	}
 
 	@Override
 	public void deleteAll() {
 		FileSystemUtils.deleteRecursively(path.toFile());
-	}
-
-	@Override
-	public List<Response> retrieveAll() {
-		LOG.info("Loading all responses");
-		List<Response> responses = responseRepository.findAll();
-		if (responses == null) {
-			responses = new ArrayList<>();
-		}
-		return responses;
 	}
 }
