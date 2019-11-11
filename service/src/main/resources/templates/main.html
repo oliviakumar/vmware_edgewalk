@@ -1,4 +1,8 @@
-<!DOCTYPE HTML>
+
+
+<!DOCTYPE html>
+
+
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -6,8 +10,14 @@
 <title>Edgewalk Security</title>
 </head>
 <body style="margin:0;">
+	<body>
+		<noscript>You need to enable JavaScript to run this app.</noscript>
+		<div id="root"></div>
+		<h1>Welcome to FACEX</h1>
+	  </body>
 	<div id="container" th:include="content :: display" style="width:100%;height:100%;text-align:center;margin:0;"></div>
 <script type="text/javascript">
+
 function call() {
 	$.ajax({
 		url : '/content',
@@ -25,5 +35,6 @@ setInterval(function() {
 	call();
 }, 10000)
 </script>
+        <div id="code"></div>
 </body>
 </html>

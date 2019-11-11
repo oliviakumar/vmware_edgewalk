@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
+    "babel-loader": "^8.0.6",
     "babel-preset-es2015": "^6.24.1",
     "body-parser": "^1.18.2",
     "ejs": "^2.5.7",
@@ -22,5 +23,9 @@
   "scripts": {
     "webpack": "webpack",
     "start": "npm run webpack && nodemon --exec babel-node -- bin/www"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   }
 }
