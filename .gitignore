@@ -19,3 +19,4 @@ service/target/
 *.logs
 *.log
 
+node_modules
