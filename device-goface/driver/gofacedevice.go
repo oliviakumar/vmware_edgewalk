@@ -63,7 +63,7 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	// routine for reading the goface data and saving it to s.gofacedata
 	go func() {
 		// open device / mock file
-		s.device, _ = os.Open("/Users/oliviakumar/Documents/Fall19/Senior Team/vmware_edgewalk/device-goface/driver/goface-test.txt")
+		s.device, _ = os.Open("../goface-test.txt")
 		// don't close until done
 		defer s.device.Close()
 
@@ -101,6 +101,7 @@ func parseGofaceLine(data []string) string {
 	acceptedStatus, _ := strconv.ParseBool(data[2])
 	location := strings.TrimSpace(data[3])
 	entrytype := strings.TrimSpace(data[4])
+	imagePath := strings.TrimSpace(data[5])
 
 	// creating struct containing data extracted from line
 	gofaceDataPoint := GofaceData{
@@ -108,6 +109,7 @@ func parseGofaceLine(data []string) string {
 		Accepted:  acceptedStatus,
 		Location:  location,
 		Entrytype: entrytype,
+		Imagepath: imagePath,
 	}
 
 	// convert to JSON

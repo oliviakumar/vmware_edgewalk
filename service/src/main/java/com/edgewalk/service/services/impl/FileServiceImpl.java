@@ -43,6 +43,7 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	public boolean store(MultipartFile file, String edgexId) throws IOException {
+		LOG.info("Received file with edgex id {}", edgexId);
 		if (!file.isEmpty()) {
 			Response response = responseRepository.findByEdgexId(edgexId);
 			if (response == null) {
@@ -54,6 +55,8 @@ public class FileServiceImpl implements FileService {
 			StandardCopyOption.REPLACE_EXISTING);
 
 			return true;
+		} else {
+			LOG.info("No file received");
 		}
 		return false;
 	}
