@@ -16,4 +16,6 @@ public interface EdgeService {
 	List<Response> retrieveAll();
 
 	void clear();
+
+	Response getIdentity(String indentity);
 }

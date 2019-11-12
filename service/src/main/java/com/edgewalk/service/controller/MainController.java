@@ -3,6 +3,10 @@ package com.edgewalk.service.controller;
 import java.sql.Timestamp;
 import java.text.ParseException;
 
+import com.edgewalk.service.model.Response;
+import com.edgewalk.service.model.ResponseFilter;
+import com.edgewalk.service.services.EdgeService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -10,10 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import com.edgewalk.service.model.Response;
-import com.edgewalk.service.model.ResponseFilter;
-import com.edgewalk.service.services.EdgeService;
 
 @Controller
 public class MainController {

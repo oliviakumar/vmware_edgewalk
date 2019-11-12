@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.edgewalk.service.model.Response;
+import com.edgewalk.service.model.ResponseFilter;
+import com.edgewalk.service.repository.ResponseRepository;
+import com.edgewalk.service.services.EdgeService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import com.edgewalk.service.model.Response;
-import com.edgewalk.service.model.ResponseFilter;
-import com.edgewalk.service.repository.ResponseRepository;
-import com.edgewalk.service.services.EdgeService;
 
 @Service
 public class EdgeServiceImpl implements EdgeService {
@@ -91,4 +91,14 @@ public class EdgeServiceImpl implements EdgeService {
 		LOG.info("Deleting all database entries");
 		responseRepository.deleteAll();
 	}
+
+	@Override
+	public Response getIdentity(String identity) {
+		for (Response entry: responseRepository.findAll()) {
+		  if (entry.getIdentity() == identity) {
+			return entry;
+		  }
+		}
+		return null;
+	  }
 }

@@ -3,17 +3,18 @@ package com.edgewalk.service.controller;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.edgewalk.service.model.Response;
+import com.edgewalk.service.model.ResponseFilter;
+import com.edgewalk.service.services.EdgeService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.edgewalk.service.model.Response;
-import com.edgewalk.service.model.ResponseFilter;
-import com.edgewalk.service.services.EdgeService;
 
 @RestController
 public class ResponseController {
@@ -60,5 +61,10 @@ public class ResponseController {
 	@PostMapping("/filter")
 	public List<Response> filter(@RequestBody ResponseFilter filter) {
 		return edgeService.getResponseFromFilter(filter);
+	}
+
+	@GetMapping("/edgewalk/{username}/entries/{id}")
+	public Response getEntry(@PathVariable String username, @PathVariable long id) {
+		return edgeService.getIdentity(username);
 	}
 }
