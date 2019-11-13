@@ -19,5 +19,5 @@ public interface EdgeService {
 
 	void clear();
 
-	Response getIdentity(String indentity);
+	Response getIdentityLiv(String indentity);
 }

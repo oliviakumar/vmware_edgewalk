@@ -27,13 +27,11 @@ public class ResponseController {
 	@Value("${second.delay}")
 	private int delay;
 
-	@ResponseBody
 	@GetMapping("/recent")
 	public Response recent() {
 		return edgeService.getRecentResponse();
 	}
 
-	@ResponseBody
 	@GetMapping("/within-delay")
 	public Response recentWithinDelay() {
 		Response response = recent();
@@ -47,7 +45,6 @@ public class ResponseController {
 		return response;
 	}
 
-	@ResponseBody
 	@GetMapping("/all")
 	public List<Response> all() {
 		return edgeService.retrieveAll();
@@ -66,7 +63,6 @@ public class ResponseController {
 		return filter(new ResponseFilter());
 	}
 
-	@ResponseBody
 	@PostMapping("/filter")
 	public List<Response> filter(@RequestBody ResponseFilter filter) {
 		return edgeService.getResponseFromFilter(filter);
@@ -74,6 +70,6 @@ public class ResponseController {
 
 	@GetMapping("/edgewalk/{username}/entries/{id}")
 	public Response getEntry(@PathVariable String username, @PathVariable long id) {
-		return edgeService.getIdentity(username);
+		return edgeService.getIdentityLiv(username);
 	}
 }

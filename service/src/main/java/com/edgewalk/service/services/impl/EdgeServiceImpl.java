@@ -23,7 +23,8 @@ public class EdgeServiceImpl implements EdgeService {
 
 	private final static Sort DEFAULT_SORT = Sort.by(Sort.Direction.DESC, "attempted");
 
-	@Autowired private ResponseRepository responseRepository;
+	@Autowired
+	private ResponseRepository responseRepository;
 
 	@Override
 	public Response processResponse(Response response) {
@@ -58,6 +59,8 @@ public class EdgeServiceImpl implements EdgeService {
 			boolean location = true;
 			boolean type = true;
 			boolean accepted = true;
+			boolean device = true;
+			boolean edgexId = true;
 			if (!filter.getIdentity().equals("")) {
 				identity = r.getIdentity().equalsIgnoreCase(filter.getIdentity());
 			}
@@ -70,7 +73,13 @@ public class EdgeServiceImpl implements EdgeService {
 			if (!filter.getType().equals("")) {
 				type = r.getType().equalsIgnoreCase(filter.getType());
 			}
-			return identity && location && type && accepted;
+			if (!filter.getDevice().equals("")) {
+				device = r.getType().equalsIgnoreCase(filter.getType());
+			}
+			if (!filter.getEdgexId().equals("")) {
+				edgexId = r.getType().equalsIgnoreCase(filter.getType());
+			}
+			return identity && location && type && accepted && device && edgexId;
 		}).collect(Collectors.toList());
 
 		return responses;
@@ -121,7 +130,7 @@ public class EdgeServiceImpl implements EdgeService {
 	}
 
 	@Override
-	public Response getIdentity(String identity) {
+	public Response getIdentityLiv(String identity) {
 		for (Response entry: responseRepository.findAll()) {
 		  if (entry.getIdentity() == identity) {
 			return entry;

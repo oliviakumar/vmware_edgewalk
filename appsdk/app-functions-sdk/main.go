@@ -22,11 +22,14 @@ const (
 	serviceKey = "imageWebService"
 )
 
+<<<<<<< HEAD
 // type ImageData struct {
 // 	Img []byte `json:"file"`
 // 	Edgexid string `json:"edgexId"`
 // }
 
+=======
+>>>>>>> master
 type SendingData struct {
 	Identity  string `json:"identity"`
 	Accepted  bool `json:"accepted"`
