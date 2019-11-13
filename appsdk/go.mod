@@ -10,3 +10,5 @@ require (
 )
 
 replace github.com/edgexfoundry/device-goface v0.0.0 => ../device-goface
+
+replace github.com/hashicorp/consul v1.4.2 => /Users/oliviakumar/go/pkg/mod/github.com/hashicorp/consul/api@v1.1.0

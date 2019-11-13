@@ -87,6 +87,34 @@ public class EdgeServiceImpl implements EdgeService {
 	}
 
 	@Override
+	public List<String> liv() {
+		LOG.info("Loading all responses");
+		List<Response> responses = responseRepository.findAll();
+		List<String> str_res = new ArrayList<>();
+		for (Response r: responses) {
+			str_res.add(r.toString());
+		}
+		if (responses == null) {
+			responses = new ArrayList<>();
+		}
+		str_res.add("test one");
+		str_res.add("test two");
+		// responses.add(new Response(null, "-", false, "--", "i", null));
+		// ResponseFilter e = new ResponseFilter(null, "-", false, "--", "i", null);
+		// responses.add(new Response());
+
+		/*
+			private ObjectId id = null;
+			private String identity = "";
+			private boolean accepted = false;
+			private String location = "";
+			private String type = ""; // I for incoming, O for outgoing
+			private Timestamp attempted = null;
+		*/
+		return str_res;
+	}
+
+	@Override
 	public void clear() {
 		LOG.info("Deleting all database entries");
 		responseRepository.deleteAll();

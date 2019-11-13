@@ -50,7 +50,7 @@ public class MainController {
 		ResponseFilter filter = new ResponseFilter();
 		model.addAttribute("responses", edgeService.getResponseFromFilter(filter));
 		model.addAttribute("filter", filter);
-
+		// model.addAttribute("attributeName", attributeValue)
 		return "entry";
 	}
 
