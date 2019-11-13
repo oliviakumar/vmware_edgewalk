@@ -14,6 +14,8 @@ public class Response {
 	private String location = "";
 	private String type = ""; // I for incoming, O for outgoing
 	private Timestamp attempted = null;
+	private String device = "";
+	private String edgexId = "";
 
 	public ObjectId getId() {
 		return this.id;
@@ -73,6 +75,22 @@ public class Response {
 
 	public void setAttempted(Timestamp attempted) {
 		this.attempted = attempted;
+	}
+
+	public String getDevice() {
+		return this.device;
+	}
+
+	public void setDevice(String device) {
+		this.device = device;
+	}
+
+	public String getEdgexId() {
+		return this.edgexId;
+	}
+
+	public void setEdgexId(String edgexId) {
+		this.edgexId = edgexId;
 	}
 
 	private String capitalCase(String str) {

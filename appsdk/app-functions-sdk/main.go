@@ -7,8 +7,9 @@ import (
 	"encoding/json"
 	"net/http"
 	"bytes"
-	"image"
-	"image/jpeg"
+	"mime/multipart"
+	"io"
+	"strings"
 
 	"github.com/edgexfoundry/app-functions-sdk-go/pkg/transforms"
 	"github.com/edgexfoundry/app-functions-sdk-go/appcontext"
@@ -20,11 +21,6 @@ import (
 const (
 	serviceKey = "imageWebService"
 )
-
-type ImageData struct {
-	Img []byte `json:"image"`
-	Edgexid string `json:"edgexId"`
-}
 
 type SendingData struct {
 	Identity  string `json:"identity"`
@@ -157,35 +153,61 @@ func SendImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, i
 	}
 	send := params[0].(SendingData)
 	if send.Imagepath != "" {
-		fImg, err := os.Open(send.Imagepath)
+		file, err := os.Open(send.Imagepath)
 		if err != nil {
 			fmt.Println(err)
 			return false, errors.New("Image could not be opened")
 		}
-		img, _, _ := image.Decode(fImg)
-		buf := new(bytes.Buffer)
-		err = jpeg.Encode(buf, img, nil)
-		imageData := ImageData{
-			Img: buf.Bytes(),
-			Edgexid: send.Edgexid,
+		values := map[string] io.Reader {
+			"file": file,
+			"edgexId": strings.NewReader(send.Edgexid),
 		}
-		data, err := json.Marshal(imageData)
+		err = Upload(values)
 		if err != nil {
 			fmt.Println(err)
-			return false, errors.New("Could not convert to JSON")
+			return false, errors.New("Error posting image data")
 		}
-		resp, err := http.Post("https://localhost:8080/edge/image", "image/jpeg", bytes.NewReader(data))
-		if err != nil {
-			fmt.Println(err)
-			return false, errors.New("Error posting data")
-		}
-		defer resp.Body.Close()
-		if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-			return false, fmt.Errorf("export failed with %d HTTP status code", resp.StatusCode)
-		}
-		return true, imageData
+		return true, nil
 	} else {
 		return true, "No image path was given"
 	}
 }
 
+func Upload(values map[string] io.Reader) (err error) {
+	b := new(bytes.Buffer)
+	w := multipart.NewWriter(b)
+	for key, r := range values {
+		var fw io.Writer
+		if x, ok := r.(io.Closer); ok {
+			defer x.Close()
+		}
+		// Add an image file
+		if x, ok := r.(*os.File); ok {
+			if fw, err = w.CreateFormFile(key, x.Name()); err != nil {
+				fmt.Println(err)
+				return errors.New("Error creating form file")
+			}
+		} else {
+			// Add other fields
+			if fw, err = w.CreateFormField(key); err != nil {
+				fmt.Println(err)
+				return errors.New("Error creating form field")
+			}
+		}
+		if _, err = io.Copy(fw, r); err != nil {
+			return err
+		}
+	}
+	w.Close()
+
+	resp, err := http.Post("http://localhost:8080/edge/image", w.FormDataContentType(), b)
+	if err != nil {
+		fmt.Println(err)
+		return errors.New("Error posting image data")
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return errors.New(fmt.Sprintf("export failed with %d HTTP status code", resp.StatusCode))
+	}
+	return
+}

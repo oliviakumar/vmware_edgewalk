@@ -1,7 +1,0 @@
-$GF, Mushahid, true, back door, I
-
-$GF, Chris, true, front door, O
-
-$GF, Doug, true, back door, I
-
-$GF, Doug, false, front door, O

@@ -28,7 +28,7 @@ import (
 // external data struct
 type GofaceData struct {
 	Identity  string `json:"identity"`
-	Accepted  bool `json:"accepted"`
+	Accepted  bool   `json:"accepted"`
 	Location  string `json:"location"`
 	Entrytype string `json:"type"`
 	Imagepath string `json:"imagePath"`
@@ -101,13 +101,15 @@ func parseGofaceLine(data []string) string {
 	acceptedStatus, _ := strconv.ParseBool(data[2])
 	location := strings.TrimSpace(data[3])
 	entrytype := strings.TrimSpace(data[4])
+	imagePath := strings.TrimSpace(data[5])
 
 	// creating struct containing data extracted from line
 	gofaceDataPoint := GofaceData{
-		Identity: identityName,
+		Identity:  identityName,
 		Accepted:  acceptedStatus,
 		Location:  location,
 		Entrytype: entrytype,
+		Imagepath: imagePath,
 	}
 
 	// convert to JSON
@@ -152,7 +154,7 @@ func (s *GofaceDevice) HandleWriteCommands(deviceName string, protocols map[stri
 	params []*dsModels.CommandValue) error {
 	err := fmt.Errorf("GofaceDevice.HandleWriteCommands; no write commands supported")
 	return err
-	}
+}
 
 // Stop the protocol-specific DS code to shutdown gracefully, or
 // if the force parameter is 'true', immediately. The driver is responsible
