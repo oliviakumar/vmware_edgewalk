@@ -15,11 +15,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"log"
+	"os/exec"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
 
+	recog "github.com/edgexfoundry/vmware_edgewalk/model-goface"
 	dsModels "github.com/edgexfoundry/device-sdk-go/pkg/models"
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	contract "github.com/edgexfoundry/go-mod-core-contracts/models"
@@ -38,11 +41,7 @@ type GofaceData struct {
 type GofaceDevice struct {
 	lc           logger.LoggingClient
 	asyncCh      chan<- *dsModels.AsyncValues
-	switchButton bool
-
 	mux        sync.Mutex
-	device     *os.File
-	scanner    *bufio.Scanner
 	gofacedata string
 }
 
@@ -54,41 +53,67 @@ func (s *GofaceDevice) DisconnectDevice(deviceName string, protocols map[string]
 	return nil
 }
 
-// Initialize performs protocol-specific initialization for the device
+// Initialize performs protocol-specific initialization for the devicef
 // service.
 func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsModels.AsyncValues) error {
+	
+	// starting up the goface main in go routine
+	// Start() will not wait for it to be finished running so it can run in the background
+	go func() {
+		// relative path: model-goface/main.go
+		filepath := "/home/tanja/go/src/github.com/edgexfoundry/vmware_edgewalk/model-goface/main.go"
+		build := exec.Command("go", "build", filepath)
+    	run := exec.Command("go", "run", filepath)
+		err := build.Start()
+
+		// error logging on both build and run
+    	if err != nil {
+	        fmt.Println("%s", err)
+	    }
+    	errRun := run.Start()
+		if errRun != nil {
+        	fmt.Println("%s", err)
+    	}
+	}
+
+	// init logger and async channel
 	s.lc = lc
 	s.asyncCh = asyncCh
 
 	// routine for reading the goface data and saving it to s.gofacedata
 	go func() {
-		// open device / mock file
-		s.device, _ = os.Open("/Users/romankasel/git/vmware_edgewalk/device-goface/cmd/goface-test.txt")
-		// don't close until done
-		defer s.device.Close()
-
-		s.scanner = bufio.NewScanner(s.device)
-
-		//scanning line by line, checking if it starts with $GF, indicating new goface reading
-		for s.scanner.Scan() {
-			// split lines and split line data points at comma
-			splitLine := strings.Split(s.scanner.Text(), ",")
-			if len(splitLine) > 0 {
-				if splitLine[0] == "$GF" {
-					tempGofaceData := parseGofaceLine(splitLine)
-					s.mux.Lock()
-					s.gofacedata = tempGofaceData
-					s.mux.Unlock()
-					time.Sleep(1000 * time.Millisecond)
-				}
+		// open 
+		tempGofaceData := parseGofaceData(recog.RecogData)
+		s.mux.Lock()
+		s.gofacedata = tempGofaceData
+		s.mux.Unlock()
+		//sleep for 1 sec
+		time.Sleep(1000 * time.Millisecond)
 			}
 		}
+	}
 
-	}()
+	}()*/
 
 	return nil
 }
 
+func parseGofaceStruct(data []string){
+
+	gofaceDataPoint, _ := recog.RecogData
+		// convert to JSON
+	resp, err := json.Marshal(gofaceDataPoint)
+
+	// print error if something has gone wrong
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// return the JSON-parsed response as a string
+	return string(resp)
+}
+
+/*
 // parse goface string and extract data necessary for struct
 // data[1] - identity of entrant as a string
 // data[2] - status of acceptance: true or false, parsed as string
@@ -121,6 +146,7 @@ func parseGofaceLine(data []string) string {
 	// return the JSON-parsed response as a string
 	return string(resp)
 }
+*/
 
 // HandleReadCommands triggers a protocol Read operation for the specified device.
 func (s *GofaceDevice) HandleReadCommands(deviceName string, protocols map[string]contract.ProtocolProperties, reqs []dsModels.CommandRequest) (res []*dsModels.CommandValue, err error) {
