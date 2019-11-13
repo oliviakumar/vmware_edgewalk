@@ -7,9 +7,13 @@
 # Unignore all dirs
 !*/
 
+# Unignore Makefile
+!Makefile
+
 # Don't track thes folders
-service/target/
+*/target/
 */logs/
+*/bin/
 
 # Don't track these files
 *.class

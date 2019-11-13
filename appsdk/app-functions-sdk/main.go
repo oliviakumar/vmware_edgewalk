@@ -52,7 +52,6 @@ func main() {
 	// execute every time an event is triggered.
 	edgexSdk.SetFunctionsPipeline(
 		transforms.NewFilter(deviceNames).FilterByDeviceName,
-		//transforms.NewConversion().TransformToJSON,
 		GetDataFromJSON,
 		SendData,
 		SendImage,
@@ -95,13 +94,6 @@ func GetDataFromJSON(edgexcontext *appcontext.Context, params ...interface{}) (b
 	if len(params) < 1 {
 		return false, errors.New("No data received")
 	}
-	//b := []byte(params[0].(string))
-	//model := models.Event{}
-	//err := json.Unmarshal(b, &model)
-	//if err != nil {
-	//	fmt.Println(err)
-	//	return false, errors.New("Could not unpack model")
-	//}
 	model := params[0].(models.Event)
 	for _, reading := range model.Readings {
 		b = []byte(reading.Value)
@@ -211,3 +203,4 @@ func Upload(values map[string] io.Reader) (err error) {
 	}
 	return
 }
+

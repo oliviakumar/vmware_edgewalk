@@ -1,12 +1,12 @@
 #!/bin/bash
 
-cd device-goface/
-make
-cd cmd/device-goface/
-./device-goface &
-cd ../../../appsdk
+cd appsdk
 make
 cd app-functions-sdk
 ./appsdk &
 cd ../..
+cd device-goface/
+make
+cd cmd/device-goface/
+./device-goface &
 
