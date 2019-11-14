@@ -9,14 +9,19 @@ class ListEntriesComponent extends Component {
         this.state = {
             entries: [],
             message: null,
+            imgpath: [],
         }
         this.refreshEntries = this.refreshEntries.bind(this)
+        this.getImage = this.getImage.bind(this);
+        this.getContent = this.getContent.bind(this);
         // this.updateEntryClicked = this.updateEntryClicked.bind(this)
         // this.addEntryClicked = this.addEntryClicked.bind(this)
     }
 
     componentDidMount() {
         this.refreshEntries();
+        this.getImage();
+        this.getContent();
     }
 
     refreshEntries() {
@@ -27,9 +32,36 @@ class ListEntriesComponent extends Component {
                     console.log(response);
                     this.setState({entries: response.data})
                     console.log(this.state.entries[4].identity);
-
                 }
             )
+    }
+
+    getImage() {
+        console.log("entered get image");
+        EntryDataService.retrieveImage() // HARDCODED
+            // .then(
+            //     response => {
+                    console.log("images -----");
+                    console.log(EntryDataService.retrieveImage());
+                    this.setState({imgpath: EntryDataService.retrieveImage()})
+                    console.log(this.state.imgpath);
+
+                // }
+            // )
+    }
+
+    getContent() {
+        console.log("entered get content");
+        // console.log(EntryDataService.retrieveContent());
+        EntryDataService.retrieveContent()
+            .then(
+                response => {
+                    console.log("content -----");
+                    console.log(response);
+                    this.setState({imgpath: response});
+                }
+            )
+        
     }
 
     // updateEntryClicked(id) {
@@ -41,8 +73,16 @@ class ListEntriesComponent extends Component {
     //     this.props.history.push(`/entries/-1`)
     // }
 
+    onFileChange = (event) => {
+        this.setState({
+          file: event.target.files[0]
+        });
+      }
+
     render() {
         return (
+            <div>
+                <img src={"Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/model-goface/images/Olivia/olivia3.jpg"} />
                 <div className="container">
                     <table className="table">
                         <thead>
@@ -70,7 +110,9 @@ class ListEntriesComponent extends Component {
                                         <td> {entry.attempted} </td>
                                     </tr>
                                 )
+                                
                             }
+
                         </tbody>
 
                         {
@@ -99,9 +141,10 @@ class ListEntriesComponent extends Component {
                         }
                     </table>
                     <div className="row">
-                        <button className="btn btn-success" onClick={this.addEntryClicked}>Add</button>
+                        <button className="btn btn-success" onClick={this.addEntryClicked}>Return to Dashboard</button>
                     </div>
                 </div>
+            </div>
         )
     }
 }

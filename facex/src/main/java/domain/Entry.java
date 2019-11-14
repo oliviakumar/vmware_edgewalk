@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity
 public class Entry {
@@ -17,8 +18,20 @@ public class Entry {
 	private String acceptanceCriteria;
 	private String status;
 
+	private String filename;
+	private String contentType;
+
+	@Lob
+	private byte[] data;
+
 	public Entry() {
 
+	}
+
+	public Entry(String filename, String contentType, byte[] data) {
+		this.filename = filename;
+		this.contentType = contentType;
+		this.data = data;
 	}
 
 	public Long getId() {
@@ -51,5 +64,29 @@ public class Entry {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getFilename() {
+        return filename;
+    }
+
+    public void setFileName(String filename) {
+        this.filename = filename;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+		this.data = data;
 	}
 }

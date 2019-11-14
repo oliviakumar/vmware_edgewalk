@@ -1,11 +1,5 @@
-@import url(https://unpkg.com/bootstrap@4.1.0/dist/css/bootstrap.min.css)
-/* .App {
-  text-align: center;
-}
+/* @import url(https://unpkg.com/bootstrap@4.1.0/dist/css/bootstrap.min.css) */
 
-.App-logo {
-  height: 40vmin;
-}
 
 .App-header {
   background-color: #282c34;
@@ -17,7 +11,13 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+/* .App {
+  text-align: center;
+}
 
+.App-logo {
+  height: 40vmin;
+}
 .App-link {
   color: #09d3ac;
 } */
