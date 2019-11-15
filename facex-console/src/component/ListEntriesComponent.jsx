@@ -80,9 +80,9 @@ class ListEntriesComponent extends Component {
       }
 
     render() {
+        const images = require.context('../logos', true);
         return (
             <div>
-                <img src={"Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/model-goface/images/Olivia/olivia3.jpg"} />
                 <div className="container">
                     <table className="table">
                         <thead>
