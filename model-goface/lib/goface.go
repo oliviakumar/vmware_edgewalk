@@ -1,6 +1,7 @@
-package model-goface
+package lib
 
 import  (
+    // L "./lib"
     "fmt"
     "log"
     "os"
@@ -9,15 +10,15 @@ import  (
     "os/exec"
     "strings"
     "path/filepath"
-    "time"
+    // "time"
     "github.com/Kagami/go-face"
 )
 
 //Struct for storing individual samples, id, and name
-type Train struct {
-    data []face.Descriptor
-    index []int32
-    name string
+type TrainStruct struct {
+    Data []face.Descriptor
+    Index []int32
+    Name string
 }
 
 type GofaceData struct {
@@ -28,11 +29,15 @@ type GofaceData struct {
 	Imagepath string `json:"imagePath"`
 }
 
+type Recognizer struct {
+    Rec face.Recognizer
+}
+
 //Data directory for training the model
 var dataDir = "images"
 
 //Map that contains all the trained entries, makes it easier to retrieve info
-var model map[int]Train
+var Model map[int]TrainStruct
 
 var samples []face.Descriptor
 var indSamples []face.Descriptor
@@ -45,13 +50,17 @@ var valid bool
 var found bool
 var approved bool
 
+func NewRecognizer() Recognizer {
+    return Recognizer{}
+}
+
 //Changes the dataDir to given filename
-func changeDir(folder string) {
+func ChangeDir(folder string) {
     dataDir = filepath.Join(dataDir, folder)
 }
 
 //Updates the variables and directory so that it can be resused for training a new person
-func update() {
+func Update() {
     dataDir = "images"
     indSamples = nil
     indTracker = nil
@@ -60,7 +69,7 @@ func update() {
 }
 
 //Traverses through the given file and finds any ".jpg" to train the model with
-func dirTraverse(file string, rec *face.Recognizer, name string) {
+func DirTraverse(file string, rec *face.Recognizer, name string) {
     fi, err := os.Stat(file)
     if err != nil {
         fmt.Println(err)
@@ -77,12 +86,12 @@ func dirTraverse(file string, rec *face.Recognizer, name string) {
         
         for _, f2 := range files {
             newDir := filepath.Join(file, f2.Name())            
-            dirTraverse(newDir, rec, name)
+            DirTraverse(newDir, rec, name)
         }
 
         //Updating count, which will be used as id
         if (valid == true) {
-            populateDescriptor(name)
+            PopulateDescriptor(name)
         }
     //If the file given is a regular file
     case mode.IsRegular():
@@ -107,13 +116,13 @@ func dirTraverse(file string, rec *face.Recognizer, name string) {
 }
 
 //Populates the Train struct, and stores it into a map
-func populateDescriptor(name string) {
-    var entry Train
-    entry.data = indSamples    
-    entry.index = indTracker
-    entry.name = name
+func PopulateDescriptor(name string) {
+    var entry TrainStruct
+    entry.Data = indSamples    
+    entry.Index = indTracker
+    entry.Name = name
 
-    model[indCount] = entry
+    Model[indCount] = entry
 }
 
 //Writes a shell script that opens an image path
@@ -138,7 +147,7 @@ func WriteToFile(filename string, data string) error {
 
 //Traverses through the training images folders to find the image match 
 //**Only for demonstration purposes**
-func findPic(file string, rec *face.Recognizer, pic face.Descriptor) {
+func FindPic(file string, rec *face.Recognizer, pic face.Descriptor) {
     fi, err := os.Stat(file)
     if err != nil {
         fmt.Println(err)
@@ -159,7 +168,7 @@ func findPic(file string, rec *face.Recognizer, pic face.Descriptor) {
                 break
             }
             newDir := filepath.Join(file, f2.Name())
-            findPic(newDir, rec, pic)
+            FindPic(newDir, rec, pic)
         }
 
     //If the file given is a regular file
@@ -196,7 +205,7 @@ func findPic(file string, rec *face.Recognizer, pic face.Descriptor) {
 }
 
 //Testing to see if the face resembles that of a trained individual
-func test(rec *face.Recognizer, images map[string]bool) (person string, approved bool, location string, entryType string, path string) {
+func (r Recognizer) test(images map[string]bool) (GofaceData) {
     files, err := ioutil.ReadDir(dataDir)
     if err != nil {
         log.Fatal(err)
@@ -216,7 +225,7 @@ func test(rec *face.Recognizer, images map[string]bool) (person string, approved
     }
     
     if (execute) {
-        testPic, err := rec.RecognizeSingleFile(testPath)
+        testPic, err := (&r.Rec).RecognizeSingleFile(testPath)
         if err != nil {
             log.Fatalf("Can't recognize: %v", err)
         }
@@ -226,27 +235,27 @@ func test(rec *face.Recognizer, images map[string]bool) (person string, approved
             log.Fatalf("Picture Match: %t", approved)
         }
         
-        picID := rec.Classify(testPic.Descriptor)
+        picID := (&r.Rec).Classify(testPic.Descriptor)
         if picID < 0 {
             log.Fatalf("Can't classify")
         }
 
         approved = true
-        for i := 0; i < len(model); i++ {
-            var arr []int32 = model[i].index
+        var person string
+        for i := 0; i < len(Model); i++ {
+            var arr []int32 = Model[i].Index
             if (int32(picID) >= arr[0] && int32(picID) <= arr[(len(arr) - 1)]) {
-                person = model[i].name
+                person = Model[i].Name
                 break
             }
         }
 
-        location = "Front Door"
-        entryType = "I"
-        path = testPath
-
-        update()    
+        location := "Front Door"
+        entryType := "I"
+        path := testPath
+        Update()    
         //Uncomment if you want to pull up the most accurate match with picture that was used to train
-        // findPic(dataDir, rec, samples[picID])
+        // FindPic(dataDir, rec, samples[picID])
 
         RecogData := GofaceData{
             Identity: person,
@@ -257,95 +266,125 @@ func test(rec *face.Recognizer, images map[string]bool) (person string, approved
         }
 
         return RecogData
-    } else { 
-        return "", false, "", "", ""
-    }
+    } else {
+        person := ""
+        approved = false
+        location := ""
+        entryType := ""
+        path := ""
 
+        RecogData := GofaceData{
+            Identity: person,
+            Accepted:  approved,
+            Location:  location,
+            Entrytype: entryType,
+            Imagepath:	path,
+        }
+
+        return RecogData
+    }
 }
 
-func main () {
-    fmt.Println("Facial Recognition System")
-    model = make(map[int]Train)
+func (r Recognizer) Train() {
+    Model = make(map[int]TrainStruct)
 
     //Changing directory and training for Chris
-    changeDir("Chris")
-    rec, err := face.NewRecognizer(dataDir)
+    ChangeDir("Chris")
+    var err error
+    var rec *face.Recognizer
+    rec, err = face.NewRecognizer(dataDir)
+    r.Rec = *rec
     if (err != nil) {
         log.Fatalf("Error opening directory.")
     }
-    defer rec.Close()
+    // defer r.Rec.Close()
 
     var name string = "Chris Smith"
     //Traversing through Chris directory
-    dirTraverse(dataDir, rec, name)
-    rec.SetSamples(samples, tracker)
-    update()
+    DirTraverse(dataDir, &r.Rec, name)
+    r.Rec.SetSamples(samples, tracker)
+    Update()
     
     //Changing directory and training for Mushahid
-    changeDir("Mushahid")
+    ChangeDir("Mushahid")
     rec, err = face.NewRecognizer(dataDir)
+    r.Rec = *rec
     if (err != nil) {
         log.Fatalf("Error opening directory.")
     }
-    defer rec.Close()
+    // defer r.Rec.Close()
 
     name = "Mushahid Hassan"
     //Traversing through Mushahid directory
-    dirTraverse(dataDir, rec, name)
-    rec.SetSamples(samples, tracker)
-    update()
+    DirTraverse(dataDir, &r.Rec, name)
+    r.Rec.SetSamples(samples, tracker)
+    Update()
 
     //Changing directory and training for Tanja
-    changeDir("Tanja")
+    ChangeDir("Tanja")
     rec, err = face.NewRecognizer(dataDir)
+    r.Rec = *rec
     if (err != nil) {
         log.Fatalf("Error opening directory.")
     }
-    defer rec.Close()
+    // defer r.Rec.Close()
 
     name = "Tanja Nuendel"
     //Traversing through Tanja directory
-    dirTraverse(dataDir, rec, name)
-    rec.SetSamples(samples, tracker)
-    update()
+    DirTraverse(dataDir, &r.Rec, name)
+    r.Rec.SetSamples(samples, tracker)
+    Update()
 
     //Changing directory and training for Olivia
-    changeDir("Olivia")
+    ChangeDir("Olivia")
     rec, err = face.NewRecognizer(dataDir)
+    r.Rec = *rec
     if (err != nil) {
         log.Fatalf("Error opening directory.")
     }
-    defer rec.Close()
+    // defer r.Rec.Close()
     
     name = "Olivia Kumar"
     //Traversing through Olivia directory
-    dirTraverse(dataDir, rec, name)
-    rec.SetSamples(samples, tracker)
-    update()
-    
-    images := make(map[string]bool)
-    for {
-        dataDir = "images/testImages"
-        fmt.Println("\n")
-        fmt.Println(images)
-        start := time.Now()
-
-        Identity, Accepted, Location, Entrytype, Imagepath := test(rec, images)
-        if (Identity != "") {
-            if (Accepted) {
-                fmt.Println(Identity)
-                fmt.Println(Accepted)
-                fmt.Println(Location)
-                fmt.Println(Entrytype)
-                fmt.Println(Imagepath)
-            } else {
-                fmt.Println("Denied, Anonymous");
-            }
-        }
-        elapsed := time.Since(start)
-        fmt.Println("Binomial took %s", elapsed)
-        approved = false
-
-        time.Sleep(5 * time.Second)
+    DirTraverse(dataDir, &r.Rec, name)
+    r.Rec.SetSamples(samples, tracker)
+    Update()
+    if &r.Rec != nil {
+        fmt.Println("Done training")
+        fmt.Println("This is rec: ", r.Rec)
+    } else {
+        fmt.Println("Rec is nil")
     }
+}
+
+func ReturnModel() (mod map[int]TrainStruct) {
+    return Model
+}
+
+func (r Recognizer) Run() {
+    fmt.Println("This is rec in run(): ", r.Rec)
+    images := make(map[string]bool)
+
+    // for {
+        dataDir = "images/testImages"
+        Identity, Accepted, Location, Entrytype, Imagepath := r.test(images)
+
+        RecogData := GofaceData{
+            Identity: Identity,
+            Accepted:  Accepted,
+            Location:  Location,
+            Entrytype: Entrytype,
+            Imagepath:	Imagepath,
+        }
+
+        if (Identity != "") {
+            fmt.Println(RecogData.Identity)
+            fmt.Println(RecogData.Accepted)
+            fmt.Println(RecogData.Location)
+            fmt.Println(RecogData.Entrytype)
+            fmt.Println(RecogData.Imagepath)
+        }
+        
+        approved = false
+    // }
 }
