@@ -3,9 +3,7 @@ package com.edgewalk.service.controller;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.edgewalk.service.model.Response;
 import com.edgewalk.service.services.FileService;
@@ -24,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 // import org.apache.commons.io.IOUtils
 
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
+@CrossOrigin(origins = { "http://localhost:3000" })
 @RequestMapping("/files")
 @RestController
 public class FileController {
@@ -72,21 +70,6 @@ public class FileController {
 		// list.add()
 		return list;
 		// return fileService.load("/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/model-goface/images/Olivia/olivia3.jpg");
-	}
-	// private BeerRepository repository;
-	
-	// public BeerController(BeerRepository repository) {
-	// 	this.repository = repository;
-	// }
-
-	@GetMapping("/approved-entries")
-	public Collection<Response> goodBeers() {
-		// System.out.println(fileService.load("/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/model-goface/images/Olivia/olivia3.jpg").stream()
-		// .filter(this::isGreat)
-		// .collect(Collectors.toList()));
-		return fileService.load("/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/model-goface/images/Olivia/olivia3.jpg").stream()
-			.filter(this::isGreat)
-			.collect(Collectors.toList());
 	}
 
 /*

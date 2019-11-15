@@ -25,6 +25,7 @@ class AddNewEntry extends Component {
         }
         console.log(newEntry);
     }
+
     render() {
         return (
             <div>

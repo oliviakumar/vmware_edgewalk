@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import EntryDataService from '../service/EntryDataService';
+import Toggle from './Toggle';
 
 const ORGANIZATION = 'edgewalk';
 
@@ -9,7 +10,7 @@ class ListEntriesComponent extends Component {
         this.state = {
             entries: [],
             message: null,
-            imgpath: [],
+            imgpath: '',
         }
         this.refreshEntries = this.refreshEntries.bind(this)
         this.getImage = this.getImage.bind(this);
@@ -37,17 +38,19 @@ class ListEntriesComponent extends Component {
     }
 
     getImage() {
-        console.log("entered get image");
-        EntryDataService.retrieveImage() // HARDCODED
-            // .then(
-            //     response => {
+        console.log("entered get image, imgpath: " + this.state.imgpath);
+        EntryDataService.retrieveImage(this.state.imgpath) // HARDCODED
+            .then(
+                response => {
                     console.log("images -----");
-                    console.log(EntryDataService.retrieveImage());
-                    this.setState({imgpath: EntryDataService.retrieveImage()})
+                    // console.log(response);
+                    this.setState({imgpath: response.data});
+                    console.log('this.state.imgpath:');
+
                     console.log(this.state.imgpath);
 
-                // }
-            // )
+                }
+            )
     }
 
     getContent() {
@@ -63,6 +66,8 @@ class ListEntriesComponent extends Component {
             )
         
     }
+
+
 
     // updateEntryClicked(id) {
     //     console.log('update ' + id)
@@ -86,12 +91,12 @@ class ListEntriesComponent extends Component {
                 <div className="container">
                     <table className="table">
                         <thead>
-                            <tr>
+                            <table>
                                 <th>Location</th>
                                 <th>Identity</th>
                                 <th>Entry Status</th>
                                 <th>Time</th>
-                            </tr>
+                            </table>
                         </thead>
                         <tbody>
                             <tr>
@@ -100,17 +105,24 @@ class ListEntriesComponent extends Component {
                         </tbody>
                         <tbody>
                             {
-
                                 this.state.entries.map(
                                     entry =>
                                     <tr key={Math.random()}>
-                                        <td> {entry.location} </td>
-                                        <td> {entry.identity} </td>
-                                        <td> {entry.accepted ? "true" : "false"} </td>
-                                        <td> {entry.attempted} </td>
+                                    <table>
+{                                        // 
+                                        // <td> {entry.location} </td>
+                                        // <td> {entry.identity} </td>
+                                        // <td> {entry.accepted ? "true" : "false"} </td>
+                                        // <td> {entry.attempted} </td>
+}
+                                    </table>
+                                    <span onClick={() => {this.props.viewDetail(entry.id)}}></span>
+                                    <Toggle entry={entry} details={entry.content}/>
+                                    
+                                    <img src={require('/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/model-goface/images/Olivia/olivia3.jpg')}> </img>
                                     </tr>
+
                                 )
-                                
                             }
 
                         </tbody>

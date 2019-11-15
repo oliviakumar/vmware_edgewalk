@@ -15,20 +15,31 @@ class EntryDataService {
         // return axios.get(`${ORG_API_URL}/all`);
     }
 
-    retrieveImage() {
+    retrieveImage(imgpath) {
         // console.log(axios.get(`@{ORG_API_URL}/vmware_edgewalk/model-goface/images/Olivia/olivia3.jpg`));
         // return axios.get(`@{ORG_API_URL}/vmware_edgewalk/model-goface/images/Olivia/olivia3.jpg`);
-        console.log('test');
+        console.log('test' + imgpath);
         var response = '';
         // console.log(axios.get(`${ORG_API_URL}/files/liv-get-photo`));
-        axios({
+        // axios({
+        //     method: 'get',
+        //     url: `${ORG_API_URL}/files/liv-get-photo`
+        //   })
+        //     .then(function(response) {
+        //     console.log('liv-get-photo: ');
+        //     console.log(response);
+        //   });
+        return axios({
             method: 'get',
             url: `${ORG_API_URL}/files/liv-get-photo`
-          })
-            .then(function(response) {
-            console.log(response);
           });
-        return response;
+            // .then(function(response) {
+            //     const path = response.data;
+            //     console.log(path);
+
+            //     this.setState({imgpath: path});
+        //   });;
+          
     }
 
     retrieveContent() {

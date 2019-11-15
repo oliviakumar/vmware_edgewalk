@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import './App.css';
 import EntriesApp from './component/EntriesApp';
+import Search from './component/Search';
 import ListEntriesComponent from './component/ListEntriesComponent';
 import Contacts from './components/Contacts';
-import Entries from './components/AllEntries';
+// import Entries from './components/AllEntries';
+import Entries from './component/Entries';
 import NavBar from './components/NavBar';
 
 class App extends Component {
   state = {
     contacts: [],
-    entries: [],
+    entries: [
+      {id: 1, content: 'first entry log'},
+      {id: 2, content: 'second entry log'},
+    ],
     file: '',
     error: '',
     msg: '',
-
+    searchText: '',
     isLoading: ''
   }
 
@@ -26,11 +31,23 @@ class App extends Component {
     })
     .catch(console.log)
 
-    this.setState({isLoading: true});
+    // this.setState({isLoading: true});
     
-    fetch('http://localhost:8080/content')
-      .then(response => response.json())
-      .then(data => this.setState({entries: data, isLoading: false}));
+    // fetch('http://localhost:8080/content')
+    //   .then(response => response.json())
+    //   .then(data => this.setState({entries: data, isLoading: false}));
+  }
+
+  viewDetail = (id) => {
+    console.log(id);
+  }
+
+  onchange = e => {
+    this.setState({ search: e.target.value });
+  }
+
+  searchUpdate(value) {
+    this.setState({searchText: value});
   }
 
   onFileChange = (event) => {
@@ -95,23 +112,28 @@ class App extends Component {
           // <Contacts contacts={this.state.contacts} />
         }
         {
-          <div className="App-intro">
-          <h3>Upload a file</h3>
-          <h4 style={{color: 'red'}}>{this.state.error}</h4>
-          <h4 style={{color: 'green'}}>{this.state.msg}</h4>
-          <input onChange={this.onFileChange} type="file"></input>
-          <button onClick={this.uploadFile}>Upload</button>   
-          </div>
+          // <div className="App-intro">
+          // <h3>Upload a file</h3>
+          // <h4 style={{color: 'red'}}>{this.state.error}</h4>
+          // <h4 style={{color: 'green'}}>{this.state.msg}</h4>
+          // <input onChange={this.onFileChange} type="file"></input>
+          // <button onClick={this.uploadFile}>Upload</button>   
+          // </div>
         }
-
-        <div className="App-intro">
-        <h3>Download a random file</h3>
-        <button onClick={this.downloadRandomImage}>Download</button>
-        </div>
-
-
-        <Entries entries={this.state.entries} />
-        <ListEntriesComponent />
+        {
+          // <div className="App-intro">
+          // <h3>Download a random file</h3>
+          // <button onClick={this.downloadRandomImage}>Download</button>
+          // </div>
+        }
+        <Search
+          searchUpdate={this.searchUpdate.bind(this)}
+          searchText={this.state.searchText} />
+        {
+        // <Entries entries={this.state.entries} />
+        }
+        <ListEntriesComponent
+          entries={this.state.entries} viewDetail={this.viewDetail} />
       </div>
     );
   }
