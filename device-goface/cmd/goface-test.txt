@@ -1,7 +1,7 @@
-$GF, Mushahid, true, back door, I, /Users/romankasel/Pictures/Photo Booth Library/Pictures/Photo on 10-16-19 at 2.13 PM.jpg
+$GF, Mushahid, true, back door, I, /../../model-goface/images/Olivia/olivia3.jpg
 
-$GF, Chris, true, front door, O, /Users/romankasel/Pictures/Photo Booth Library/Pictures/Photo on 10-16-19 at 2.13 PM.jpg
+$GF, Chris, true, front door, O, /../../model-goface/images/Olivia/olivia3.jpg
 
-$GF, Doug, true, back door, I, /Users/romankasel/Pictures/Photo Booth Library/Pictures/Photo on 10-16-19 at 2.13 PM.jpg
+$GF, Doug, true, back door, I, ../../model-goface/images/Olivia/olivia3.jpg
 
-$GF, Doug, false, front door, O, /Users/romankasel/Pictures/Photo Booth Library/Pictures/Photo on 10-16-19 at 2.13 PM.jpg
+$GF, Doug, false, front door, O, ../../model-goface/images/Olivia/olivia3.jpg

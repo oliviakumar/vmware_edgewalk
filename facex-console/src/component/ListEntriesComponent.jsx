@@ -118,8 +118,9 @@ class ListEntriesComponent extends Component {
                                     </table>
                                     <span onClick={() => {this.props.viewDetail(entry.id)}}></span>
                                     <Toggle entry={entry} details={entry.content}/>
-                                    
-                                    <img src={require('/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/model-goface/images/Olivia/olivia3.jpg')}> </img>
+                                    {
+                                    // <img src={require('/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/model-goface/images/Olivia/olivia3.jpg')}> </img>
+                                    }
                                     </tr>
 
                                 )

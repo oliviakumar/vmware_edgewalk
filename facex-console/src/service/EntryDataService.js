@@ -57,8 +57,11 @@ class EntryDataService {
         // return axios.get(`${ORG_API_URL}/contentResponse`);
 
         // console.log("inside retrieve content");
-        console.log(axios.get(`@{ORG_API_URL}/contentResponse`));
-        return axios.get(`@{ORG_API_URL}/contentResponse`);
+        // console.log(axios.get(`@{ORG_API_URL}/contentResponse`));
+        // return axios.get(`@{ORG_API_URL}/contentResponse`);
+        console.log(axios.get(`@{ORG_API_URL}/files/liv-get-photo2`));
+        return axios.get(`@{ORG_API_URL}/files/photo1`);
+
     }
     // retrieveEntry(name, id) {
     //     return axios.get(`${ORG_API_URL}/entries/${id}`);

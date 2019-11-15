@@ -1,21 +1,21 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
-	"encoding/json"
-	"net/http"
-	"bytes"
-	"mime/multipart"
 	"io"
+	"mime/multipart"
+	"net/http"
+	"os"
 	"strings"
 
-	"github.com/edgexfoundry/app-functions-sdk-go/pkg/transforms"
 	"github.com/edgexfoundry/app-functions-sdk-go/appcontext"
 	"github.com/edgexfoundry/app-functions-sdk-go/appsdk"
-	"github.com/edgexfoundry/go-mod-core-contracts/models"
+	"github.com/edgexfoundry/app-functions-sdk-go/pkg/transforms"
 	"github.com/edgexfoundry/device-goface/driver"
+	"github.com/edgexfoundry/go-mod-core-contracts/models"
 )
 
 const (
@@ -23,17 +23,17 @@ const (
 )
 
 type ImageData struct {
- 	Img []byte `json:"file"`
- 	Edgexid string `json:"edgexId"`
+	Img     []byte `json:"file"`
+	Edgexid string `json:"edgexId"`
 }
 
 type SendingData struct {
 	Identity  string `json:"identity"`
-	Accepted  bool `json:"accepted"`
+	Accepted  bool   `json:"accepted"`
 	Location  string `json:"location"`
 	Entrytype string `json:"type"`
-	Device string `json:"device"`
-	Edgexid string `json:"edgexId"`
+	Device    string `json:"device"`
+	Edgexid   string `json:"edgexId"`
 	Imagepath string
 }
 
@@ -87,7 +87,7 @@ func main() {
 	os.Exit(0)
 }
 
-func printJSONToConsole(edgexcontext *appcontext.Context, params ...interface{}) (bool,interface{}) {
+func printJSONToConsole(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
 	if len(params) < 1 {
 		// We didn't receive a result
 		return false, errors.New("No Data Received")
@@ -116,15 +116,15 @@ func GetDataFromJSON(edgexcontext *appcontext.Context, params ...interface{}) (b
 			return false, errors.New("Could not unpack data")
 		}
 		send := SendingData{
-			Identity: data.Identity,
-			Accepted: data.Accepted,
-			Location: data.Location,
+			Identity:  data.Identity,
+			Accepted:  data.Accepted,
+			Location:  data.Location,
 			Entrytype: data.Entrytype,
-			Device: reading.Device,
-			Edgexid: reading.Id,
+			Device:    reading.Device,
+			Edgexid:   reading.Id,
 			Imagepath: data.Imagepath,
 		}
-		return true, send;
+		return true, send
 	}
 	return false, errors.New("No readings received")
 }
@@ -139,6 +139,7 @@ func SendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, in
 		fmt.Println(err)
 		return false, errors.New("Could not convert to json")
 	}
+	// resp, err := http.Post("http://localhost:8080/", "application/json", bytes.NewReader(data))
 	resp, err := http.Post("http://localhost:8080/edge/api", "application/json", bytes.NewReader(data))
 	if err != nil {
 		fmt.Println(err)
@@ -162,8 +163,8 @@ func SendImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, i
 			fmt.Println(err)
 			return false, errors.New("Image could not be opened")
 		}
-		values := map[string] io.Reader {
-			"file": file,
+		values := map[string]io.Reader{
+			"file":    file,
 			"edgexId": strings.NewReader(send.Edgexid),
 		}
 		err = Upload(values)
@@ -177,7 +178,7 @@ func SendImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, i
 	}
 }
 
-func Upload(values map[string] io.Reader) (err error) {
+func Upload(values map[string]io.Reader) (err error) {
 	b := new(bytes.Buffer)
 	w := multipart.NewWriter(b)
 	for key, r := range values {

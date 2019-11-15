@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-import EntriesApp from './component/EntriesApp';
+// import EntriesApp from './component/EntriesApp';
 import Search from './component/Search';
 import ListEntriesComponent from './component/ListEntriesComponent';
-import Contacts from './components/Contacts';
+// import Contacts from './components/Contacts';
 // import Entries from './components/AllEntries';
-import Entries from './component/Entries';
+// import Entries from './component/Entries';
 import NavBar from './components/NavBar';
 
 class App extends Component {
