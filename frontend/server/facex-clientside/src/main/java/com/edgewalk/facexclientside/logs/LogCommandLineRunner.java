@@ -1,9 +1,9 @@
-package com.edgewalk.facexclientside;
+package com.edgewalk.facexclientside.logs;
+
+import java.util.stream.Stream;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.stream.Stream;
 
 @Component
 public class LogCommandLineRunner implements CommandLineRunner {

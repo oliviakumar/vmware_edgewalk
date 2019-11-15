@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - FacexClientsideApplication",
+            "request": "launch",
+            "mainClass": "com.edgewalk.facexclientside.FacexClientsideApplication",
+            "projectName": "facex-clientside"
+        }
+    ]
+}

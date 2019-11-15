@@ -12,7 +12,9 @@ class App extends Component {
     entries: [],
     file: '',
     error: '',
-    msg: ''
+    msg: '',
+
+    isLoading: ''
   }
 
   componentDidMount() {
@@ -23,6 +25,12 @@ class App extends Component {
       this.setState({ entries: data })
     })
     .catch(console.log)
+
+    this.setState({isLoading: true});
+    
+    fetch('http://localhost:8080/content')
+      .then(response => response.json())
+      .then(data => this.setState({entries: data, isLoading: false}));
   }
 
   onFileChange = (event) => {

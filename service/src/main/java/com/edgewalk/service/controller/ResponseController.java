@@ -1,4 +1,6 @@
 package com.edgewalk.service.controller;
+// /Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/service/src/main/java/com/edgewalk/service/logs/LogRepository.java
+// import com.edgewalk.service.logs;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -73,3 +75,5 @@ public class ResponseController {
 		return edgeService.getIdentityLiv(username);
 	}
 }
+
+
