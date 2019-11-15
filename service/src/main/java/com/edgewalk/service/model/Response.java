@@ -2,12 +2,17 @@ package com.edgewalk.service.model;
 
 import java.sql.Timestamp;
 
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
+import org.bson.types.ObjectId;
+
+@Entity
 public class Response {
 
 	@Id
+	@GeneratedValue
 	private ObjectId id = null;
 	private String identity = "";
 	private boolean accepted = false;
@@ -16,6 +21,12 @@ public class Response {
 	private Timestamp attempted = null;
 	private String device = "";
 	private String edgexId = "";
+
+	public Response() {}
+
+	public Response(String identity) {
+		this.identity = identity;
+	}
 
 	public ObjectId getId() {
 		return this.id;
@@ -106,5 +117,10 @@ public class Response {
 			}
 		}
 		return sb.toString().trim();
+	}
+
+	@Override
+	public String toString() {
+		return "Entry{" + "id=" + id + ", identity='" + identity + '\'' + '}';
 	}
 }
