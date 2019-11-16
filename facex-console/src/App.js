@@ -9,17 +9,22 @@ import ListEntriesComponent from './component/ListEntriesComponent';
 import NavBar from './components/NavBar';
 
 class App extends Component {
-  state = {
-    contacts: [],
-    entries: [
-      {id: 1, content: 'first entry log'},
-      {id: 2, content: 'second entry log'},
-    ],
-    file: '',
-    error: '',
-    msg: '',
-    searchText: '',
-    isLoading: ''
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      contacts: [],
+      entries: [
+        {id: 1, content: 'first entry log', name: 'bob'},
+        {id: 2, content: 'second entry log', name: 'doug'},
+        {id: 2, content: 'second entry log', name: 'alex'}
+      ],
+      file: '',
+      error: '',
+      msg: '',
+      searchText: 'hello',
+      isLoading: ''
+    }
   }
 
   componentDidMount() {
@@ -30,6 +35,10 @@ class App extends Component {
       this.setState({ entries: data })
     })
     .catch(console.log)
+
+    // fetch('http://localhost:8080/edge/api')
+    // .then(response => response.json())
+    // .then(data => this.setState({beers: data, isLoading: false}));
 
     // this.setState({isLoading: true});
     
@@ -86,9 +95,10 @@ class App extends Component {
   }
 
   downloadRandomImage = () => {
-    fetch('http://localhost:8080/api/files')
+    fetch('http://localhost:8080/edge/image')
       .then(response => {
         const filename =  response.headers.get('Content-Disposition').split('filename=')[1];
+        console.log(filename);
         response.blob().then(blob => {
           let url = window.URL.createObjectURL(blob);
           let a = document.createElement('a');
@@ -100,6 +110,7 @@ class App extends Component {
   }
 
   render() {
+    console.log('searchText', this.state.searchText);
     return (
       <div
         className="container"
@@ -121,19 +132,22 @@ class App extends Component {
           // </div>
         }
         {
-          // <div className="App-intro">
-          // <h3>Download a random file</h3>
-          // <button onClick={this.downloadRandomImage}>Download</button>
-          // </div>
+          <div className="App-intro">
+          <h3>Download a random file</h3>
+          <button onClick={this.downloadRandomImage}>Download</button>
+          </div>
         }
         <Search
-          searchUpdate={this.searchUpdate.bind(this)}
-          searchText={this.state.searchText} />
+          searchText={this.state.searchText}
+          searchUpdate={this.searchUpdate.bind(this)} />
         {
         // <Entries entries={this.state.entries} />
         }
         <ListEntriesComponent
-          entries={this.state.entries} viewDetail={this.viewDetail} />
+          entries={this.state.entries}
+          viewDetail={this.viewDetail}
+          searchText={this.state.searchText}
+        />
       </div>
     );
   }

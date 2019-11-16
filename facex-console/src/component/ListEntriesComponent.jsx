@@ -8,7 +8,9 @@ class ListEntriesComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            entries: [],
+            entries: [{id: 1, content: 'first entry log', name: 'bob'},
+            {id: 2, content: 'second entry log', name: 'doug'},
+            {id: 2, content: 'second entry log', name: 'alex'}],
             message: null,
             imgpath: '',
         }
@@ -38,7 +40,6 @@ class ListEntriesComponent extends Component {
     }
 
     getImage() {
-        console.log("entered get image, imgpath: " + this.state.imgpath);
         EntryDataService.retrieveImage(this.state.imgpath) // HARDCODED
             .then(
                 response => {
@@ -86,6 +87,34 @@ class ListEntriesComponent extends Component {
 
     render() {
         const images = require.context('../logos', true);
+        const {entries, viewDetail, searchText} = this.props;
+        {
+            const entriesList = this.state.entries
+            
+            .filter(entry => {
+                // remove entries that don't match curr filter text
+                console.log(entry);
+                return entry.indexOf(searchText) > -1
+            })
+            .map(entry => {
+                return (
+                    <Toggle entry={entry} details={entry.content} onClick={() => {this.props.viewDetail(entry.id)}} />
+                )
+            })
+{
+    // <tr key={Math.random()}>
+
+                    // <td> {entry.location} </td>
+                    // <td> {entry.identity} </td>
+                    // <td> {entry.accepted ? "true" : "false"} </td>
+                    // <td> {entry.attempted} </td>
+}
+                    {
+                        // <Toggle entry={entry} details={entry.name}/>
+                    // <img src={require('/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/model-goface/images/Olivia/olivia3.jpg')}> </img>
+                    }
+
+
         return (
             <div>
                 <div className="container">
@@ -101,31 +130,18 @@ class ListEntriesComponent extends Component {
                         <tbody>
                             <tr>
                                 <td> hello?? </td>
+                                <td> are you there? </td>
+                                <td> bye THERE </td>
                             </tr>
                         </tbody>
                         <tbody>
-                            {
-                                this.state.entries.map(
-                                    entry =>
-                                    <tr key={Math.random()}>
-                                    <table>
-{                                        // 
-                                        // <td> {entry.location} </td>
-                                        // <td> {entry.identity} </td>
-                                        // <td> {entry.accepted ? "true" : "false"} </td>
-                                        // <td> {entry.attempted} </td>
-}
-                                    </table>
-                                    <span onClick={() => {this.props.viewDetail(entry.id)}}></span>
-                                    <Toggle entry={entry} details={entry.content}/>
-                                    {
-                                    // <img src={require('/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/model-goface/images/Olivia/olivia3.jpg')}> </img>
-                                    }
-                                    </tr>
-
-                                )
-                            }
-
+                        <div>
+                        <p>
+                        searchText value is: {this.props.searchText}
+                        </p>
+                        </div>
+                            
+                        {entriesList}
                         </tbody>
 
                         {
@@ -159,6 +175,7 @@ class ListEntriesComponent extends Component {
                 </div>
             </div>
         )
+    }
     }
 }
 
