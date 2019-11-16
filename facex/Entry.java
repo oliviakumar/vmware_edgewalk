@@ -103,6 +103,6 @@ public class Entry {
     
     @Override
     public String toString() {
-        return "Entry{" + "id=" + id + ", name='" + name + '\'' + '}';
+        return "Entry {" + "id=" + id + ", name='" + name + '\'' + '}';
     }
 }

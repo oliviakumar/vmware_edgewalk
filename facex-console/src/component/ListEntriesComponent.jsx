@@ -55,7 +55,7 @@ class ListEntriesComponent extends Component {
 
     getContent() {
         console.log("entered get content");
-        // console.log(EntryDataService.retrieveContent());
+        console.log(EntryDataService.retrieveContent());
         EntryDataService.retrieveContent()
             .then(
                 response => {

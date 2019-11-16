@@ -210,6 +210,7 @@ func Upload(values map[string]io.Reader) (err error) {
 		fmt.Println(err)
 		return errors.New("Error posting image data")
 	}
+	http.Get("http://localhost:8080/edge/image/5dcf20d60830d315b04b3d69.jpg")
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		return errors.New(fmt.Sprintf("export failed with %d HTTP status code", resp.StatusCode))

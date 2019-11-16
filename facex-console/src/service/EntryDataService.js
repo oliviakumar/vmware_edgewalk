@@ -59,8 +59,14 @@ class EntryDataService {
         // console.log("inside retrieve content");
         // console.log(axios.get(`@{ORG_API_URL}/contentResponse`));
         // return axios.get(`@{ORG_API_URL}/contentResponse`);
-        console.log(axios.get(`@{ORG_API_URL}/files/liv-get-photo2`));
-        return axios.get(`@{ORG_API_URL}/files/photo1`);
+        /* LOADS AN IMAGE BUT NOT THE CORRECT ONE
+            console.log(axios.get(`@{ORG_API_URL}/files/liv-get-photo2`));
+            return axios.get(`@{ORG_API_URL}/files/photo1`);
+        */
+        // console.log(axios.get(`@{ORG_API_URL}/files/liv-entries`));
+        // return axios.get(`@{ORG_API_URL}/files/liv-entries`);
+
+        return axios.get(`${ORG_API_URL}/files/{filename}`);
 
     }
     // retrieveEntry(name, id) {
