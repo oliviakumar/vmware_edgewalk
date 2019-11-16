@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Jumbotron, Button, Table } from 'react-bootstrap';
 import './App.css';
 // import EntriesApp from './component/EntriesApp';
 import Search from './component/Search';
@@ -7,25 +8,35 @@ import ListEntriesComponent from './component/ListEntriesComponent';
 // import Entries from './components/AllEntries';
 // import Entries from './component/Entries';
 import NavBar from './components/NavBar';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import Entry from './Entry/Entry';
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      contacts: [],
-      entries: [
-        {id: 1, content: 'first entry log', name: 'bob'},
-        {id: 2, content: 'second entry log', name: 'doug'},
-        {id: 2, content: 'second entry log', name: 'alex'}
-      ],
-      file: '',
-      error: '',
-      msg: '',
-      searchText: 'hello',
-      isLoading: ''
-    }
+  state = {
+    entries: [
+      { id: '1', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
+      { id: '2', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
+      { id: '3', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
+    ]
   }
+
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     contacts: [],
+  //     entries: [
+  //       {id: 1, content: 'first entry log', name: 'bob'},
+  //       {id: 2, content: 'second entry log', name: 'doug'},
+  //       {id: 2, content: 'second entry log', name: 'alex'}
+  //     ],
+  //     file: '',
+  //     error: '',
+  //     msg: '',
+  //     searchText: 'hello',
+  //     isLoading: ''
+  //   }
+  // }
 
   componentDidMount() {
     fetch('http://localhost:3000/edgewalk/liv-entries')
@@ -65,59 +76,95 @@ class App extends Component {
     });
   }
 
-  uploadFile = (event) => {
-      event.preventDefault();
-      this.setState({error: '', msg: ''});
+  // uploadFile = (event) => {
+  //     event.preventDefault();
+  //     this.setState({error: '', msg: ''});
   
-      if(!this.state.file) {
-        this.setState({error: 'Please upload a file.'})
-        return;
-      }
+  //     if(!this.state.file) {
+  //       this.setState({error: 'Please upload a file.'})
+  //       return;
+  //     }
   
-      if(this.state.file.size >= 2000000) {
-        this.setState({error: 'File size exceeds limit of 2MB.'})
-        return;
-      }
+  //     if(this.state.file.size >= 2000000) {
+  //       this.setState({error: 'File size exceeds limit of 2MB.'})
+  //       return;
+  //     }
   
-      let data = new FormData();
-      data.append('file', this.state.file);
-      data.append('name', this.state.file.name);
+  //     let data = new FormData();
+  //     data.append('file', this.state.file);
+  //     data.append('name', this.state.file.name);
   
-      fetch('http://localhost:8080/api/files', {
-        method: 'POST',
-        body: data
-      }).then(response => {
-        this.setState({error: '', msg: 'Sucessfully uploaded file'});
-      }).catch(err => {
-        this.setState({error: err});
-      });
+  //     fetch('http://localhost:8080/api/files', {
+  //       method: 'POST',
+  //       body: data
+  //     }).then(response => {
+  //       this.setState({error: '', msg: 'Sucessfully uploaded file'});
+  //     }).catch(err => {
+  //       this.setState({error: err});
+  //     });
   
-  }
+  // }
 
-  downloadRandomImage = () => {
-    fetch('http://localhost:8080/edge/image')
-      .then(response => {
-        const filename =  response.headers.get('Content-Disposition').split('filename=')[1];
-        console.log(filename);
-        response.blob().then(blob => {
-          let url = window.URL.createObjectURL(blob);
-          let a = document.createElement('a');
-          a.href = url;
-          a.download = filename;
-          a.click();
-      });
-   });
-  }
+  // downloadRandomImage = () => {
+  //   fetch('http://localhost:8080/edge/image')
+  //     .then(response => {
+  //       const filename =  response.headers.get('Content-Disposition').split('filename=')[1];
+  //       console.log(filename);
+  //       response.blob().then(blob => {
+  //         let url = window.URL.createObjectURL(blob);
+  //         let a = document.createElement('a');
+  //         a.href = url;
+  //         a.download = filename;
+  //         a.click();
+  //     });
+  //  });
+  // }
 
   render() {
     console.log('searchText', this.state.searchText);
     return (
+      <div style={{
+        backgroundColor: 'black',
+      }}>
+      <NavBar />
+      <Jumbotron>
+        <h1>Hello, world!</h1>
+        <p>
+          This is a simple hero unit, a simple jumbotron-style component for calling
+          extra attention to featured content or information.
+        </p>
+        <p>
+        <Table striped bordered hover>
+{
+
+}
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Time</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+      {this.state.entries
+        .map(entry => {
+          console.log(entry);
+          return <Entry id={entry.id} identity={entry.identity} attempted={entry.attempted} location={entry.location} accepted={entry.accepted} />
+
+        })}
+  </tbody>
+</Table>
+          <Button variant="primary">Learn more</Button>
+        </p>
+      </Jumbotron>
+
       <div
         className="container"
         style={{
           backgroundColor: 'lightgrey',
         }}>
-        <NavBar />
         {
           // <EntriesApp />
           // <Contacts contacts={this.state.contacts} />
@@ -132,10 +179,10 @@ class App extends Component {
           // </div>
         }
         {
-          <div className="App-intro">
-          <h3>Download a random file</h3>
-          <button onClick={this.downloadRandomImage}>Download</button>
-          </div>
+          // <div className="App-intro">
+          // <h3>Download a random file</h3>
+          // <button onClick={this.downloadRandomImage}>Download</button>
+          // </div>
         }
         <Search
           searchText={this.state.searchText}
@@ -148,6 +195,9 @@ class App extends Component {
           viewDetail={this.viewDetail}
           searchText={this.state.searchText}
         />
+      </div>
+      hello
+
       </div>
     );
   }

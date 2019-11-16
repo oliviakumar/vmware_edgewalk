@@ -89,18 +89,18 @@ class ListEntriesComponent extends Component {
         const images = require.context('../logos', true);
         const {entries, viewDetail, searchText} = this.props;
         {
-            const entriesList = this.state.entries
+            // const entriesList = this.state.entries
             
-            .filter(entry => {
-                // remove entries that don't match curr filter text
-                console.log(entry);
-                return entry.indexOf(searchText) > -1
-            })
-            .map(entry => {
-                return (
-                    <Toggle entry={entry} details={entry.content} onClick={() => {this.props.viewDetail(entry.id)}} />
-                )
-            })
+            // .filter(entry => {
+            //     // remove entries that don't match curr filter text
+            //     console.log(entry);
+            //     // return entry.indexOf(searchText) > -1
+            // })
+            // .map(entry => {
+            //     return (
+            //         <Toggle entry={entry} details={entry.content} onClick={() => {this.props.viewDetail(entry.id)}} />
+            //     )
+            // })
 {
     // <tr key={Math.random()}>
 
@@ -135,39 +135,22 @@ class ListEntriesComponent extends Component {
                             </tr>
                         </tbody>
                         <tbody>
-                        <div>
-                        <p>
-                        searchText value is: {this.props.searchText}
-                        </p>
-                        </div>
-                            
-                        {entriesList}
+                            <div>
+                                <p> searchText value is: {this.props.searchText} </p>
+                            </div>
+                                
+                            {//entriesList
+                            }
+                            {this.state.entries
+                            //     .filter(entry => {
+                            //     // remove entries that don't match curr filter text
+                            //     return entry.indexOf(searchText) > -1 ? (entry.indexOf(searchText)) : null;
+                            // })
+                            .map(entry => {
+                                return <Toggle entry={entry} details={entry.content} onClick={() => {this.props.viewDetail(entry.id)}} />
+                            })}
                         </tbody>
 
-                        {
-                        //     <tbody>
-                        // {
-                        //     // this.state.entries.map(
-                        //     //     entry =>
-                        //     //         <tr key={entry.id}>
-                        //     //             <td>{entry.id} hello?? {entry}</td>
-                        //     //             <td><button className="btn btn-success" onClick={() => this.updateEntryClicked(entry.id)}>Update</button></td>
-                        //     //             <td>{entry.description}</td>
-                        //     //         </tr>
-                        //     // )
-                        // }
-                        // {
-                        //     this.state.contacts.map(
-                        //         contact =>
-                        //             <tr key={contact.id}>
-                        //                 <td>{contact.id} hello?? </td>
-                        //                 <td><button className="btn btn-success" onClick={() => this.updateEntryClicked(contact.id)}>Update</button></td>
-                        //                 <td>{contact.name}</td>
-                        //             </tr>
-                        //     )
-                        // }
-                        // </tbody>
-                        }
                     </table>
                     <div className="row">
                         <button className="btn btn-success" onClick={this.addEntryClicked}>Return to Dashboard</button>
