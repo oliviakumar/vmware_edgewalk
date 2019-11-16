@@ -4,4 +4,4 @@ $GF, Chris, true, front door, O, /Users/romankasel/Pictures/Photo Booth Library/
 
 $GF, Doug, true, back door, I, /Users/romankasel/Pictures/Photo Booth Library/Pictures/Photo on 10-16-19 at 2.13 PM.jpg
 
-$GF, Doug, false, front door, O, /Users/romankasel/Pictures/Photo Booth Library/Pictures/Photo on 10-16-19 at 2.13 PM.jpg
+$GF, Olivia, true, front door, O, /Users/romankasel/Pictures/Photo Booth Library/Pictures/Photo on 10-16-19 at 2.13 PM.jpg

@@ -98,7 +98,7 @@ func parseGofaceLine(data []string) string {
 
 	// parsing data from file
 	identityName := strings.TrimSpace(data[1])
-	acceptedStatus, _ := strconv.ParseBool(data[2])
+	acceptedStatus, _ := strconv.ParseBool(strings.TrimSpace(data[2]))
 	location := strings.TrimSpace(data[3])
 	entrytype := strings.TrimSpace(data[4])
 	imagePath := strings.TrimSpace(data[5])
