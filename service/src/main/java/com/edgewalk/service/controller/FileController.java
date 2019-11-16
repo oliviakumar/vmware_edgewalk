@@ -6,17 +6,20 @@ import java.nio.file.Path;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.edgewalk.service.repository.ResponseRepository;
 import com.edgewalk.service.services.FileService;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 // import org.apache.commons.io.IOUtils
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
 
 @CrossOrigin(origins = { "http://localhost:3000" })
 @RequestMapping("/files")
@@ -37,6 +41,7 @@ public class FileController {
 
 	@Autowired
 	private FileService fileService;
+	ResponseRepository responseRepository;
 
 	private byte[] buffer;
 
@@ -50,6 +55,15 @@ public class FileController {
 			response = new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return response;
+	}
+
+	@GetMapping("/files/{filename}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename) throws IOException {
+
+        Resource file = fileService.loadAsResource(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
 	}
 
 	@GetMapping("/liv-get-photo")
@@ -93,7 +107,7 @@ public class FileController {
 	}
 
 	@RequestMapping(value = "/edge/image", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-	@GetMapping("/edge/image")
+	// @GetMapping("/edge/image")
 	public @ResponseBody byte[] getPhoto() throws IOException {
 		InputStream in = getClass().getResourceAsStream("5dcf20d60830d315b04b3d69.jpg");
 
@@ -110,6 +124,33 @@ public class FileController {
 				"/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/service/5dcf20d60830d315b04b3d69.jpg");
 		IOUtils.copy(in, response.getOutputStream());
 	}
+
+	@RequestMapping(value = "/5dcf20d60830d315b04b3d69", method = RequestMethod.GET,
+		produces = MediaType.IMAGE_JPEG_VALUE)
+
+	public void getImage(HttpServletResponse response) throws IOException {
+
+		var imgFile = new ClassPathResource("/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/service/5dcf20d60830d315b04b3d69.jpg");
+
+		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+		StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
+	}
+	// @RequestMapping("/photo")
+	// public void getPhoto(HttpServletResponse response) throws IOException {
+	// 	// // ServletContext servletContext = null;
+	// 	// response.setContentType("image/jpg");
+	// 	// InputStream in = getClass().getResourceAsStream(
+	// 	// 		"/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/service/5dcf20d60830d315b04b3d69.jpg");
+	// 	// IOUtils.copy(in, response.getOutputStream());
+	// 	response.findByEdgexId(edgexId);
+	// 	// if (response == null) {
+	// 		// LOG.info("Received file to store but no response under edgexId: {}", edgexId);
+	// 	// }
+	// 	String id = response.getId().toHexString() + ".jpg";
+	// 	Files.copy(file.getInputStream(), this.path.resolve(id),
+	// 	StandardCopyOption.REPLACE_EXISTING);
+		
+	// }
 
 	// @RequestMapping(value = "/getImage", method = RequestMethod.GET)
 	// public void showImage(HttpServletResponse response) throws Exception {

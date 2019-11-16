@@ -121,6 +121,6 @@ public class Response {
 
 	@Override
 	public String toString() {
-		return "Entry{" + "id=" + id + ", identity='" + identity + '\'' + '}';
+		return "Entry{" + "id=" + id + ", identity='" + identity + "\' edgexId='" + edgexId + "\'";
 	}
 }
