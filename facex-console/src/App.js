@@ -10,14 +10,15 @@ import ListEntriesComponent from './component/ListEntriesComponent';
 import NavBar from './components/NavBar';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import Entry from './Entry/Entry';
+import Toggle from './component/Toggle';
 
 class App extends Component {
 
   state = {
     entries: [
-      { id: '1', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
-      { id: '2', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
-      { id: '3', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
+      { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
+      { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
+      { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
     ]
   }
 
@@ -59,7 +60,14 @@ class App extends Component {
   }
 
   viewDetail = (id) => {
+    console.log("entered view detail");
     console.log(id);
+  }
+
+  viewDetailHandler = (id) => {
+    console.log('entered vdh');
+    console.log(this.state.entries[id]);
+    return <Toggle entry={this.state.entries[id]} onClick={() => {this.props.viewDetail(this.state.entries[id])}} />
   }
 
   onchange = e => {
@@ -150,10 +158,19 @@ class App extends Component {
   <tbody>
       {this.state.entries
         .map(entry => {
-          console.log(entry);
-          return <Entry id={entry.id} identity={entry.identity} attempted={entry.attempted} location={entry.location} accepted={entry.accepted} />
+          // console.log(entry);
+          
+          return  <Entry
+            click={() => this.viewDetailHandler(entry.id)}
+            id={entry.id}
+            identity={entry.identity}
+            attempted={entry.attempted} 
+            location={entry.location}
+            accepted={entry.accepted}/>
+            
 
         })}
+        
   </tbody>
 </Table>
           <Button variant="primary">Learn more</Button>
