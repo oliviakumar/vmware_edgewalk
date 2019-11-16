@@ -67,7 +67,8 @@ class App extends Component {
   viewDetailHandler = (id) => {
     console.log('entered vdh');
     console.log(this.state.entries[id]);
-    return <Toggle entry={this.state.entries[id]} onClick={() => {this.props.viewDetail(this.state.entries[id])}} />
+    // return <Toggle entry={this.state.entries[id]} onClick={() => {this.props.viewDetail(this.state.entries[id])}} />
+    
   }
 
   onchange = e => {
@@ -155,7 +156,7 @@ class App extends Component {
       <th>Status</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody className="collapse in">
       {this.state.entries
         .map(entry => {
           // console.log(entry);
