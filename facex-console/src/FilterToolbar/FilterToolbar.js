@@ -6,9 +6,8 @@ const FilterToolbar = (props) => {
 
 
   return (
-            <Navbar variant="light" bg="light">
-            </Navbar>
-
+    <Navbar variant="light" bg="light">
+    </Navbar>
   );
 }
 

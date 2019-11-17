@@ -13,14 +13,16 @@ import Entry from './Entry/Entry';
 import FilterToolbar from './FilterToolbar/FilterToolbar'
 import Toggle from './component/Toggle';
 import './Entry/Entry.css';
+
 class App extends Component {
 
   state = {
     entries: [
-      { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
-      { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
-      { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
-    ]
+      // { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
+      // { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
+      // { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
+    ],
+    searchText: ''
   }
 
   // constructor(props) {
@@ -88,7 +90,7 @@ class App extends Component {
 
   render() {
     const style = {
-      backgroundColor: 'lightpink',
+      backgroundColor: 'lightgrey',
       font: 'inherit',
       border: '1x solid lightblue',
       padding: 'pointer'
@@ -99,33 +101,7 @@ class App extends Component {
         backgroundColor: 'black',
       }}>
       <NavBar />
-      
-      <Jumbotron>
-        <p>
-        <FilterToolbar />
-        <Table bordered hover >
-          <thead>
-            <tr className="Entry">
-              <th>#</th>
-              <th>Name</th>
-              <th>Location</th>
-              <th>Time</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody className="collapse in" style={style}>
-              {this.state.entries
-                .map(entry => {
-                  // console.log(entry);
 
-                }
-                )
-              }
-          </tbody>
-        </Table>
-          <Button variant="primary">Learn more</Button>
-        </p>
-      </Jumbotron>
 
       <div
         className=""

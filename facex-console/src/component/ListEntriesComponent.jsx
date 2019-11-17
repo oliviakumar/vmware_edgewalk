@@ -4,6 +4,8 @@ import Toggle from './Toggle';
 import { Jumbotron, Button, Table } from 'react-bootstrap';
 import FilterToolbar from '../FilterToolbar/FilterToolbar'
 import Entry from '../Entry/Entry'
+import '../Entry/Entry.css';
+import '../App.css';
 
 const ORGANIZATION = 'edgewalk';
 
@@ -11,9 +13,11 @@ class ListEntriesComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            entries: [{id: 1, content: 'first entry log', name: 'bob'},
-            {id: 2, content: 'second entry log', name: 'doug'},
-            {id: 2, content: 'second entry log', name: 'alex'}],
+            entries: [
+                { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
+      { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
+      { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
+            ],
             message: null,
             imgpath: '',
         }
@@ -74,10 +78,11 @@ class ListEntriesComponent extends Component {
 
     render() {
         const style = {
-            backgroundColor: 'lightpink',
+            backgroundColor: 'grey',
             font: 'inherit',
             border: '1x solid lightblue',
-            padding: 'pointer'
+            padding: 'pointer',
+            hover: 'true'
         };
         const images = require.context('../logos', true);
         const {entries, viewDetail, searchText} = this.props;
@@ -85,36 +90,40 @@ class ListEntriesComponent extends Component {
         return (
             <div>
                 <Jumbotron>
-                <h1>Hello, world!</h1>
-                <p>
-                  This is a simple hero unit, a simple jumbotron-style component for calling
-                  extra attention to featured content or information.
-                </p>
-                <FilterToolbar />
+                <h1>ENTRY LOGS</h1>
+                    <p>
+                    View history of system entry. Click individual logs for entrant details.
+                    <div>
+                        <p> searchText value is: {this.props.searchText} </p>
+                    </div>
+                    </p>
+
                 <div className="">
+                <p>
+                    <FilterToolbar />
                     <Table bordered hover>
                         <thead>
-                            <table>
+                            <tr className="Entry">
+                                <th>#</th>
+                                <th>Name</th>
                                 <th>Location</th>
-                                <th>Identity</th>
-                                <th>Entry Status</th>
                                 <th>Time</th>
-                            </table>
+                                <th>Status</th>
+                            </tr>
                         </thead>
-                        <tbody>
-                            <div>
-                                <p> searchText value is: {this.props.searchText} </p>
-                            </div>
-                            {
-                                this.state.entries
-                                    .map(entry => {
-                                    // return <Toggle entry={entry} details={entry.content} onClick={() => {this.props.viewDetail(entry.id)}} />
-                                    // console.log(entry);
-                                    return <Entry entry={entry} details={entry.content}/>
-                            })}
+                        <tbody className="collapse in" style={style}>
+                        {
+                            this.state.entries
+                                .map(entry => {
+                                // return <Toggle entry={entry} details={entry.content} onClick={() => {this.props.viewDetail(entry.id)}} />
+                                // console.log(entry);
+                                return <Entry entry={entry} details={entry.content}/>
+                        })}
                         </tbody>
 
                     </Table>
+                    </p>
+                    <Button variant="primary">Learn more</Button>
                     <div className="row">
                         <button className="btn btn-success" onClick={this.addEntryClicked}>Return to Dashboard</button>
                     </div>

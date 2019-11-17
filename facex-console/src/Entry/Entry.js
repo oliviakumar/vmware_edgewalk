@@ -6,13 +6,16 @@ const Entry = (props) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggle = () => setIsOpen(!isOpen);
+    // const statusColor = () => setStatusColor(!isApproved)
+    const style = 'red'
 
 
-      return <tr className="Entry" onClick={toggle}>
+      return <tr className="Entry" onClick={toggle} >
+            <td> {Math.random()} </td>
             <td> {props.entry.identity} </td>
             <td> {props.entry.location} </td>
             <td> {props.entry.attempted} </td>
-            <td> {props.entry.accepted} </td>
+            <td style={{ hover: 'true', backgroundColor: props.entry.accepted === "true" ?  'green' : 'red' }}> {props.entry.accepted === "true" ? "yes" : "no"} </td>
 
           </tr>
 }
