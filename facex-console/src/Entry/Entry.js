@@ -9,8 +9,14 @@ const Entry = (props) => {
     // const statusColor = () => setStatusColor(!isApproved)
     const style = 'red'
 
+    // viewDetailHandler = (i) => {
+      // console.log('from entry: ' + i);
+      // const entries = this.state.entries;
+      // entries.push(i, 0, <tr> details... </tr>);
+      // this.setState({entries: entries});
+    // }
 
-      return <tr className="Entry" onClick={toggle} >
+      return <tr className="Entry" onClick={props.onClick}>
             <td> {Math.random()} </td>
             <td> {props.entry.identity} </td>
             <td> {props.entry.location} </td>
@@ -22,7 +28,7 @@ const Entry = (props) => {
 
 export default Entry;
 
-/* 
+/*
 
 return <tr onClick={props.click} style={{ marginBottom: '1rem', width: '100%'}}>
 

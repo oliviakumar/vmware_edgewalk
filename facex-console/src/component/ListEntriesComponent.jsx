@@ -35,6 +35,14 @@ class ListEntriesComponent extends Component {
         // this.getContent();
     }
 
+    viewDetailHandler= (i) => {
+        console.log(i);
+        const entries = this.state.entries.slice();
+        // entries.push(i, 0, <tr> details... </tr>);
+        // console.log(entries);
+        // this.setState({entries: entries});
+    }
+
     refreshEntries() {
         EntryDataService.retrieveAllEntries(ORGANIZATION) // HARDCODED
             .then(
@@ -114,10 +122,10 @@ class ListEntriesComponent extends Component {
                         <tbody className="collapse in" style={style}>
                         {
                             this.state.entries
-                                .map(entry => {
+                                .map((entry, i) => {
                                 // return <Toggle entry={entry} details={entry.content} onClick={() => {this.props.viewDetail(entry.id)}} />
                                 // console.log(entry);
-                                return <Entry entry={entry} details={entry.content}/>
+                                return <Entry entry={entry} details={entry.content} onClick={() => this.viewDetailHandler(i)} />
                         })}
                         </tbody>
 
