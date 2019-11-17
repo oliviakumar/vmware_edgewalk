@@ -27,7 +27,7 @@ import (
 // external data struct
 type GofaceData struct {
 	Identity  string `json:"identity"`
-	Accepted  bool `json:"accepted"`
+	Accepted  bool   `json:"accepted"`
 	Location  string `json:"location"`
 	Entrytype string `json:"type"`
 	Imagepath string `json:"imagePath"`
@@ -35,8 +35,8 @@ type GofaceData struct {
 
 // internal data struct
 type GofaceDevice struct {
-	lc           logger.LoggingClient
-	asyncCh      chan<- *dsModels.AsyncValues
+	lc         logger.LoggingClient
+	asyncCh    chan<- *dsModels.AsyncValues
 	mux        sync.Mutex
 	gofacedata string
 }
@@ -64,45 +64,61 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	// call on goface.go to init model training
 	rec := GF.NewRecognizer()
 	rec.Train()
-	// start operating camera to check for faces
-	s.OperateCamera(rec)
+	// start routine operating camera to check for faces
+	go s.OperateCamera(rec)
 
 	return nil
 }
 
-// routine that will be initialized in Init() but
+// method that will be initialized in Init() but will run as a routine to constantly take in new image paths
 func (s *GofaceDevice) OperateGoface(imgPath string, rec GF.Recognizer) {
 	// anon routine for reading the goface data and saving it to s.gofacedata
-		// read in struct and parse as JSON
-		// rec.Infer() gives back an a struct, that is parsed into a JSON-type string
-		tempGofaceData := parseStruct(rec.Infer(imgPath))
-		s.mux.Lock()
-		s.gofacedata = tempGofaceData
-		s.mux.Unlock()
-		//sleep for 10 millisecs to give other routines the opportunity to run
-		time.Sleep(10 * time.Millisecond)
+	go func() {
+		// check if a face was detected
+		if imgPath != "no face detected" {
+			// read in struct and parse as JSON
+			// rec.Infer() gives back a struct of GofaceData type that is parsed into a JSON-formatted string
+			tempGofaceData := parseStruct(rec.Infer(imgPath))
+			s.mux.Lock()
+			s.gofacedata = tempGofaceData
+			s.mux.Unlock()
+			//sleep for 10 millisecs to give other routines the opportunity to run
+			time.Sleep(10 * time.Millisecond)
+		} else {
+			// sleep for 1 sec to catch next picture
+			time.Sleep(1000 * time.Millisecond)
+		}
+	}()
 }
 
+// device service method to operate the camera, gets called with current rec instance
+// returns the last path with a face in it
 func (s *GofaceDevice) OperateCamera(rec GF.Recognizer) string {
+	// init path var that will be reused throughout the whole program
 	var imgPath string
-	exec.Command("raspistill", "dir/mycameraoutput")
-	// raspistill.takeShot()
-	imgPath = "dir/mycameraoutput"
-	hasFace := rec.TestForFace(imgPath)
-	// if there is a face in the picture, give path of picture to Infer() to recognize it
-	if(hasFace == true){
-		go s.OperateGoface(imgPath, rec)
-		return imgPath
+
+	for {
+		// @TODO to be filled with actual path
+		exec.Command("raspistill", "dir/mycameraoutput")
+		// @TODO takeShot() to be written, depending on library being used
+		// raspistill.takeShot()
+		imgPath = "dir/mycameraoutput"
+		hasFace := rec.TestForFace(imgPath)
+		// if there is a face in the picture, give path of picture to Infer() to recognize it
+		if hasFace == true {
+			go s.OperateGoface(imgPath, rec)
+			return imgPath
+		}
+		// then sleep for 1 sec
+		time.Sleep(1000 * time.Millisecond)
+		// path of last photo
+		return "no face detected"
 	}
-	// else or then sleep
-	time.Sleep(1000 * time.Millisecond)
-	// path of last photo
-	return imgPath
 }
 
 // parse struct into string input to send into EdgeX
 func parseStruct(data GF.GofaceData) string {
-		// convert to JSON
+	// convert to JSON
 	resp, err := json.Marshal(data)
 
 	// print error if something has gone wrong
@@ -144,7 +160,7 @@ func (s *GofaceDevice) HandleWriteCommands(deviceName string, protocols map[stri
 	params []*dsModels.CommandValue) error {
 	err := fmt.Errorf("GofaceDevice.HandleWriteCommands; no write commands supported")
 	return err
-	}
+}
 
 // Stop the protocol-specific DS code to shutdown gracefully, or
 // if the force parameter is 'true', immediately. The driver is responsible
