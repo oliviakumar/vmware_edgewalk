@@ -8,12 +8,11 @@ const Entry = (props) => {
     const toggle = () => setIsOpen(!isOpen);
 
 
-      return <tr className="Entry" onClick={toggle} style={props.style}>
-            <td> {props.id} </td>
-            <td> {props.identity} </td>
-            <td> {props.location} </td>
-            <td> {props.attempted} </td>
-            <td> {props.accepted} </td>
+      return <tr className="Entry" onClick={toggle}>
+            <td> {props.entry.identity} </td>
+            <td> {props.entry.location} </td>
+            <td> {props.entry.attempted} </td>
+            <td> {props.entry.accepted} </td>
 
           </tr>
 }

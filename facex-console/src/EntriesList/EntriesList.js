@@ -32,8 +32,8 @@ class EntriesList extends Component {
                 response => {
                     console.log("response -----");
                     // console.log(response.data[0]);
-                    this.setState({entries: response.data});
-                    console.log("his.state.entries -----");
+                    // this.setState({entries: response.data});
+                    console.log("this.state.entries -----");
 
                     console.log(this.props.entries);
                 }

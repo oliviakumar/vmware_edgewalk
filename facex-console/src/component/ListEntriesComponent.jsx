@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import EntryDataService from '../service/EntryDataService';
 import Toggle from './Toggle';
+import { Jumbotron, Button, Table } from 'react-bootstrap';
+import FilterToolbar from '../FilterToolbar/FilterToolbar'
+import Entry from '../Entry/Entry'
 
 const ORGANIZATION = 'edgewalk';
 
@@ -22,9 +25,10 @@ class ListEntriesComponent extends Component {
     }
 
     componentDidMount() {
+        // console.log('did mount');
         this.refreshEntries();
-        this.getImage();
-        this.getContent();
+        // this.getImage();
+        // this.getContent();
     }
 
     refreshEntries() {
@@ -68,57 +72,27 @@ class ListEntriesComponent extends Component {
         
     }
 
-
-
-    // updateEntryClicked(id) {
-    //     console.log('update ' + id)
-    //     this.props.history.push(`/entries/${id}`)
-    // }
-
-    // addEntryClicked() {
-    //     this.props.history.push(`/entries/-1`)
-    // }
-
-    onFileChange = (event) => {
-        this.setState({
-          file: event.target.files[0]
-        });
-      }
-
     render() {
+        const style = {
+            backgroundColor: 'lightpink',
+            font: 'inherit',
+            border: '1x solid lightblue',
+            padding: 'pointer'
+        };
         const images = require.context('../logos', true);
         const {entries, viewDetail, searchText} = this.props;
-        {
-            // const entriesList = this.state.entries
-            
-            // .filter(entry => {
-            //     // remove entries that don't match curr filter text
-            //     console.log(entry);
-            //     // return entry.indexOf(searchText) > -1
-            // })
-            // .map(entry => {
-            //     return (
-            //         <Toggle entry={entry} details={entry.content} onClick={() => {this.props.viewDetail(entry.id)}} />
-            //     )
-            // })
-{
-    // <tr key={Math.random()}>
-
-                    // <td> {entry.location} </td>
-                    // <td> {entry.identity} </td>
-                    // <td> {entry.accepted ? "true" : "false"} </td>
-                    // <td> {entry.attempted} </td>
-}
-                    {
-                        // <Toggle entry={entry} details={entry.name}/>
-                    // <img src={require('/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/model-goface/images/Olivia/olivia3.jpg')}> </img>
-                    }
-
 
         return (
             <div>
-                <div className="container">
-                    <table className="table">
+                <Jumbotron>
+                <h1>Hello, world!</h1>
+                <p>
+                  This is a simple hero unit, a simple jumbotron-style component for calling
+                  extra attention to featured content or information.
+                </p>
+                <FilterToolbar />
+                <div className="">
+                    <Table bordered hover>
                         <thead>
                             <table>
                                 <th>Location</th>
@@ -128,37 +102,27 @@ class ListEntriesComponent extends Component {
                             </table>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td> hello?? </td>
-                                <td> are you there? </td>
-                                <td> bye THERE </td>
-                            </tr>
-                        </tbody>
-                        <tbody>
                             <div>
                                 <p> searchText value is: {this.props.searchText} </p>
                             </div>
-                                
-                            {//entriesList
-                            }
-                            {this.state.entries
-                            //     .filter(entry => {
-                            //     // remove entries that don't match curr filter text
-                            //     return entry.indexOf(searchText) > -1 ? (entry.indexOf(searchText)) : null;
-                            // })
-                            .map(entry => {
-                                return <Toggle entry={entry} details={entry.content} onClick={() => {this.props.viewDetail(entry.id)}} />
+                            {
+                                this.state.entries
+                                    .map(entry => {
+                                    // return <Toggle entry={entry} details={entry.content} onClick={() => {this.props.viewDetail(entry.id)}} />
+                                    // console.log(entry);
+                                    return <Entry entry={entry} details={entry.content}/>
                             })}
                         </tbody>
 
-                    </table>
+                    </Table>
                     <div className="row">
                         <button className="btn btn-success" onClick={this.addEntryClicked}>Return to Dashboard</button>
                     </div>
                 </div>
+                </Jumbotron>
+
             </div>
         )
-    }
     }
 }
 
