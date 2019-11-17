@@ -361,6 +361,11 @@ func ReturnModel() (mod map[int]TrainStruct) {
     return Model
 }
 
+func (r Recognizer)TestForFace(imgPath string) bool {
+    var hasFace = true
+    return hasFace
+}
+
 // Method called by
 func (r Recognizer) Infer(imgPath string) GofaceData{
     // do reognition

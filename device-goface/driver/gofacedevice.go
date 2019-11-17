@@ -64,36 +64,17 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	// call on goface.go to init model training
 	rec := GF.NewRecognizer()
 	rec.Train()
-
-	// starting up the goface main in go routine
-	// Start() will not wait for it to be finished running so it can run in the background
-	/*go func() {
-		filepath := "/home/tanja/go/src/github.com/edgexfoundry/vmware_edgewalk/device-goface/internal/modelgoface/
-		build := exec.Command("go", "build", filepath)
-		run := exec.Command("go", "run", filepath)
-		err := build.Start()
-
-		// error logging on both build and run
-		if err != nil {
-			fmt.Println("%s", err)
-		}
-		errRun := run.Start()
-		if errRun != nil {
-			fmt.Println("%s", err)
-		}
-	}()
-
-	// init logger and async channel
-*/
+	// start operating camera to check for faces
+	s.OperateCamera(rec)
 
 	return nil
 }
 
 // routine that will be initialized in Init() but
-func (s *GofaceDevice) OperateGoface(imgPath string, rec Rec) {
+func (s *GofaceDevice) OperateGoface(imgPath string, rec GF.Recognizer) {
 	// anon routine for reading the goface data and saving it to s.gofacedata
 		// read in struct and parse as JSON
-		// rec.Infer() gives back
+		// rec.Infer() gives back an a struct, that is parsed into a JSON-type string
 		tempGofaceData := parseStruct(rec.Infer(imgPath))
 		s.mux.Lock()
 		s.gofacedata = tempGofaceData
@@ -102,17 +83,25 @@ func (s *GofaceDevice) OperateGoface(imgPath string, rec Rec) {
 		time.Sleep(10 * time.Millisecond)
 }
 
-func OperateCamera(rec Rec) string {
+func (s *GofaceDevice) OperateCamera(rec GF.Recognizer) string {
 	var imgPath string
 	exec.Command("raspistill", "dir/mycameraoutput")
 	// raspistill.takeShot()
 	imgPath = "dir/mycameraoutput"
-	hasFace :=
+	hasFace := rec.TestForFace(imgPath)
+	// if there is a face in the picture, give path of picture to Infer() to recognize it
+	if(hasFace == true){
+		go s.OperateGoface(imgPath, rec)
+		return imgPath
+	}
+	// else or then sleep
+	time.Sleep(1000 * time.Millisecond)
+	// path of last photo
 	return imgPath
 }
 
 // parse struct into string input to send into EdgeX
-func parseStruct(data []string) string {
+func parseStruct(data GF.GofaceData) string {
 		// convert to JSON
 	resp, err := json.Marshal(data)
 
