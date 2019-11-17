@@ -9,7 +9,8 @@ class EntryDataService {
     retrieveAllEntries(name) {
         // console.log(axios.get(`${ORG_API_URL}/edgewalk/liv-entries`));
         // return axios.get(`${ORG_API_URL}/edgewalk/liv-entries`);
-        console.log(axios.get(`${ORG_API_URL}/all`));
+        // console.log(axios.get(`${ORG_API_URL}/all`));
+        axios.get(`${ORG_API_URL}/edge/clear`);
         return axios.get(`${ORG_API_URL}/all`);
         // http://localhost:3000/all
         // return axios.get(`${ORG_API_URL}/all`);

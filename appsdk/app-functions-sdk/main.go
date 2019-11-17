@@ -140,11 +140,15 @@ func SendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, in
 		return false, errors.New("Could not convert to json")
 	}
 	// resp, err := http.Post("http://localhost:8080/", "application/json", bytes.NewReader(data))
+	resp0, err0 := http.Post("http://localhost:8080/edge/clear", "application/json", bytes.NewReader(data))
 	resp, err := http.Post("http://localhost:8080/edge/api", "application/json", bytes.NewReader(data))
 	if err != nil {
+		fmt.Println(err0)
 		fmt.Println(err)
 		return false, errors.New("Error posting data")
 	}
+	fmt.Println(resp0)
+
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		return false, fmt.Errorf("export failed with %d HTTP status code", resp.StatusCode)
@@ -210,7 +214,7 @@ func Upload(values map[string]io.Reader) (err error) {
 		fmt.Println(err)
 		return errors.New("Error posting image data")
 	}
-	http.Get("http://localhost:8080/edge/image/5dcf20d60830d315b04b3d69.jpg")
+
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		return errors.New(fmt.Sprintf("export failed with %d HTTP status code", resp.StatusCode))

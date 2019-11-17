@@ -9,19 +9,42 @@ import ListEntriesComponent from './component/ListEntriesComponent';
 // import Entries from './component/Entries';
 import NavBar from './components/NavBar';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-import Entry from './Entry/Entry';
 import Toggle from './component/Toggle';
+import EntriesList from './EntriesList/EntriesList';
+import './Entry/Entry.css';
+import EntryDataService from './service/EntryDataService';
 
+const ORGANIZATION = 'edgewalk';
 class App extends Component {
 
-  state = {
-    entries: [
-      { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
-      { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
-      { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
-    ]
+  constructor(props) {
+    super(props);
+    this.state = {
+      entries: [
+        // { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
+        // { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
+        // { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
+      ]
+    }
+    this.refreshEntries = this.refreshEntries.bind(this)
   }
 
+  componentDidMount() {
+    this.refreshEntries();
+    console.log('did indeed mount');
+  }
+
+  refreshEntries() {
+    EntryDataService.retrieveAllEntries(ORGANIZATION) // HARDCODED
+        .then(
+            response => {
+                console.log("response -----");
+                console.log(response);
+                this.setState({entries: response.data})
+                console.log(this.state.entries);
+            }
+        )
+  }
   // constructor(props) {
   //   super(props);
   //   this.state = {
@@ -68,7 +91,6 @@ class App extends Component {
     console.log('entered vdh');
     console.log(this.state.entries[id]);
     // return <Toggle entry={this.state.entries[id]} onClick={() => {this.props.viewDetail(this.state.entries[id])}} />
-    
   }
 
   onchange = e => {
@@ -85,57 +107,15 @@ class App extends Component {
     });
   }
 
-  // uploadFile = (event) => {
-  //     event.preventDefault();
-  //     this.setState({error: '', msg: ''});
-  
-  //     if(!this.state.file) {
-  //       this.setState({error: 'Please upload a file.'})
-  //       return;
-  //     }
-  
-  //     if(this.state.file.size >= 2000000) {
-  //       this.setState({error: 'File size exceeds limit of 2MB.'})
-  //       return;
-  //     }
-  
-  //     let data = new FormData();
-  //     data.append('file', this.state.file);
-  //     data.append('name', this.state.file.name);
-  
-  //     fetch('http://localhost:8080/api/files', {
-  //       method: 'POST',
-  //       body: data
-  //     }).then(response => {
-  //       this.setState({error: '', msg: 'Sucessfully uploaded file'});
-  //     }).catch(err => {
-  //       this.setState({error: err});
-  //     });
-  
-  // }
-
-  // downloadRandomImage = () => {
-  //   fetch('http://localhost:8080/edge/image')
-  //     .then(response => {
-  //       const filename =  response.headers.get('Content-Disposition').split('filename=')[1];
-  //       console.log(filename);
-  //       response.blob().then(blob => {
-  //         let url = window.URL.createObjectURL(blob);
-  //         let a = document.createElement('a');
-  //         a.href = url;
-  //         a.download = filename;
-  //         a.click();
-  //     });
-  //  });
-  // }
-
   render() {
+
     console.log('searchText', this.state.searchText);
     return (
       <div style={{
         backgroundColor: 'black',
       }}>
       <NavBar />
+      
       <Jumbotron>
         <h1>Hello, world!</h1>
         <p>
@@ -143,37 +123,11 @@ class App extends Component {
           extra attention to featured content or information.
         </p>
         <p>
-        <Table striped bordered hover>
-{
-
-}
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Name</th>
-      <th>Location</th>
-      <th>Time</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody className="collapse in">
-      {this.state.entries
-        .map(entry => {
-          // console.log(entry);
-          
-          return  <Entry
-            click={() => this.viewDetailHandler(entry.id)}
-            id={entry.id}
-            identity={entry.identity}
-            attempted={entry.attempted} 
-            location={entry.location}
-            accepted={entry.accepted}/>
-            
-
-        })}
-        
-  </tbody>
-</Table>
+          <ListEntriesComponent
+          entries={this.state.entries}
+          viewDetail={this.viewDetail}
+          searchText={this.state.searchText}
+        />
           <Button variant="primary">Learn more</Button>
         </p>
       </Jumbotron>
@@ -207,12 +161,9 @@ class App extends Component {
           searchUpdate={this.searchUpdate.bind(this)} />
         {
         // <Entries entries={this.state.entries} />
-        }
-        <ListEntriesComponent
-          entries={this.state.entries}
-          viewDetail={this.viewDetail}
-          searchText={this.state.searchText}
-        />
+ 
+      }
+
       </div>
       hello
 
