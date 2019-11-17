@@ -15,7 +15,7 @@
 			</thead>
 			<tbody>
 				<tr th:each="response : ${responses}">
-					<td th:text="${response.id}">id</td>
+					<td><a th:href="${'/entry/' + response.id}" th:text="${response.id}"></a></td>
 					<td th:text="${response.identityCapital}">identity</td>
 					<td th:text="${response.locationCapital}">id</td>
 					<td th:text="${response.typeCapital eq 'O' ? 'Outgoing' : 'Incoming'}">type</td>

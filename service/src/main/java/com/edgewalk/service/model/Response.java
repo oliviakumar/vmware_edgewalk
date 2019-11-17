@@ -21,6 +21,10 @@ public class Response {
 		return this.id;
 	}
 
+	public String getIdString() {
+		return this.id.toHexString();
+	}
+
 	public void setId(ObjectId id) {
 		this.id = id;
 	}

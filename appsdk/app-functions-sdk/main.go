@@ -96,9 +96,9 @@ func GetDataFromJSON(edgexcontext *appcontext.Context, params ...interface{}) (b
 	}
 	model := params[0].(models.Event)
 	for _, reading := range model.Readings {
-		b = []byte(reading.Value)
+		b := []byte(reading.Value)
 		data := driver.NewData()
-		err = json.Unmarshal(b, &data)
+		err := json.Unmarshal(b, &data)
 		if err != nil {
 			fmt.Println(err)
 			return false, errors.New("Could not unpack data")
