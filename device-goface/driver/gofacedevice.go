@@ -13,6 +13,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Kagami/go-face"
+	"os/exec"
 	"sync"
 	"time"
 
@@ -63,7 +64,6 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	// call on goface.go to init model training
 	rec := GF.NewRecognizer()
 	rec.Train()
-	recData := rec.Run()
 
 	// starting up the goface main in go routine
 	// Start() will not wait for it to be finished running so it can run in the background
@@ -86,22 +86,33 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	// init logger and async channel
 */
 
-	// anon routine for reading the goface data and saving it to s.gofacedata
-	go func() {
-		// read in struct and parse as JSON
-		tempGofaceData := parseStruct()
-		s.mux.Lock()
-		s.gofacedata = tempGofaceData
-		s.mux.Unlock()
-		//sleep for 1 sec
-		time.Sleep(1000 * time.Millisecond)
-	}()
-
 	return nil
 }
 
+// routine that will be initialized in Init() but
+func (s *GofaceDevice) OperateGoface(imgPath string, rec Rec) {
+	// anon routine for reading the goface data and saving it to s.gofacedata
+		// read in struct and parse as JSON
+		// rec.Infer() gives back
+		tempGofaceData := parseStruct(rec.Infer(imgPath))
+		s.mux.Lock()
+		s.gofacedata = tempGofaceData
+		s.mux.Unlock()
+		//sleep for 10 millisecs to give other routines the opportunity to run
+		time.Sleep(10 * time.Millisecond)
+}
+
+func OperateCamera(rec Rec) string {
+	var imgPath string
+	exec.Command("raspistill", "dir/mycameraoutput")
+	// raspistill.takeShot()
+	imgPath = "dir/mycameraoutput"
+	hasFace :=
+	return imgPath
+}
+
 // parse struct into string input to send into EdgeX
-func parseStruct(data ){
+func parseStruct(data []string) string {
 		// convert to JSON
 	resp, err := json.Marshal(data)
 
@@ -113,6 +124,8 @@ func parseStruct(data ){
 	// return the JSON-parsed response as a string
 	return string(resp)
 }
+
+// function to take in pictures from current
 
 // HandleReadCommands triggers a protocol Read operation for the specified device.
 func (s *GofaceDevice) HandleReadCommands(deviceName string, protocols map[string]contract.ProtocolProperties, reqs []dsModels.CommandRequest) (res []*dsModels.CommandValue, err error) {

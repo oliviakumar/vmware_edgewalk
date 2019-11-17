@@ -1,4 +1,4 @@
-package modelgoface
+package lib
 
 import  (
     // L "./lib"
@@ -22,15 +22,13 @@ type TrainStruct struct {
 }
 
 type GofaceData struct {
-	Identity  string `json:"identity"`
-	Accepted  bool `json:"accepted"`
-	Location  string `json:"location"`
-	Entrytype string `json:"type"`
-	Imagepath string `json:"imagePath"`
+    Identity  string `json:"identity"`
+    Accepted  bool `json:"accepted"`
+    Location  string `json:"location"`
+    Entrytype string `json:"type"`
+    Imagepath string `json:"imagePath"`
 }
 
-// contains pointer to recognizer object to be passed to device service
-// DS calls on New
 type Recognizer struct {
     Rec *face.Recognizer
 }
@@ -52,7 +50,6 @@ var valid bool
 var found bool
 var approved bool
 
-// device service calls on NewRecognizer() to retrieve an instrance of the used recognizer object
 func NewRecognizer() Recognizer {
     return Recognizer{}
 }
@@ -78,7 +75,7 @@ func DirTraverse(file string, rec *face.Recognizer, name string) {
         fmt.Println(err)
         return
     }
-    
+
     switch mode := fi.Mode(); {
     //If the file given is a directory
     case mode.IsDir():
@@ -86,9 +83,9 @@ func DirTraverse(file string, rec *face.Recognizer, name string) {
         if err != nil {
             log.Fatal(err)
         }
-        
+
         for _, f2 := range files {
-            newDir := filepath.Join(file, f2.Name())            
+            newDir := filepath.Join(file, f2.Name())
             DirTraverse(newDir, rec, name)
         }
 
@@ -121,7 +118,7 @@ func DirTraverse(file string, rec *face.Recognizer, name string) {
 //Populates the Train struct, and stores it into a map
 func PopulateDescriptor(name string) {
     var entry TrainStruct
-    entry.Data = indSamples    
+    entry.Data = indSamples
     entry.Index = indTracker
     entry.Name = name
 
@@ -148,7 +145,7 @@ func WriteToFile(filename string, data string) error {
     return file.Sync()
 }
 
-//Traverses through the training images folders to find the image match 
+//Traverses through the training images folders to find the image match
 //**Only for demonstration purposes**
 func FindPic(file string, rec *face.Recognizer, pic face.Descriptor) {
     fi, err := os.Stat(file)
@@ -156,7 +153,7 @@ func FindPic(file string, rec *face.Recognizer, pic face.Descriptor) {
         fmt.Println(err)
         return
     }
-    
+
     switch mode := fi.Mode(); {
     //If the file given is a directory
     case mode.IsDir():
@@ -164,7 +161,7 @@ func FindPic(file string, rec *face.Recognizer, pic face.Descriptor) {
         if err != nil {
             log.Fatal(err)
         }
-        
+
         for _, f2 := range files {
             if (found) {
                 found = false
@@ -190,12 +187,12 @@ func FindPic(file string, rec *face.Recognizer, pic face.Descriptor) {
                     //Writing shell script to open the training picture that matches the picture given
                     //**Change path when running locally**
                     WriteToFile("/Users/mushahidhassan/go/src/demo/open-pic.sh", file)
-                    
+
                     fmt.Println("Opening image used to train...")
                     //Executing shell script
                     //**Change path when running locally**
                     c := exec.Command("/Users/mushahidhassan/go/src/demo/open-pic.sh")
-                    if err2 := c.Run(); err2 != nil { 
+                    if err2 := c.Run(); err2 != nil {
                         fmt.Println("Error: ", err2)
                     }
 
@@ -207,8 +204,8 @@ func FindPic(file string, rec *face.Recognizer, pic face.Descriptor) {
     }
 }
 
-//Recognizing method to see if the face resembles that of a trained individual
-func (r Recognizer) Infer(images map[string]bool) GofaceData {
+//Testing to see if the face resembles that of a trained individual
+func (r Recognizer) test(images map[string]bool) (GofaceData) {
     files, err := ioutil.ReadDir(dataDir)
     if err != nil {
         log.Fatal(err)
@@ -226,18 +223,18 @@ func (r Recognizer) Infer(images map[string]bool) GofaceData {
             }
         }
     }
-    
+
     if (execute) {
         testPic, err := (*(&r.Rec)).RecognizeSingleFile(testPath)
         if err != nil {
             log.Fatalf("Can't recognize: %v", err)
         }
-        
+
         if testPic == nil {
             approved = false
             log.Fatalf("Picture Match: %t", approved)
         }
-        
+
         picID := (*(&r.Rec)).Classify(testPic.Descriptor)
         if picID < 0 {
             log.Fatalf("Can't classify")
@@ -256,11 +253,10 @@ func (r Recognizer) Infer(images map[string]bool) GofaceData {
         location := "Front Door"
         entryType := "I"
         path := testPath
-        Update()    
+        Update()
         //Uncomment if you want to pull up the most accurate match with picture that was used to train
         // FindPic(dataDir, rec, samples[picID])
 
-        //populate goface data struct
         RecogData := GofaceData{
             Identity: person,
             Accepted:  approved,
@@ -269,9 +265,7 @@ func (r Recognizer) Infer(images map[string]bool) GofaceData {
             Imagepath:	path,
         }
 
-        // returns a pointer to the current data struct
         return RecogData
-
     } else {
         person := ""
         approved = false
@@ -307,14 +301,14 @@ func (r Recognizer) Train() {
 
     var name string = "Chris Smith"
     //Traversing through Chris directory
-    DirTraverse(dataDir, &r.Rec, name)
+    DirTraverse(dataDir, r.Rec, name)
     r.Rec.SetSamples(samples, tracker)
     Update()
-    
+
     //Changing directory and training for Mushahid
     ChangeDir("Mushahid")
     rec, err = face.NewRecognizer(dataDir)
-    r.Rec = *rec
+    r.Rec = rec
     if (err != nil) {
         log.Fatalf("Error opening directory.")
     }
@@ -322,14 +316,14 @@ func (r Recognizer) Train() {
 
     name = "Mushahid Hassan"
     //Traversing through Mushahid directory
-    DirTraverse(dataDir, &r.Rec, name)
+    DirTraverse(dataDir, r.Rec, name)
     r.Rec.SetSamples(samples, tracker)
     Update()
 
     //Changing directory and training for Tanja
     ChangeDir("Tanja")
     rec, err = face.NewRecognizer(dataDir)
-    r.Rec = *rec
+    r.Rec = rec
     if (err != nil) {
         log.Fatalf("Error opening directory.")
     }
@@ -337,22 +331,22 @@ func (r Recognizer) Train() {
 
     name = "Tanja Nuendel"
     //Traversing through Tanja directory
-    DirTraverse(dataDir, &r.Rec, name)
+    DirTraverse(dataDir, r.Rec, name)
     r.Rec.SetSamples(samples, tracker)
     Update()
 
     //Changing directory and training for Olivia
     ChangeDir("Olivia")
     rec, err = face.NewRecognizer(dataDir)
-    r.Rec = *rec
+    r.Rec = rec
     if (err != nil) {
         log.Fatalf("Error opening directory.")
     }
     // defer r.Rec.Close()
-    
+
     name = "Olivia Kumar"
     //Traversing through Olivia directory
-    DirTraverse(dataDir, &r.Rec, name)
+    DirTraverse(dataDir, r.Rec, name)
     r.Rec.SetSamples(samples, tracker)
     Update()
     if &r.Rec != nil {
@@ -367,16 +361,30 @@ func ReturnModel() (mod map[int]TrainStruct) {
     return Model
 }
 
-func (r Recognizer) Run() GofaceData {
+// Method called by
+func (r Recognizer) Infer(imgPath string) GofaceData{
+    // do reognition
+
+    gofaceData := GofaceData{
+        Identity: "this is your name",
+        Accepted:  approved,
+        Location:  "this is your location",
+        Entrytype: "I",
+        Imagepath:	imgPath,
+    }
+    return gofaceData
+}
+
+/* future Infer() method
+func (r Recognizer) Run() {
     fmt.Println("This is rec in run(): ", r.Rec)
     images := make(map[string]bool)
 
     // for {
-        dataDir = "images/testImages"
-        // arity mismatch: need to pass struct
-    Identity, Accepted, Location, Entrytype, Imagepath := r.Infer(images)
+    dataDir = "images/testImages"
+    Identity, Accepted, Location, Entrytype, Imagepath := r.test(images)
 
-    GofaceData := GofaceData{
+    RecogData := GofaceData{
         Identity: Identity,
         Accepted:  Accepted,
         Location:  Location,
@@ -384,15 +392,15 @@ func (r Recognizer) Run() GofaceData {
         Imagepath:	Imagepath,
     }
 
-        // if identity is empty (no recognization), goface will always return false
-        if (GofaceData.Identity != "") {
-            fmt.Println(GofaceData.Identity)
-            fmt.Println(GofaceData.Accepted)
-            fmt.Println(GofaceData.Location)
-            fmt.Println(GofaceData.Entrytype)
-            fmt.Println(GofaceData.Imagepath)
-        }
-        
-        approved = false
+    if (Identity != "") {
+        fmt.Println(RecogData.Identity)
+        fmt.Println(RecogData.Accepted)
+        fmt.Println(RecogData.Location)
+        fmt.Println(RecogData.Entrytype)
+        fmt.Println(RecogData.Imagepath)
+    }
+
+    approved = false
     // }
-}
+
+ */
