@@ -7,8 +7,9 @@ require (
 	github.com/edgexfoundry/device-goface v0.0.0
 	github.com/edgexfoundry/device-sdk-go v1.1.0
 	github.com/edgexfoundry/go-mod-core-contracts v0.1.31
-    github.com/edgexfoundry/model-goface v0.0.0
+	github.com/edgexfoundry/model-goface v0.0.0
 )
 
-replace github.com/edgexfoundry/device-goface v0.0.0 => github.com/edgexfoundry/vmware_edgewalk/device-goface
-replace github.com/edgexfoundry/model-goface v0.0.o => github.com/edgexfoundry/vmware_edgewalk/model-goface
+replace github.com/edgexfoundry/device-goface v0.0.0 => /github.com/edgexfoundry/vmware_edgewalk/device-goface
+
+replace github.com/edgexfoundry/model-goface v0.0.0 => /github.com/edgexfoundry/vmware_edgewalk/model-goface

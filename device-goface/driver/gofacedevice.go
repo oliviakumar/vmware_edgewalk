@@ -4,28 +4,23 @@
 // Copyright (C) 2018-2019 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
-
-// This package provides a simple example implementation of
-// ProtocolDriver interface.
 //
+// Credit goes to
+
 package driver
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
-	"os"
-	"log"
-	"os/exec"
-	"strconv"
-	"strings"
+	"github.com/Kagami/go-face"
 	"sync"
 	"time"
 
-	recog "github.com/edgexfoundry/vmware_edgewalk/model-goface"
 	dsModels "github.com/edgexfoundry/device-sdk-go/pkg/models"
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	contract "github.com/edgexfoundry/go-mod-core-contracts/models"
+	// import goface functionality, to be called on by using "GF.funcName()"
+	GF "github.com/edgexfoundry/vmware_edgewalk/modelgoface"
 )
 
 // external data struct
@@ -45,6 +40,12 @@ type GofaceDevice struct {
 	gofacedata string
 }
 
+// instantiate struct
+type Rec struct {
+	*face.Recognizer
+}
+
+// constructor used by App SDK to call on data struct from device service
 func NewData() GofaceData {
 	return GofaceData{}
 }
@@ -56,53 +57,53 @@ func (s *GofaceDevice) DisconnectDevice(deviceName string, protocols map[string]
 // Initialize performs protocol-specific initialization for the devicef
 // service.
 func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsModels.AsyncValues) error {
-	
-	// starting up the goface main in go routine
-	// Start() will not wait for it to be finished running so it can run in the background
-	go func() {
-		// relative path: model-goface/main.go
-		filepath := "/home/tanja/go/src/github.com/edgexfoundry/vmware_edgewalk/model-goface/main.go"
-		build := exec.Command("go", "build", filepath)
-    	run := exec.Command("go", "run", filepath)
-		err := build.Start()
-
-		// error logging on both build and run
-    	if err != nil {
-	        fmt.Println("%s", err)
-	    }
-    	errRun := run.Start()
-		if errRun != nil {
-        	fmt.Println("%s", err)
-    	}
-	}
-
-	// init logger and async channel
 	s.lc = lc
 	s.asyncCh = asyncCh
 
-	// routine for reading the goface data and saving it to s.gofacedata
+	// call on goface.go to init model training
+	rec := GF.NewRecognizer()
+	rec.Train()
+	recData := rec.Run()
+
+	// starting up the goface main in go routine
+	// Start() will not wait for it to be finished running so it can run in the background
+	/*go func() {
+		filepath := "/home/tanja/go/src/github.com/edgexfoundry/vmware_edgewalk/device-goface/internal/modelgoface/
+		build := exec.Command("go", "build", filepath)
+		run := exec.Command("go", "run", filepath)
+		err := build.Start()
+
+		// error logging on both build and run
+		if err != nil {
+			fmt.Println("%s", err)
+		}
+		errRun := run.Start()
+		if errRun != nil {
+			fmt.Println("%s", err)
+		}
+	}()
+
+	// init logger and async channel
+*/
+
+	// anon routine for reading the goface data and saving it to s.gofacedata
 	go func() {
-		// open 
-		tempGofaceData := parseGofaceData(recog.RecogData)
+		// read in struct and parse as JSON
+		tempGofaceData := parseStruct()
 		s.mux.Lock()
 		s.gofacedata = tempGofaceData
 		s.mux.Unlock()
 		//sleep for 1 sec
 		time.Sleep(1000 * time.Millisecond)
-			}
-		}
-	}
-
-	}()*/
+	}()
 
 	return nil
 }
 
-func parseGofaceStruct(data []string){
-
-	gofaceDataPoint, _ := recog.RecogData
+// parse struct into string input to send into EdgeX
+func parseStruct(data ){
 		// convert to JSON
-	resp, err := json.Marshal(gofaceDataPoint)
+	resp, err := json.Marshal(data)
 
 	// print error if something has gone wrong
 	if err != nil {
@@ -112,45 +113,9 @@ func parseGofaceStruct(data []string){
 	// return the JSON-parsed response as a string
 	return string(resp)
 }
-
-/*
-// parse goface string and extract data necessary for struct
-// data[1] - identity of entrant as a string
-// data[2] - status of acceptance: true or false, parsed as string
-// data[3] - location of entry , like back door or front door
-// data[4] - type of entry, in or out (for later checkout function)
-func parseGofaceLine(data []string) string {
-
-	// parsing data from file
-	identityName := strings.TrimSpace(data[1])
-	acceptedStatus, _ := strconv.ParseBool(data[2])
-	location := strings.TrimSpace(data[3])
-	entrytype := strings.TrimSpace(data[4])
-
-	// creating struct containing data extracted from line
-	gofaceDataPoint := GofaceData{
-		Identity: identityName,
-		Accepted:  acceptedStatus,
-		Location:  location,
-		Entrytype: entrytype,
-	}
-
-	// convert to JSON
-	resp, err := json.Marshal(gofaceDataPoint)
-
-	// print error if something has gone wrong
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	// return the JSON-parsed response as a string
-	return string(resp)
-}
-*/
 
 // HandleReadCommands triggers a protocol Read operation for the specified device.
 func (s *GofaceDevice) HandleReadCommands(deviceName string, protocols map[string]contract.ProtocolProperties, reqs []dsModels.CommandRequest) (res []*dsModels.CommandValue, err error) {
-	//fmt.Fprintf(os.Stdout,  "....... %s .......\n", reqs[0].DeviceResourceName)
 	if len(reqs) != 1 {
 		err = fmt.Errorf("GofaceDevice.HandleReadCommands; too many command requests; only one supported")
 		return
@@ -160,7 +125,6 @@ func (s *GofaceDevice) HandleReadCommands(deviceName string, protocols map[strin
 	res = make([]*dsModels.CommandValue, 1)
 	now := time.Now().UnixNano() / int64(time.Millisecond)
 
-	// define case that goface device calls on driver - send testString ("Hello IoT!")
 	if reqs[0].DeviceResourceName == "goface" {
 		s.mux.Lock()
 		cv := dsModels.NewStringValue(reqs[0].DeviceResourceName, now, s.gofacedata)

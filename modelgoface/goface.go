@@ -1,4 +1,4 @@
-package lib
+package modelgoface
 
 import  (
     // L "./lib"
@@ -29,8 +29,10 @@ type GofaceData struct {
 	Imagepath string `json:"imagePath"`
 }
 
+// contains pointer to recognizer object to be passed to device service
+// DS calls on New
 type Recognizer struct {
-    Rec face.Recognizer
+    Rec *face.Recognizer
 }
 
 //Data directory for training the model
@@ -50,6 +52,7 @@ var valid bool
 var found bool
 var approved bool
 
+// device service calls on NewRecognizer() to retrieve an instrance of the used recognizer object
 func NewRecognizer() Recognizer {
     return Recognizer{}
 }
@@ -204,8 +207,8 @@ func FindPic(file string, rec *face.Recognizer, pic face.Descriptor) {
     }
 }
 
-//Testing to see if the face resembles that of a trained individual
-func (r Recognizer) test(images map[string]bool) (GofaceData) {
+//Recognizing method to see if the face resembles that of a trained individual
+func (r Recognizer) Infer(images map[string]bool) GofaceData {
     files, err := ioutil.ReadDir(dataDir)
     if err != nil {
         log.Fatal(err)
@@ -225,7 +228,7 @@ func (r Recognizer) test(images map[string]bool) (GofaceData) {
     }
     
     if (execute) {
-        testPic, err := (&r.Rec).RecognizeSingleFile(testPath)
+        testPic, err := (*(&r.Rec)).RecognizeSingleFile(testPath)
         if err != nil {
             log.Fatalf("Can't recognize: %v", err)
         }
@@ -235,7 +238,7 @@ func (r Recognizer) test(images map[string]bool) (GofaceData) {
             log.Fatalf("Picture Match: %t", approved)
         }
         
-        picID := (&r.Rec).Classify(testPic.Descriptor)
+        picID := (*(&r.Rec)).Classify(testPic.Descriptor)
         if picID < 0 {
             log.Fatalf("Can't classify")
         }
@@ -257,6 +260,7 @@ func (r Recognizer) test(images map[string]bool) (GofaceData) {
         //Uncomment if you want to pull up the most accurate match with picture that was used to train
         // FindPic(dataDir, rec, samples[picID])
 
+        //populate goface data struct
         RecogData := GofaceData{
             Identity: person,
             Accepted:  approved,
@@ -265,7 +269,9 @@ func (r Recognizer) test(images map[string]bool) (GofaceData) {
             Imagepath:	path,
         }
 
+        // returns a pointer to the current data struct
         return RecogData
+
     } else {
         person := ""
         approved = false
@@ -293,7 +299,7 @@ func (r Recognizer) Train() {
     var err error
     var rec *face.Recognizer
     rec, err = face.NewRecognizer(dataDir)
-    r.Rec = *rec
+    r.Rec = rec
     if (err != nil) {
         log.Fatalf("Error opening directory.")
     }
@@ -361,28 +367,30 @@ func ReturnModel() (mod map[int]TrainStruct) {
     return Model
 }
 
-func (r Recognizer) Run() {
+func (r Recognizer) Run() GofaceData {
     fmt.Println("This is rec in run(): ", r.Rec)
     images := make(map[string]bool)
 
     // for {
         dataDir = "images/testImages"
-        Identity, Accepted, Location, Entrytype, Imagepath := r.test(images)
+        // arity mismatch: need to pass struct
+    Identity, Accepted, Location, Entrytype, Imagepath := r.Infer(images)
 
-        RecogData := GofaceData{
-            Identity: Identity,
-            Accepted:  Accepted,
-            Location:  Location,
-            Entrytype: Entrytype,
-            Imagepath:	Imagepath,
-        }
+    GofaceData := GofaceData{
+        Identity: Identity,
+        Accepted:  Accepted,
+        Location:  Location,
+        Entrytype: Entrytype,
+        Imagepath:	Imagepath,
+    }
 
-        if (Identity != "") {
-            fmt.Println(RecogData.Identity)
-            fmt.Println(RecogData.Accepted)
-            fmt.Println(RecogData.Location)
-            fmt.Println(RecogData.Entrytype)
-            fmt.Println(RecogData.Imagepath)
+        // if identity is empty (no recognization), goface will always return false
+        if (GofaceData.Identity != "") {
+            fmt.Println(GofaceData.Identity)
+            fmt.Println(GofaceData.Accepted)
+            fmt.Println(GofaceData.Location)
+            fmt.Println(GofaceData.Entrytype)
+            fmt.Println(GofaceData.Imagepath)
         }
         
         approved = false
