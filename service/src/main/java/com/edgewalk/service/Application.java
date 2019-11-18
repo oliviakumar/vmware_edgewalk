@@ -15,14 +15,4 @@ public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-
-    @Configuration
-    public class WebConfig implements WebMvcConfigurer {      
-        @Override
-        public void addResourceHandlers(ResourceHandlerRegistry registry) {
-            registry.addResourceHandler("/**")
-            .addResourceLocations("classpath:/static/","service/server")
-            .setCachePeriod(0);
-        }
-    }
 }

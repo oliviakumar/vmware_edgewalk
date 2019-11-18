@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css"
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import axios from 'axios'
+import '../public/*'
 // import htmlContent from '/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/service/src/main/resources/templates/main.html';
 
 const ORGANIZATION = 'edgewalk'
@@ -26,18 +27,18 @@ class Test extends Component {
         axios
         .get("http://localhost:8080/all")
         .then(data => {
-            console.log(data);
+            // console.log(data.data[0].identity);
+            this.setState({data: data.data});
         })
         .catch(err => alert(err));
 
         axios
         .get("http://localhost:8080/content")
         .then(data => {
-            console.log(data);
+            // console.log(data);
             // this.setState({data: data});
         })
         .catch(err => alert(err));
-
 
         // function call() {
         // 	$.ajax({
@@ -63,11 +64,18 @@ class Test extends Component {
         <div className="test">
           <h1 className="alert alert-warning"> FACEX </h1>
             <h1>testing...</h1>
-            <p> hi </p>
-            // <p> {this.state.data} </p>
-            <div> {this.state.data} </div>
-            <div dangerouslySetInnerHTML={ {__html: this.state.data} } />
 
+            <p> hi </p>
+            {
+                this.state.data
+                    .map((entry) => {
+
+                        console.log(entry);
+
+                })
+
+            }
+            <img src="../public/logo192.png"> img </img>
 
         </div>
       </Router>
@@ -79,7 +87,16 @@ export default Test;
 
 
 
+// facex-console/src/facex.png
 //
+// <img src="`../../service/${data.code}.jpg`"> img </img>
+//
+            // {console.log('reached2');}
+            // <img src={`../files/${data.code}.jpg`}
+            // <div dangerouslySetInnerHTML={ {__html: this.state.data} } />
+
+            // <img src="`../files/${data.code}.jpg`"> img </img>
+
 // class EntryDataService {
 //
 //     retrieveAllEntries(name) {

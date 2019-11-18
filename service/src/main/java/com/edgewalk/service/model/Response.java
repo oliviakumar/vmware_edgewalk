@@ -28,6 +28,13 @@ public class Response {
 		this.identity = identity;
 	}
 
+	public Response(String identity, String type, String location, boolean accepted) {
+		this.identity = identity;
+		this.type = type;
+		this.location = location;
+		this.accepted = accepted;
+	}
+
 	public ObjectId getId() {
 		return this.id;
 	}
