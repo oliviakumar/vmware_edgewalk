@@ -64,7 +64,9 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	// call on goface.go to init model training
 	rec := GF.NewRecognizer()
 	rec.Train()
-	// start routine operating camera to check for faces
+	// start routine operating camera to check for faces with current rec instance
+	// OperateCamera will call on OperateGoface to recognize the faces
+	// OperateGoface will call on parseStruct to get the info of the recognized picture
 	go s.OperateCamera(rec)
 
 	return nil
@@ -74,7 +76,7 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 func (s *GofaceDevice) OperateGoface(imgPath string, rec GF.Recognizer) {
 	// anon routine for reading the goface data and saving it to s.gofacedata
 	go func() {
-		// check if a face was detected
+		// check if a face was detected in
 		if imgPath != "no face detected" {
 			// read in struct and parse as JSON
 			// rec.Infer() gives back a struct of GofaceData type that is parsed into a JSON-formatted string
@@ -102,8 +104,10 @@ func (s *GofaceDevice) OperateCamera(rec GF.Recognizer) string {
 		exec.Command("raspistill", "dir/mycameraoutput")
 		// @TODO takeShot() to be written, depending on library being used
 		// raspistill.takeShot()
+		// @TODO to be filled with actual path
 		imgPath = "dir/mycameraoutput"
 		hasFace := rec.TestForFace(imgPath)
+		fmt.Println("imgPath: ", imgPath)
 		// if there is a face in the picture, give path of picture to Infer() to recognize it
 		if hasFace == true {
 			go s.OperateGoface(imgPath, rec)
@@ -143,6 +147,7 @@ func (s *GofaceDevice) HandleReadCommands(deviceName string, protocols map[strin
 	res = make([]*dsModels.CommandValue, 1)
 	now := time.Now().UnixNano() / int64(time.Millisecond)
 
+	// reads in the devices data in the form of s.gofacedata string
 	if reqs[0].DeviceResourceName == "goface" {
 		s.mux.Lock()
 		cv := dsModels.NewStringValue(reqs[0].DeviceResourceName, now, s.gofacedata)

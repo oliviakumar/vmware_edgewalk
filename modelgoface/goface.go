@@ -205,7 +205,7 @@ func FindPic(file string, rec *face.Recognizer, pic face.Descriptor) {
 }
 
 //Testing to see if the face resembles that of a trained individual
-func (r Recognizer) test(images map[string]bool) (GofaceData) {
+func (r *Recognizer) test(images map[string]bool) (string, bool, string, string) {
     files, err := ioutil.ReadDir(dataDir)
     if err != nil {
         log.Fatal(err)
@@ -252,37 +252,25 @@ func (r Recognizer) test(images map[string]bool) (GofaceData) {
 
         location := "Front Door"
         entryType := "I"
-        path := testPath
+        // @TODO currently unused, we actually just need the imgPath that's in the service anyways
+        //path := testPath
         Update()
         //Uncomment if you want to pull up the most accurate match with picture that was used to train
         // FindPic(dataDir, rec, samples[picID])
 
-        RecogData := GofaceData{
-            Identity: person,
-            Accepted:  approved,
-            Location:  location,
-            Entrytype: entryType,
-            Imagepath:	path,
-        }
+        return person, approved, location, entryType
 
-        return RecogData
     } else {
         person := ""
         approved = false
         location := ""
         entryType := ""
-        path := ""
+        //path := ""
 
-        RecogData := GofaceData{
-            Identity: person,
-            Accepted:  approved,
-            Location:  location,
-            Entrytype: entryType,
-            Imagepath:	path,
-        }
-
-        return RecogData
+        return person, false, location, entryType
     }
+    // @TODO Doesn't this make the function always return empty data with false?
+    return "", false, "", ""
 }
 
 func (r Recognizer) Train() {
@@ -361,20 +349,26 @@ func ReturnModel() (mod map[int]TrainStruct) {
     return Model
 }
 
-func (r Recognizer)TestForFace(imgPath string) bool {
+func (r *Recognizer) TestForFace(imgPath string) bool {
+    // @TODO rework. hasFace set always true for testing purposes
     var hasFace = true
     return hasFace
 }
 
 // Method called by
-func (r Recognizer) Infer(imgPath string) GofaceData{
+func (r *Recognizer) Infer(imgPath string) GofaceData{
     // do reognition
+    images := make(map[string]bool)
+    // @TODO put in correct path to directory of imgPath (convert from single imgPath to directory path!)
+    dataDir = "./imgPath"
+    person, approved, location, entryType := r.test(images)
 
+    //
     gofaceData := GofaceData{
-        Identity: "this is your name",
+        Identity: person,
         Accepted:  approved,
-        Location:  "this is your location",
-        Entrytype: "I",
+        Location:  location,
+        Entrytype: entryType,
         Imagepath:	imgPath,
     }
     return gofaceData
