@@ -29,9 +29,7 @@ type GofaceData struct {
     Imagepath string `json:"imagePath"`
 }
 
-type Recognizer struct {
-    Rec *face.Recognizer
-}
+var rec *face.Recognizer
 
 //Data directory for training the model
 var dataDir = "images"
@@ -50,10 +48,6 @@ var valid bool
 var found bool
 var approved bool
 
-func NewRecognizer() Recognizer {
-    return Recognizer{}
-}
-
 //Changes the dataDir to given filename
 func ChangeDir(folder string) {
     dataDir = filepath.Join(dataDir, folder)
@@ -68,8 +62,12 @@ func Update() {
     indCount = indCount + 1
 }
 
+func ReturnModel() (mod map[int]TrainStruct) {
+    return Model
+}
+
 //Traverses through the given file and finds any ".jpg" to train the model with
-func DirTraverse(file string, rec *face.Recognizer, name string) {
+func DirTraverse(file string, name string) {
     fi, err := os.Stat(file)
     if err != nil {
         fmt.Println(err)
@@ -86,7 +84,7 @@ func DirTraverse(file string, rec *face.Recognizer, name string) {
 
         for _, f2 := range files {
             newDir := filepath.Join(file, f2.Name())
-            DirTraverse(newDir, rec, name)
+            DirTraverse(newDir, name)
         }
 
         //Updating count, which will be used as id
@@ -147,7 +145,7 @@ func WriteToFile(filename string, data string) error {
 
 //Traverses through the training images folders to find the image match
 //**Only for demonstration purposes**
-func FindPic(file string, rec *face.Recognizer, pic face.Descriptor) {
+func FindPic(file string, pic face.Descriptor) {
     fi, err := os.Stat(file)
     if err != nil {
         fmt.Println(err)
@@ -168,7 +166,7 @@ func FindPic(file string, rec *face.Recognizer, pic face.Descriptor) {
                 break
             }
             newDir := filepath.Join(file, f2.Name())
-            FindPic(newDir, rec, pic)
+            FindPic(newDir, pic)
         }
 
     //If the file given is a regular file
@@ -204,175 +202,229 @@ func FindPic(file string, rec *face.Recognizer, pic face.Descriptor) {
     }
 }
 
-//Testing to see if the face resembles that of a trained individual
-func (r *Recognizer) test(images map[string]bool) (string, bool, string, string) {
-    files, err := ioutil.ReadDir(dataDir)
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    var testPath string
-    var execute bool
-    for _, file := range files {
-        if (strings.HasSuffix(file.Name(), ".jpg") == true || strings.HasSuffix(file.Name(), ".jpeg") == true) {
-            if (images[file.Name()] == false) {
-                images[file.Name()] = true
-                execute = true
-                testPath = filepath.Join(dataDir, file.Name())
-                break
-            }
-        }
-    }
-
-    if (execute) {
-        testPic, err := (*(&r.Rec)).RecognizeSingleFile(testPath)
-        if err != nil {
-            log.Fatalf("Can't recognize: %v", err)
-        }
-
-        if testPic == nil {
-            approved = false
-            log.Fatalf("Picture Match: %t", approved)
-        }
-
-        picID := (*(&r.Rec)).Classify(testPic.Descriptor)
-        if picID < 0 {
-            log.Fatalf("Can't classify")
-        }
-
-        approved = true
-        var person string
-        for i := 0; i < len(Model); i++ {
-            var arr []int32 = Model[i].Index
-            if (int32(picID) >= arr[0] && int32(picID) <= arr[(len(arr) - 1)]) {
-                person = Model[i].Name
-                break
-            }
-        }
-
-        location := "Front Door"
-        entryType := "I"
-        // @TODO currently unused, we actually just need the imgPath that's in the service anyways
-        //path := testPath
-        Update()
-        //Uncomment if you want to pull up the most accurate match with picture that was used to train
-        // FindPic(dataDir, rec, samples[picID])
-
-        return person, approved, location, entryType
-
-    } else {
-        person := ""
-        approved = false
-        location := ""
-        entryType := ""
-        //path := ""
-
-        return person, false, location, entryType
-    }
-    // @TODO Doesn't this make the function always return empty data with false?
-    return "", false, "", ""
+func ReturnRec() (*face.Recognizer) {
+    return rec
 }
 
-func (r Recognizer) Train() {
+func Train() {
     Model = make(map[int]TrainStruct)
+    var err error
 
     //Changing directory and training for Chris
     ChangeDir("Chris")
-    var err error
-    var rec *face.Recognizer
     rec, err = face.NewRecognizer(dataDir)
-    r.Rec = rec
     if (err != nil) {
         log.Fatalf("Error opening directory.")
     }
-    // defer r.Rec.Close()
 
     var name string = "Chris Smith"
     //Traversing through Chris directory
-    DirTraverse(dataDir, r.Rec, name)
-    r.Rec.SetSamples(samples, tracker)
+    DirTraverse(dataDir, name)
+    rec.SetSamples(samples, tracker)
     Update()
 
     //Changing directory and training for Mushahid
     ChangeDir("Mushahid")
     rec, err = face.NewRecognizer(dataDir)
-    r.Rec = rec
     if (err != nil) {
         log.Fatalf("Error opening directory.")
     }
-    // defer r.Rec.Close()
 
     name = "Mushahid Hassan"
     //Traversing through Mushahid directory
-    DirTraverse(dataDir, r.Rec, name)
-    r.Rec.SetSamples(samples, tracker)
+    DirTraverse(dataDir, name)
+    rec.SetSamples(samples, tracker)
     Update()
 
     //Changing directory and training for Tanja
     ChangeDir("Tanja")
     rec, err = face.NewRecognizer(dataDir)
-    r.Rec = rec
     if (err != nil) {
         log.Fatalf("Error opening directory.")
     }
-    // defer r.Rec.Close()
 
     name = "Tanja Nuendel"
     //Traversing through Tanja directory
-    DirTraverse(dataDir, r.Rec, name)
-    r.Rec.SetSamples(samples, tracker)
+    DirTraverse(dataDir, name)
+    rec.SetSamples(samples, tracker)
     Update()
 
     //Changing directory and training for Olivia
     ChangeDir("Olivia")
     rec, err = face.NewRecognizer(dataDir)
-    r.Rec = rec
     if (err != nil) {
         log.Fatalf("Error opening directory.")
     }
-    // defer r.Rec.Close()
 
     name = "Olivia Kumar"
     //Traversing through Olivia directory
-    DirTraverse(dataDir, r.Rec, name)
-    r.Rec.SetSamples(samples, tracker)
+    DirTraverse(dataDir, name)
+    rec.SetSamples(samples, tracker)
     Update()
-    if &r.Rec != nil {
-        fmt.Println("Done training")
-        fmt.Println("This is rec: ", r.Rec)
-    } else {
-        fmt.Println("Rec is nil")
+
+}
+
+func Infer(imgPath string) (GofaceData) {
+    dataDir = "images/testImages"
+    imgPath = filepath.Join(dataDir, imgPath)
+
+    testPic, err := rec.RecognizeSingleFile(imgPath)
+    if err != nil {
+        log.Fatalf("Can't recognize: %v", err)
     }
+
+    if testPic == nil {
+        approved = false
+        log.Fatalf("Picture Match: %t", approved)
+    }
+
+    picID := rec.ClassifyThreshold(testPic.Descriptor, 0.4)
+    if picID < 0 {
+        panic("Can't classify")
+    }
+
+    fmt.Println("Pic id: ", picID)
+    approved = true
+    var person string
+    for i := 0; i < len(Model); i++ {
+        var arr []int32 = Model[i].Index
+        if (int32(picID) >= arr[0] && int32(picID) <= arr[(len(arr) - 1)]) {
+            person = Model[i].Name
+            break
+        }
+    }
+
+    var gofaceData GofaceData
+    if (approved) {
+        location := "Front Door"
+        entryType := "I"
+
+        gofaceData = GofaceData{
+            Identity: person,
+            Accepted:  approved,
+            Location:  location,
+            Entrytype: entryType,
+            Imagepath:	imgPath,
+        }
+    } else {
+        gofaceData = GofaceData{
+            Identity: "",
+            Accepted:  approved,
+            Location:  "",
+            Entrytype: "",
+            Imagepath:	imgPath,
+        }
+    }
+
+    Update()
+    return gofaceData
+
 }
 
-func ReturnModel() (mod map[int]TrainStruct) {
-    return Model
-}
+func TestForFace(imgPath string) bool {
+    var hasFace = false
+    dataDir = "images/testImages"
 
-func (r *Recognizer) TestForFace(imgPath string) bool {
-    // @TODO rework. hasFace set always true for testing purposes
-    var hasFace = true
+    imgPath = filepath.Join(dataDir, imgPath)
+    faces, err := rec.RecognizeFile(imgPath)
+    if (err != nil) {
+        log.Fatalf("Unable to open file.")
+    }
+
+    if (len(faces) >= 1) {
+        hasFace = true
+    }
+
     return hasFace
 }
 
-// Method called by
-func (r *Recognizer) Infer(imgPath string) GofaceData{
-    // do reognition
-    images := make(map[string]bool)
-    // @TODO put in correct path to directory of imgPath (convert from single imgPath to directory path!)
-    dataDir = "./imgPath"
-    person, approved, location, entryType := r.test(images)
+// // Method called by
+// func (r *Recognizer) Infer(imgPath string) GofaceData{
+//     // do reognition
+//     images := make(map[string]bool)
+//     // @TODO put in correct path to directory of imgPath (convert from single imgPath to directory path!)
+//     dataDir = "./imgPath"
+//     person, approved, location, entryType := r.test(images)
 
-    //
-    gofaceData := GofaceData{
-        Identity: person,
-        Accepted:  approved,
-        Location:  location,
-        Entrytype: entryType,
-        Imagepath:	imgPath,
-    }
-    return gofaceData
-}
+//     //
+//     gofaceData := GofaceData{
+//         Identity: person,
+//         Accepted:  approved,
+//         Location:  location,
+//         Entrytype: entryType,
+//         Imagepath:	imgPath,
+//     }
+//     return gofaceData
+// }
+
+//Testing to see if the face resembles that of a trained individual
+// func (r *Recognizer) test(images map[string]bool) (string, bool, string, string) {
+//     files, err := ioutil.ReadDir(dataDir)
+//     if err != nil {
+//         log.Fatal(err)
+//     }
+
+//     var testPath string
+//     var execute bool
+//     for _, file := range files {
+//         if (strings.HasSuffix(file.Name(), ".jpg") == true || strings.HasSuffix(file.Name(), ".jpeg") == true) {
+//             if (images[file.Name()] == false) {
+//                 images[file.Name()] = true
+//                 execute = true
+//                 testPath = filepath.Join(dataDir, file.Name())
+//                 break
+//             }
+//         }
+//     }
+
+//     if (execute) {
+//         testPic, err := (*(&r.Rec)).RecognizeSingleFile(testPath)
+//         if err != nil {
+//             log.Fatalf("Can't recognize: %v", err)
+//         }
+
+//         if testPic == nil {
+//             approved = false
+//             log.Fatalf("Picture Match: %t", approved)
+//         }
+
+//         picID := (*(&r.Rec)).Classify(testPic.Descriptor)
+//         if picID < 0 {
+//             log.Fatalf("Can't classify")
+//         }
+
+//         approved = true
+//         var person string
+//         for i := 0; i < len(Model); i++ {
+//             var arr []int32 = Model[i].Index
+//             if (int32(picID) >= arr[0] && int32(picID) <= arr[(len(arr) - 1)]) {
+//                 person = Model[i].Name
+//                 break
+//             }
+//         }
+
+//         location := "Front Door"
+//         entryType := "I"
+//         // @TODO currently unused, we actually just need the imgPath that's in the service anyways
+//         //path := testPath
+//         Update()
+//         //Uncomment if you want to pull up the most accurate match with picture that was used to train
+//         // FindPic(dataDir, rec, samples[picID])
+
+//         return person, approved, location, entryType
+
+//     } else {
+//         person := ""
+//         approved = false
+//         location := ""
+//         entryType := ""
+//         //path := ""
+
+//         return person, false, location, entryType
+//     }
+//     // @TODO Doesn't this make the function always return empty data with false?
+//     return "", false, "", ""
+// }
 
 /* future Infer() method
 func (r Recognizer) Run() {
