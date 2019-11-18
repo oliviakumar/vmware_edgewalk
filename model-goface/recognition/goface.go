@@ -1,16 +1,12 @@
 package lib
 
 import  (
-    // L "./lib"
     "fmt"
     "log"
     "os"
     "io/ioutil"
-    "io"
-    "os/exec"
     "strings"
     "path/filepath"
-    // "time"
     "github.com/Kagami/go-face"
 )
 
@@ -64,6 +60,10 @@ func Update() {
 
 func ReturnModel() (mod map[int]TrainStruct) {
     return Model
+}
+
+func ReturnRec() (*face.Recognizer) {
+    return rec
 }
 
 //Traverses through the given file and finds any ".jpg" to train the model with
@@ -121,89 +121,6 @@ func PopulateDescriptor(name string) {
     entry.Name = name
 
     Model[indCount] = entry
-}
-
-//Writes a shell script that opens an image path
-func WriteToFile(filename string, data string) error {
-    file, err := os.Create(filename)
-    if err != nil {
-        return err
-    }
-    defer file.Close()
-
-    var newData string = "#!/bin/bash\n"
-    _, err = io.WriteString(file, newData)
-
-    newData = fmt.Sprintf("open %s", data)
-    _, err = io.WriteString(file, newData)
-    if err != nil {
-        return err
-    }
-
-    return file.Sync()
-}
-
-//Traverses through the training images folders to find the image match
-//**Only for demonstration purposes**
-func FindPic(file string, pic face.Descriptor) {
-    fi, err := os.Stat(file)
-    if err != nil {
-        fmt.Println(err)
-        return
-    }
-
-    switch mode := fi.Mode(); {
-    //If the file given is a directory
-    case mode.IsDir():
-        files, err := ioutil.ReadDir(file)
-        if err != nil {
-            log.Fatal(err)
-        }
-
-        for _, f2 := range files {
-            if (found) {
-                found = false
-                break
-            }
-            newDir := filepath.Join(file, f2.Name())
-            FindPic(newDir, pic)
-        }
-
-    //If the file given is a regular file
-    case mode.IsRegular():
-        if (strings.HasSuffix(file, ".jpg") == true || strings.HasSuffix(file, ".jpeg") == true || strings.HasSuffix(file, ".png") == true) {
-            tempFaces, err := rec.RecognizeFile(file)
-
-            if (err != nil) {
-                log.Fatalf("Can't recognize image")
-            }
-
-            //Finds the correct file and sends it's name to shell script
-            if (len(tempFaces) >= 1) {
-                if (pic == tempFaces[0].Descriptor) {
-                    fmt.Println("Trained image path: ", file)
-                    //Writing shell script to open the training picture that matches the picture given
-                    //**Change path when running locally**
-                    WriteToFile("/Users/mushahidhassan/go/src/demo/open-pic.sh", file)
-
-                    fmt.Println("Opening image used to train...")
-                    //Executing shell script
-                    //**Change path when running locally**
-                    c := exec.Command("/Users/mushahidhassan/go/src/demo/open-pic.sh")
-                    if err2 := c.Run(); err2 != nil {
-                        fmt.Println("Error: ", err2)
-                    }
-
-                    found = true
-                    break
-                }
-            }
-        }
-    }
-}
-
-func ReturnRec() (*face.Recognizer) {
-    return rec
 }
 
 func Train() {
@@ -283,7 +200,6 @@ func Infer(imgPath string) (GofaceData) {
         panic("Can't classify")
     }
 
-    fmt.Println("Pic id: ", picID)
     approved = true
     var person string
     for i := 0; i < len(Model); i++ {
@@ -337,121 +253,3 @@ func TestForFace(imgPath string) bool {
 
     return hasFace
 }
-
-// // Method called by
-// func (r *Recognizer) Infer(imgPath string) GofaceData{
-//     // do reognition
-//     images := make(map[string]bool)
-//     // @TODO put in correct path to directory of imgPath (convert from single imgPath to directory path!)
-//     dataDir = "./imgPath"
-//     person, approved, location, entryType := r.test(images)
-
-//     //
-//     gofaceData := GofaceData{
-//         Identity: person,
-//         Accepted:  approved,
-//         Location:  location,
-//         Entrytype: entryType,
-//         Imagepath:	imgPath,
-//     }
-//     return gofaceData
-// }
-
-//Testing to see if the face resembles that of a trained individual
-// func (r *Recognizer) test(images map[string]bool) (string, bool, string, string) {
-//     files, err := ioutil.ReadDir(dataDir)
-//     if err != nil {
-//         log.Fatal(err)
-//     }
-
-//     var testPath string
-//     var execute bool
-//     for _, file := range files {
-//         if (strings.HasSuffix(file.Name(), ".jpg") == true || strings.HasSuffix(file.Name(), ".jpeg") == true) {
-//             if (images[file.Name()] == false) {
-//                 images[file.Name()] = true
-//                 execute = true
-//                 testPath = filepath.Join(dataDir, file.Name())
-//                 break
-//             }
-//         }
-//     }
-
-//     if (execute) {
-//         testPic, err := (*(&r.Rec)).RecognizeSingleFile(testPath)
-//         if err != nil {
-//             log.Fatalf("Can't recognize: %v", err)
-//         }
-
-//         if testPic == nil {
-//             approved = false
-//             log.Fatalf("Picture Match: %t", approved)
-//         }
-
-//         picID := (*(&r.Rec)).Classify(testPic.Descriptor)
-//         if picID < 0 {
-//             log.Fatalf("Can't classify")
-//         }
-
-//         approved = true
-//         var person string
-//         for i := 0; i < len(Model); i++ {
-//             var arr []int32 = Model[i].Index
-//             if (int32(picID) >= arr[0] && int32(picID) <= arr[(len(arr) - 1)]) {
-//                 person = Model[i].Name
-//                 break
-//             }
-//         }
-
-//         location := "Front Door"
-//         entryType := "I"
-//         // @TODO currently unused, we actually just need the imgPath that's in the service anyways
-//         //path := testPath
-//         Update()
-//         //Uncomment if you want to pull up the most accurate match with picture that was used to train
-//         // FindPic(dataDir, rec, samples[picID])
-
-//         return person, approved, location, entryType
-
-//     } else {
-//         person := ""
-//         approved = false
-//         location := ""
-//         entryType := ""
-//         //path := ""
-
-//         return person, false, location, entryType
-//     }
-//     // @TODO Doesn't this make the function always return empty data with false?
-//     return "", false, "", ""
-// }
-
-/* future Infer() method
-func (r Recognizer) Run() {
-    fmt.Println("This is rec in run(): ", r.Rec)
-    images := make(map[string]bool)
-
-    // for {
-    dataDir = "images/testImages"
-    Identity, Accepted, Location, Entrytype, Imagepath := r.test(images)
-
-    RecogData := GofaceData{
-        Identity: Identity,
-        Accepted:  Accepted,
-        Location:  Location,
-        Entrytype: Entrytype,
-        Imagepath:	Imagepath,
-    }
-
-    if (Identity != "") {
-        fmt.Println(RecogData.Identity)
-        fmt.Println(RecogData.Accepted)
-        fmt.Println(RecogData.Location)
-        fmt.Println(RecogData.Entrytype)
-        fmt.Println(RecogData.Imagepath)
-    }
-
-    approved = false
-    // }
-
- */
