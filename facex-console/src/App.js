@@ -22,7 +22,8 @@ class App extends Component {
       // { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
       // { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
     ],
-    searchText: ''
+    searchText: '',
+
   }
 
   // constructor(props) {
@@ -43,6 +44,23 @@ class App extends Component {
   // }
 
   componentDidMount() {
+      console.log('did mount');
+      fetch("http://localhost:8080/5dd20dafd52ccf2697896d38")
+        .then(res => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              isLoaded: true,
+              response: result
+            });
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error
+            });
+          }
+        )
     // fetch('http://localhost:3000/edgewalk/liv-entries')
     // .then(res => res.json())
     // .then((data) => {
