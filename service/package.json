@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "facex",
   "repository": {
-    "type": "git",
+    "type": "git"
   },
   "keywords": [
     "rest",
@@ -15,12 +15,15 @@
   "author": "Olivia Kumar",
   "license": "Apache-2.0",
   "dependencies": {
+    "gulp": "^4.0.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-scripts": "^3.2.0",
     "rest": "^1.3.1"
   },
   "scripts": {
-    "watch": "webpack --watch -d"
+    "watch": "webpack --watch -d",
+    "start": "react-scripts start"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
