@@ -4,4 +4,4 @@ $GF, Chris, true, front door, O, blah
 
 $GF, Doug, true, back door, I, blah
 
-$GF, Doug, false, front door, O, blah
+$GF, Olivia, true, front door, O, blah

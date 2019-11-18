@@ -74,6 +74,11 @@ public class ResponseController {
 	public Response getEntry(@PathVariable String username, @PathVariable long id) {
 		return edgeService.getIdentityLiv(username);
 	}
+
+	@GetMapping("/{id}")
+	public Response getResponse(@PathVariable String id) {
+		return edgeService.getResponseById(id);
+	}
 }
 
 

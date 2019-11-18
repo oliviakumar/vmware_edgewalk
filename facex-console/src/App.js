@@ -50,13 +50,13 @@ class App extends Component {
     //   this.setState({ entries: data })
     // })
     // .catch(console.log)
-
+    //
     // fetch('http://localhost:8080/edge/api')
     // .then(response => response.json())
     // .then(data => this.setState({beers: data, isLoading: false}));
-
+    //
     // this.setState({isLoading: true});
-    
+    //
     // fetch('http://localhost:8080/content')
     //   .then(response => response.json())
     //   .then(data => this.setState({entries: data, isLoading: false}));
@@ -71,7 +71,7 @@ class App extends Component {
     console.log('entered vdh');
     console.log(this.state.entries[id]);
     // return <Toggle entry={this.state.entries[id]} onClick={() => {this.props.viewDetail(this.state.entries[id])}} />
-    
+
   }
 
   onchange = e => {

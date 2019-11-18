@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "*" })
 @RequestMapping("/edge")
 @RestController
 public class EdgeController {

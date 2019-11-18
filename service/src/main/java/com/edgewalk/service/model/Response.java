@@ -104,6 +104,10 @@ public class Response {
 		this.edgexId = edgexId;
 	}
 
+	public String getIdString() {
+		return this.id.toHexString();
+	}
+
 	private String capitalCase(String str) {
 		StringBuilder sb = new StringBuilder();
 		if (!str.isEmpty()) {
@@ -123,4 +127,5 @@ public class Response {
 	public String toString() {
 		return "Entry{" + "id=" + id + ", identity='" + identity + "\' edgexId='" + edgexId + "\'";
 	}
+
 }
