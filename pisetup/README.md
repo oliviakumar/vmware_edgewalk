@@ -103,7 +103,13 @@ Either clone script into local machine or use wget to just get the script
 
 ```git clone https://github.com/oliviakumar/vmware_edgewalk.git```
 
-```wget https://raw.githubusercontent.com/oliviakumar/vmware_edgewalk/master/pisetup/setup.sh?token=AHPIDWCVD6UCW5E2NPDO4S25TEXLK```
+```
+wget https://raw.githubusercontent.com/oliviakumar/vmware_edgewalk/master/pisetup/setup.sh?token=AHPIDWCVD6UCW5E2NPDO4S25TEXLK
+```
+
+If the script was acquired through wget then the following command will need to completed.
+
+```chmod +x setup.sh```
 
 ### 2. Steps to Run the Script
 Enter the following command
@@ -134,6 +140,33 @@ These instructions are repeated in the script before you can do the next part in
 @reboot /etc/startup/getip&
 @reboot /etc/startup/dockerrun&
 ```
+
+## Getting Docker Running
+Docker should have been installed through the setup script. You can check to make sure it was successfully installed by entering the following command.
+
+```
+docker --version
+```
+
+If the repository was cloned then the ```docker-compose.yml``` is available if it was not cloned then the ```docker-compose.yml``` will need to retrieved through the following command.
+
+```
+wget https://raw.githubusercontent.com/oliviakumar/vmware_edgewalk/task/refactoring/pisetup/docker-compose.yml?token=AHPIDWE34653QUMRENTFF5C53O5JG
+```
+
+Once the file is on the Raspberry Pi, the following command will need to be run after you change to the directory the file is in.
+
+```
+sudo docker-compose up -d
+```
+
+You can then check if the Edgex Foundry containers are running.
+
+```
+sudo docker ps -a
+```
+
+You will need to repeat this portion on every startup.
 
 ## Usage Instructions
 ```
