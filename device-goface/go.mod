@@ -3,6 +3,7 @@ module github.com/edgexfoundry/device-goface
 go 1.13
 
 require (
+	github.com/Kagami/go-face v0.0.0-20191005110546-01156987f993 // indirect
 	github.com/edgexfoundry/device-sdk-go v1.0.0
 	github.com/edgexfoundry/go-mod-core-contracts v0.1.16
 	github.com/edgexfoundry/go-mod-registry v0.1.0
