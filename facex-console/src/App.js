@@ -169,7 +169,7 @@ class App extends Component {
               searchText={this.state.searchText}
               searchUpdate={this.searchUpdate.bind(this)} />
             <ListEntriesComponent
-              entries={this.state.entries}
+              entries={this.state.response}
               viewDetail={this.viewDetail}
               searchText={this.state.searchText}
             />

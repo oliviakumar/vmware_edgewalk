@@ -37,9 +37,25 @@ class ListEntriesComponent extends Component {
 
     viewDetailHandler= (i) => {
         console.log(i);
-        const entries = this.state.entries.slice();
+
+        // const entries = this.state.entries.slice();
         // entries.push(i, 0, <tr> details... </tr>);
-        // console.log(entries);
+
+        console.log('this.state.entries[i]');
+        console.log(this.state.entries[i]);
+        console.log(this.state.entries[i].idString);
+        return (
+          <div>
+          <table>
+            <tr>
+              <td><b>Id: </b></td>
+              <td>{this.state.entries[i].idString}</td>
+            </tr>
+
+          </table>
+        </div>
+        );
+
         // this.setState({entries: entries});
     }
 
@@ -81,7 +97,7 @@ class ListEntriesComponent extends Component {
                     this.setState({imgpath: response});
                 }
             )
-        
+
     }
 
     render() {
