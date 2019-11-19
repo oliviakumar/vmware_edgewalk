@@ -14,17 +14,29 @@ import FilterToolbar from './FilterToolbar/FilterToolbar'
 import Toggle from './component/Toggle';
 import './Entry/Entry.css';
 
+function renderImage(host, id) {
+  const c = host + id
+  return (
+      <img src={c} />
+    );
+}
+
 class App extends Component {
 
-  state = {
-    entries: [
-      // { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
-      // { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
-      // { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
-    ],
-    searchText: '',
-
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            entries: [
+              // { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
+              // { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
+              // { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
+            ],
+            searchText: '',
+            error: null,
+            isLoaded: false,
+            response: []
+        };
+    }
 
   // constructor(props) {
   //   super(props);
@@ -45,13 +57,15 @@ class App extends Component {
 
   componentDidMount() {
       console.log('did mount');
-      fetch("http://localhost:8080/5dd20dafd52ccf2697896d38")
+      fetch("http://localhost:8080/5dd33036efe3b71736d6db0d")
         .then(res => res.json())
         .then(
           (result) => {
-            this.setState({
-              isLoaded: true,
-              response: result
+              console.log('result-');
+              console.log(result);
+              this.setState({
+                  isLoaded: true,
+                  response: result,
             });
           },
           (error) => {
@@ -107,6 +121,8 @@ class App extends Component {
   }
 
   render() {
+    const { error, isLoaded, response } = this.state;
+
     const style = {
       backgroundColor: 'lightgrey',
       font: 'inherit',
@@ -114,29 +130,35 @@ class App extends Component {
       padding: 'pointer'
     };
     console.log('searchText', this.state.searchText);
+    console.log('response');
+    console.log(this.state.response);
     return (
       <div style={{
         backgroundColor: 'black',
+        height: '500px'
       }}>
-      <NavBar />
-
-
-      <div
-        className=""
-        style={{
-          backgroundColor: 'lightgrey',
-        }}>
-
-        <Search
-          searchText={this.state.searchText}
-          searchUpdate={this.searchUpdate.bind(this)} />
-        <ListEntriesComponent
-          entries={this.state.entries}
-          viewDetail={this.viewDetail}
-          searchText={this.state.searchText}
-        />
-      </div>
-
+      {
+          // <NavBar />
+          // <div
+          //   className=""
+          //   style={{
+          //     backgroundColor: 'lightgrey',
+          //   }}>
+          //
+          //   <Search
+          //     searchText={this.state.searchText}
+          //     searchUpdate={this.searchUpdate.bind(this)} />
+          //   <ListEntriesComponent
+          //     entries={this.state.entries}
+          //     viewDetail={this.viewDetail}
+          //     searchText={this.state.searchText}
+          //   />
+          // </div>
+      }
+        <p> hi </p>
+          <div>
+            {renderImage('http://localhost:8080/files/', response.idString)}
+          </div>
       </div>
     );
   }

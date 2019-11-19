@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css"
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import axios from 'axios'
-import '../public/*'
+// import '../public/*'
 // import htmlContent from '/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/service/src/main/resources/templates/main.html';
 
 const ORGANIZATION = 'edgewalk'
@@ -75,7 +75,7 @@ class Test extends Component {
                 })
 
             }
-            <img src="../public/logo192.png"> img </img>
+            // <img src="../public/logo192.png"> img </img>
 
         </div>
       </Router>

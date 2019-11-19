@@ -7,8 +7,8 @@ import Test from './Test';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// ReactDOM.render(<App />, document.getElementById('root'));
-ReactDOM.render(<Test />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
+// ReactDOM.render(<Test />, document.getElementById('root'));
 // axios({
 //     method: 'get',
 //     url: `${ORG_API_URL}/files/liv-get-photo`
