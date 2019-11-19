@@ -57,24 +57,25 @@ class App extends Component {
 
   componentDidMount() {
       console.log('did mount');
-      // fetch("http://localhost:8080/entries")
-      //   .then(res => res.json())
-      //   .then(
-      //     (result) => {
-      //         console.log('content call');
-      //       //   this.setState({
-      //       //       isLoaded: true,
-      //       //       response: result,
-      //       // });
-      //     },
-      //     (error) => {
-      //       // this.setState({
-      //       //   isLoaded: true,
-      //       //   error
-      //       // });
-      //       console.log('error');
-      //     }
-      //   )
+      console.log('five');
+      fetch("http://localhost:8080/all")
+        .then(res => res.json())
+        .then(
+          (result) => {
+            console.log(result);
+            this.setState({
+              isLoaded: true,
+              response: result
+            });
+          },
+          (error) => {
+              console.log('error2');
+            this.setState({
+              isLoaded: true,
+              error
+            });
+          }
+        )
 
       fetch("http://localhost:8080/5dd33036efe3b71736d6db0d")
         .then(res => res.json())
@@ -88,6 +89,7 @@ class App extends Component {
             });
           },
           (error) => {
+            console.log('error2');
             this.setState({
               isLoaded: true,
               error
