@@ -57,6 +57,25 @@ class App extends Component {
 
   componentDidMount() {
       console.log('did mount');
+      // fetch("http://localhost:8080/entries")
+      //   .then(res => res.json())
+      //   .then(
+      //     (result) => {
+      //         console.log('content call');
+      //       //   this.setState({
+      //       //       isLoaded: true,
+      //       //       response: result,
+      //       // });
+      //     },
+      //     (error) => {
+      //       // this.setState({
+      //       //   isLoaded: true,
+      //       //   error
+      //       // });
+      //       console.log('error');
+      //     }
+      //   )
+
       fetch("http://localhost:8080/5dd33036efe3b71736d6db0d")
         .then(res => res.json())
         .then(
@@ -137,25 +156,23 @@ class App extends Component {
         backgroundColor: 'black',
         height: '500px'
       }}>
-      {
-          // <NavBar />
-          // <div
-          //   className=""
-          //   style={{
-          //     backgroundColor: 'lightgrey',
-          //   }}>
-          //
-          //   <Search
-          //     searchText={this.state.searchText}
-          //     searchUpdate={this.searchUpdate.bind(this)} />
-          //   <ListEntriesComponent
-          //     entries={this.state.entries}
-          //     viewDetail={this.viewDetail}
-          //     searchText={this.state.searchText}
-          //   />
-          // </div>
-      }
-        <p> hi </p>
+          <NavBar />
+          <div
+            className=""
+            style={{
+              backgroundColor: 'lightgrey',
+            }}>
+
+            <Search
+              searchText={this.state.searchText}
+              searchUpdate={this.searchUpdate.bind(this)} />
+            <ListEntriesComponent
+              entries={this.state.entries}
+              viewDetail={this.viewDetail}
+              searchText={this.state.searchText}
+            />
+          </div>
+          <p> hi </p>
           <div>
             {renderImage('http://localhost:8080/files/', response.idString)}
           </div>
