@@ -20,5 +20,6 @@ const (
 
 func main() {
 	sd := driver.GofaceDevice{}
+	sd.WriteConfiguration()
 	startup.Bootstrap(serviceName, device_goface.Version, &sd)
 }
