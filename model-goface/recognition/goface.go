@@ -28,7 +28,7 @@ type GofaceData struct {
 var rec *face.Recognizer
 
 //Data directory for training the model
-var dataDir = "images"
+var dataDir = "trainImages"
 
 //Map that contains all the trained entries, makes it easier to retrieve info
 var Model map[int]TrainStruct
@@ -51,7 +51,7 @@ func ChangeDir(folder string) {
 
 //Updates the variables and directory so that it can be resused for training a new person
 func Update() {
-    dataDir = "images"
+    dataDir = "trainImages"
     indSamples = nil
     indTracker = nil
     valid = false
@@ -182,8 +182,8 @@ func Train() {
 }
 
 func Infer(imgPath string) (GofaceData) {
-    dataDir = "images/testImages"
-    imgPath = filepath.Join(dataDir, imgPath)
+    // dataDir = "images/testImages"
+    // imgPath = filepath.Join(dataDir, imgPath)
 
     testPic, err := rec.RecognizeSingleFile(imgPath)
     if err != nil {
@@ -235,21 +235,4 @@ func Infer(imgPath string) (GofaceData) {
     Update()
     return gofaceData
 
-}
-
-func TestForFace(imgPath string) bool {
-    var hasFace = false
-    dataDir = "images/testImages"
-
-    imgPath = filepath.Join(dataDir, imgPath)
-    faces, err := rec.RecognizeFile(imgPath)
-    if (err != nil) {
-        log.Fatalf("Unable to open file.")
-    }
-
-    if (len(faces) >= 1) {
-        hasFace = true
-    }
-
-    return hasFace
 }
