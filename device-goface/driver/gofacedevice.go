@@ -21,7 +21,7 @@ import (
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	contract "github.com/edgexfoundry/go-mod-core-contracts/models"
 	// import goface functionality, to be called on by using "GF.funcName()"
-	GF "github.com/edgexfoundry/vmware_edgewalk/modelgoface"
+	GF "github.com/edgexfoundry/vmware_edgewalk/model-goface/recognition"
 )
 
 // external data struct
@@ -62,8 +62,8 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	s.asyncCh = asyncCh
 
 	// call on goface.go to init model training
-	rec := GF.NewRecognizer()
-	rec.Train()
+	GF.Train()
+	rec := GF.ReturnRec()
 	// start routine operating camera to check for faces with current rec instance
 	// OperateCamera will call on OperateGoface to recognize the faces
 	// OperateGoface will call on parseStruct to get the info of the recognized picture
@@ -73,14 +73,14 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 }
 
 // method that will be initialized in Init() but will run as a routine to constantly take in new image paths
-func (s *GofaceDevice) OperateGoface(imgPath string, rec GF.Recognizer) {
+func (s *GofaceDevice) OperateGoface(imgPath string, rec *face.Recognizer) {
 	// anon routine for reading the goface data and saving it to s.gofacedata
 	go func() {
 		// check if a face was detected in
 		if imgPath != "no face detected" {
 			// read in struct and parse as JSON
 			// rec.Infer() gives back a struct of GofaceData type that is parsed into a JSON-formatted string
-			tempGofaceData := parseStruct(rec.Infer(imgPath))
+			tempGofaceData := parseStruct(GF.Infer(imgPath))
 			s.mux.Lock()
 			s.gofacedata = tempGofaceData
 			s.mux.Unlock()
@@ -95,7 +95,7 @@ func (s *GofaceDevice) OperateGoface(imgPath string, rec GF.Recognizer) {
 
 // device service method to operate the camera, gets called with current rec instance
 // returns the last path with a face in it
-func (s *GofaceDevice) OperateCamera(rec GF.Recognizer) string {
+func (s *GofaceDevice) OperateCamera(rec *face.Recognizer) string {
 	// init path var that will be reused throughout the whole program
 	var imgPath string
 
@@ -106,7 +106,7 @@ func (s *GofaceDevice) OperateCamera(rec GF.Recognizer) string {
 		// raspistill.takeShot()
 		// @TODO to be filled with actual path
 		imgPath = "dir/mycameraoutput"
-		hasFace := rec.TestForFace(imgPath)
+		hasFace := GF.TestForFace(imgPath)
 		fmt.Println("imgPath: ", imgPath)
 		// if there is a face in the picture, give path of picture to Infer() to recognize it
 		if hasFace == true {

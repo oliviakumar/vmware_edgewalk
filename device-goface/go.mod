@@ -5,6 +5,7 @@ go 1.13
 require (
 	github.com/Kagami/go-face v0.0.0-20191005110546-01156987f993 // indirect
 	github.com/edgexfoundry/device-sdk-go v1.0.0
+	github.com/edgexfoundry/model-goface v0.0.0
 	github.com/edgexfoundry/go-mod-core-contracts v0.1.16
 	github.com/edgexfoundry/go-mod-registry v0.1.0
 	github.com/google/uuid v1.1.0
@@ -15,3 +16,5 @@ require (
 	github.com/ugorji/go v1.1.4
 	gopkg.in/yaml.v2 v2.2.2
 )
+
+replace github.com/edgexfoundry/model-goface v0.0.0 => ../model-goface

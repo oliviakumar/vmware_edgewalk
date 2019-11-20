@@ -9,9 +9,9 @@
 package main
 
 import (
-	device_goface "github.com/edgexfoundry/device-goface"
-	"github.com/edgexfoundry/device-goface/driver"
 	"github.com/edgexfoundry/device-sdk-go/pkg/startup"
+	device_goface "github.com/edgexfoundry/vmware_edgewalk/device-goface"
+	"github.com/edgexfoundry/vmware_edgewalk/device-goface/driver"
 )
 
 const (

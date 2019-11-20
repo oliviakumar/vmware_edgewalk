@@ -10,6 +10,4 @@ require (
 	github.com/edgexfoundry/model-goface v0.0.0
 )
 
-replace github.com/edgexfoundry/device-goface v0.0.0 => /github.com/edgexfoundry/vmware_edgewalk/device-goface
-
-replace github.com/edgexfoundry/model-goface v0.0.0 => /github.com/edgexfoundry/vmware_edgewalk/model-goface
+replace github.com/edgexfoundry/device-goface v0.0.0 => ../device-goface
