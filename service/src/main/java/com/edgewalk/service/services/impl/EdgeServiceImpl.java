@@ -3,6 +3,7 @@ package com.edgewalk.service.services.impl;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -99,5 +100,17 @@ public class EdgeServiceImpl implements EdgeService {
 	public void clear() {
 		LOG.info("Deleting all database entries");
 		responseRepository.deleteAll();
+	}
+
+	@Override
+	public Response getResponseById(String id) {
+		LOG.debug("Recevied a request for id {}", id);
+		Response response = null;
+		try {
+			response = responseRepository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			LOG.error("No element found for id {}", id, e);
+		}
+		return response;
 	}
 }

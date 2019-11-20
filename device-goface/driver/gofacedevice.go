@@ -15,6 +15,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"io/ioutil"
 	"strconv"
 	"strings"
 	"sync"
@@ -98,7 +99,7 @@ func parseGofaceLine(data []string) string {
 
 	// parsing data from file
 	identityName := strings.TrimSpace(data[1])
-	acceptedStatus, _ := strconv.ParseBool(data[2])
+	acceptedStatus, _ := strconv.ParseBool(strings.TrimSpace(data[2]))
 	location := strings.TrimSpace(data[3])
 	entrytype := strings.TrimSpace(data[4])
 	imagePath := strings.TrimSpace(data[5])
@@ -188,3 +189,93 @@ func (s *GofaceDevice) RemoveDevice(deviceName string, protocols map[string]cont
 	s.lc.Debug(fmt.Sprintf("Device %s is removed", deviceName))
 	return nil
 }
+
+func (s *GofaceDevice) WriteConfiguration() {
+	edgeHub := GetEdgeHub()
+	config := "[Writable]\n" +
+	"LogLevel = 'INFO'\n" +
+	"\n" +
+	"[Service] \n" +
+	"Host = \"localhost\"\n" +
+	"Port = 45045\n" +
+	"ConnectRetries = 20\n" +
+	"Labels = []\n" +
+	"OpenMsg = \"device goface started\"\n" +
+	"MaxResultCount = 50000\n" +
+	"Timeout = 5000\n" +
+	"EnableAsyncReadings = true\n" +
+	"AsyncBufferSize = 16\n" +
+	"\n" +
+	"[Registry]\n" +
+	"Host = \"" + edgeHub + "\"\n" +
+	"Port = 8500\n" +
+	"CheckInterval = \"10s\"\n" +
+	"FailLimit = 3\n" +
+	"FailWaitTime = 10\n" +
+	"\n" +
+	"# Calls to other EdgeX components\n" +
+	"[Clients]\n" +
+	"	[Clients.Data]\n" +
+	"	Name = \"edgex-core-data\"\n" +
+	"	Protocol = \"http\"\n" +
+	"	Host = \"" + edgeHub + "\"\n" +
+	"	Port = 48080\n" +
+	"	Timeout = 5000\n" +
+	"\n" +
+	"	[Clients.Metadata]\n" +
+	"	Name = \"edgex-core-metadata\"\n" +
+	"	Protocol = \"http\"\n" +
+	"	Host = \"" + edgeHub + "\"\n" +
+	"	Port = 48081\n" +
+	"	Timeout = 5000\n" +
+	"\n" +
+	" 	[Clients.Logging]\n" +
+	"	Name = \"edgex-support-logging\"\n" +
+	"	Protocol = \"http\"\n" +
+	"	Host = \"" + edgeHub + "\"\n" +
+	"	Port = 48061\n" +
+	"\n" +
+	"[Device]\n" +
+	"	DataTransform = true\n" +
+	"	InitCmd = \"\"\n" +
+	"	InitCmdArgs = \"\"\n" +
+	"	MaxCmdOps = 128\n" +
+	"	MaxCmdValueLen = 256\n" +
+	"	RemoveCmd = \"\"\n" +
+	"	RemoveCmdArgs = \"\"\n" +
+	"	ProfilesDir = \"./res\"\n" +
+	"\n" +
+	"# enable the logging and define the level\n" +
+	"[Logging]\n" +
+	"EnableRemote = false\n" +
+	"File = \"./device-goface.log\"\n" +
+	"\n" +
+	"# Pre-define Devices - use Name for API calls\n" +
+	"[[DeviceList]]\n" +
+	"	Name = \"device-goface-01\"\n" +
+	"	Profile = \"device-goface\"\n" +
+	"	Description = \"Goface Recognizer Device\"\n" +
+	"	Labels = [ \"IoT\" ]\n" +
+	"	[DeviceList.Protocols]\n" +
+	"		[DeviceList.Protocols.Other]\n" +
+	"			Address = \"goface01\"\n" +
+	"			Port = \"300\"\n" +
+	"		[[DeviceList.AutoEvents]]\n" +
+	"			Frequency = \"1s\"\n" +
+	"			OnChange = false\n" +
+	"			Resource = \"goface\"\n"
+	bytes := []byte(config)
+	err := ioutil.WriteFile("res/configuration.toml", bytes, 0644)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func GetEdgeHub() string  {
+	edgeHub := os.Getenv("EDGEHUB")
+	if (edgeHub == "") {
+		edgeHub = "localhost"
+	}
+	return edgeHub
+}
+

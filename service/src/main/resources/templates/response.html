@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<meta charset="UTF-8">
+<title>Edgewalk Security</title>
+</head>
+<body>
+	<table>
+		<tr>
+			<td><b>Id: </b></td>
+			<td th:text="${response.id}">id</td>
+		</tr>
+		<tr>
+			<td><b>EdgeX Id: </b></td>
+			<td th:text="${response.edgexId}">edgex id</td>
+		</tr>
+		<tr>
+			<td><b>Identity: </b></td>
+			<td th:text="${response.identityCapital}">identity</td>
+		</tr>
+		<tr>
+			<td><b>Location: </b></td>
+			<td th:text="${response.locationCapital}">location</td>
+		</tr>
+		<tr>
+			<td><b>Device: </b></td>
+			<td th:text="${response.device}">device</td>
+		</tr>
+		<tr>
+			<td><b>Type: </b></td>
+			<td th:text="${response.typeCapital eq 'O' ? 'Outgoing' : 'Incoming'}">type</td>
+		</tr>
+		<tr>
+			<td><b>Time: </b></td>
+			<td  th:text="${response.attempted}">time</td>
+		</tr>
+		<tr>
+			<td><b>Accepted: </b></td>
+			<td th:if="${response.accepted}" style="background-color:chartreuse"></td>
+			<td th:unless="${response.accepted}" style="background-color:red"></td>
+		</tr>
+	</table>
+	<img th:alt="${identity}" th:src="${'/files/' + response.id}" />
+</body>

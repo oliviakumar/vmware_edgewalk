@@ -52,7 +52,6 @@ func main() {
 	// execute every time an event is triggered.
 	edgexSdk.SetFunctionsPipeline(
 		transforms.NewFilter(deviceNames).FilterByDeviceName,
-		transforms.NewConversion().TransformToJSON,
 		GetDataFromJSON,
 		SendData,
 		SendImage,
@@ -95,17 +94,11 @@ func GetDataFromJSON(edgexcontext *appcontext.Context, params ...interface{}) (b
 	if len(params) < 1 {
 		return false, errors.New("No data received")
 	}
-	b := []byte(params[0].(string))
-	model := models.Event{}
-	err := json.Unmarshal(b, &model)
-	if err != nil {
-		fmt.Println(err)
-		return false, errors.New("Could not unpack model")
-	}
+	model := params[0].(models.Event)
 	for _, reading := range model.Readings {
-		b = []byte(reading.Value)
+		b := []byte(reading.Value)
 		data := driver.NewData()
-		err = json.Unmarshal(b, &data)
+		err := json.Unmarshal(b, &data)
 		if err != nil {
 			fmt.Println(err)
 			return false, errors.New("Could not unpack data")
@@ -134,7 +127,9 @@ func SendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, in
 		fmt.Println(err)
 		return false, errors.New("Could not convert to json")
 	}
-	resp, err := http.Post("http://localhost:8080/edge/api", "application/json", bytes.NewReader(data))
+	exportHost := GetExportHost()
+	host := "http://" + exportHost + ":8080/edge/api"
+	resp, err := http.Post(host, "application/json", bytes.NewReader(data))
 	if err != nil {
 		fmt.Println(err)
 		return false, errors.New("Error posting data")
@@ -199,7 +194,9 @@ func Upload(values map[string] io.Reader) (err error) {
 	}
 	w.Close()
 
-	resp, err := http.Post("http://localhost:8080/edge/image", w.FormDataContentType(), b)
+	exportHost := GetExportHost()
+	host := "http://" + exportHost + ":8080/edge/image"
+	resp, err := http.Post(host, w.FormDataContentType(), b)
 	if err != nil {
 		fmt.Println(err)
 		return errors.New("Error posting image data")
@@ -210,3 +207,12 @@ func Upload(values map[string] io.Reader) (err error) {
 	}
 	return
 }
+
+func GetExportHost() string  {
+	exportHost := os.Getenv("EXPORTHOST")
+	if (exportHost == "") {
+		exportHost = "localhost"
+	}
+	return exportHost
+}
+
