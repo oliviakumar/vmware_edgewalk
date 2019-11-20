@@ -34,7 +34,8 @@ class App extends Component {
             searchText: '',
             error: null,
             isLoaded: false,
-            response: []
+            response: [],
+            content: []
         };
     }
 
@@ -69,7 +70,7 @@ class App extends Component {
             });
           },
           (error) => {
-              console.log('error2');
+              console.log('error1');
             this.setState({
               isLoaded: true,
               error
@@ -77,7 +78,7 @@ class App extends Component {
           }
         )
 
-      fetch("http://localhost:8080/5dd33036efe3b71736d6db0d")
+      fetch("http://localhost:8080/5dd59b4cefe3b7861de13556")
         .then(res => res.json())
         .then(
           (result) => {
@@ -92,6 +93,24 @@ class App extends Component {
             console.log('error2');
             this.setState({
               isLoaded: true,
+              error
+            });
+          }
+        )
+
+      fetch("http://localhost:8080/content")
+        .then(res => res.json())
+        .then(
+          (result) => {
+              console.log('content-');
+              console.log(result);
+              this.setState({
+                  content: result,
+            });
+          },
+          (error) => {
+            console.log('no content');
+            this.setState({
               error
             });
           }

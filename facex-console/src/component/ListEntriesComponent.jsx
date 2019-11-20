@@ -1,6 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Link } from 'react';
+import {Route, IndexRoute} from 'react-router';
+
 import EntryDataService from '../service/EntryDataService';
 import Toggle from './Toggle';
+import ViewDetail from './ViewDetail';
 import { Jumbotron, Button, Table } from 'react-bootstrap';
 import FilterToolbar from '../FilterToolbar/FilterToolbar'
 import Entry from '../Entry/Entry'
@@ -43,13 +46,15 @@ class ListEntriesComponent extends Component {
 
         console.log('this.state.entries[i]');
         console.log(this.state.entries[i]);
-        console.log(this.state.entries[i].idString);
+        // console.log(this.state.entries[i].idString);
         return (
           <div>
           <table>
             <tr>
               <td><b>Id: </b></td>
               <td>{this.state.entries[i].idString}</td>
+              // <Route component={ViewDetail} path='/detail' />
+              // <Link to="/login" >Click to login</Link>
             </tr>
 
           </table>
@@ -66,7 +71,7 @@ class ListEntriesComponent extends Component {
                     console.log("response -----");
                     console.log(response);
                     this.setState({entries: response.data})
-                    console.log(this.state.entries[4].identity);
+                    // console.log(this.state.entries[4].identity);
                 }
             )
     }
