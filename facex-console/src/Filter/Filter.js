@@ -56,6 +56,7 @@ class Filter extends React.Component {
       console.log('bye')
 
       options.filter(o => o.label == "back") ? console.log('true') : console.log('false')
+      
       // this.props.options.map(opt => {
       //     console.log(opt.location)
       //     if (!options.values().includes(opt.location))
