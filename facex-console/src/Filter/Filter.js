@@ -28,32 +28,41 @@ class Filter extends React.Component {
   }
 
   filterOption = (option, inputValue) => {
-    // if (option === "Search By Location") {
-    //   const { options } = this.state;
-    //   const result = options.filter(opt => {
-    //       console.log('opt');
-    //       console.log(opt);
-    //   });
-    //   this.setState({ hasExtraValue: !result.length });
-    //   return !result.length;
-    // }
+      console.log(option)
+      console.log(inputValue)
+      if (option.label === "None") {
+        const { options } = this.state;
+        const result = options.filter(opt => opt.label.includes(inputValue));
+        this.setState({ hasExtraValue: !result.length });
+        return !result.length;
+      }
 
+      return option.label.includes(inputValue);
+  }
 
-    // console.log('FO this.state.options');
-    // console.log(this.state.options);
-    return this.state.options.values();
-    // console.log('filter option');
-    // console.log(option);
-    // console.log(inputValue);
-
-  };
+  // temp() {
+  //   console.log('FO this.state.options');
+  //   console.log(this.state.options.label);
+  //   this.state.options.map(o => {
+  //       console.log(o.label)
+  //   });
+  //   return null;
+  //   // console.log('filter option');
+  //   // console.log(option);
+  //   // console.log(inputValue);
+  //
+  // };
 
   componentDidMount() {
-      var options = [{label: "Search By Location"}]
+      var options = []
       var labels = []
       // var options = [{label: "Search By Location"}, {label: "front"}, {label: "back"}]
-      console.log('hi')
       options.map(opt => {labels.push(opt.label)});
+      if (this.props.isFiltering === true) {
+          console.log('yessir');
+      } else {
+          console.log('no sir');
+      }
 
 /*
     console.log(o.label)
@@ -70,7 +79,7 @@ class Filter extends React.Component {
       // })
       this.props.options.map(opt => {
           if (!labels.includes(opt.location))
-            options.push({label: opt.location});
+            options.push({label: opt.location, value: opt.location});
             labels.push(opt.location)
 
       })
@@ -89,13 +98,14 @@ class Filter extends React.Component {
 {
         <Select
           isMulti
+          placeholder={"Search By Location"}
           filterOption={this.filterOption}
           noOptionsMessage={() => "No more options"}
           options={this.state.options}
         />
     }
         {this.state.hasExtraValue && (
-          <p>Please select 'Ostatni' option if you don't find your option !</p>
+          <p>!</p>
         )}
       </div>
     );

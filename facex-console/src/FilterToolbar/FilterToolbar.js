@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, CardBody, Card, Container } from 'reactstrap';
 import { Navbar, NavItem, NavDropdown, MenuItem, Nav, Form, FormControl } from 'react-bootstrap';
-import Filter from '..//Filter/Filter';
+import Filter from '../Filter/Filter';
 
 const FilterToolbar = (props) => {
     // console.log('props.options')

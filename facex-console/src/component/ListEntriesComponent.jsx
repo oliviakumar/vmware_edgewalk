@@ -9,6 +9,8 @@ import FilterToolbar from '../FilterToolbar/FilterToolbar'
 import Entry from '../Entry/Entry'
 import '../Entry/Entry.css';
 import '../App.css';
+import Filter from '../Filter/Filter';
+
 
 const ORGANIZATION = 'edgewalk';
 
@@ -18,11 +20,12 @@ class ListEntriesComponent extends Component {
         this.state = {
             entries: [
                 { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
-      { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
-      { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
+                { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
+                { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
             ],
             message: null,
             imgpath: '',
+            isFiltering: false,
         }
         this.refreshEntries = this.refreshEntries.bind(this)
         this.getImage = this.getImage.bind(this);
@@ -38,7 +41,12 @@ class ListEntriesComponent extends Component {
         // this.getContent();
     }
 
-    viewDetailHandler= (i) => {
+    filterHandler = () => {
+        this.setState({isFiltering: true});
+        console.log('filter handler reached');
+    }
+
+    viewDetailHandler = (i) => {
         console.log(i);
 
         // const entries = this.state.entries.slice();
@@ -127,9 +135,11 @@ class ListEntriesComponent extends Component {
 
                 <div className="">
                 <p>
-                    <FilterToolbar options={this.state.entries}>
-                        <FilterOptions data={this.state.data} changeOption={this.handleChange} />
-                    </FilterToolbar>
+                    {
+                        // <FilterToolbar options={this.state.entries}>
+                        // </FilterToolbar>
+                    }
+                    <Filter options={this.state.entries} onClick={!this.state.isFiltering}/>
                     <Table bordered hover>
                         <thead>
                             <tr className="Entry">
@@ -148,8 +158,9 @@ class ListEntriesComponent extends Component {
                                     return entry.identity.toLowerCase().indexOf(searchText.toLowerCase()) >= 0;
                                 })
                                 .map((entry, i) => {
-                                return <Entry entry={entry} details={entry.content} onClick={() => this.viewDetailHandler(i)} />
-                        })}
+                                    return <Entry entry={entry} details={entry.content} onClick={() => this.viewDetailHandler(i)} />
+                            })
+                        }
                         </tbody>
 
                     </Table>
