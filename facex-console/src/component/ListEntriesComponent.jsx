@@ -53,8 +53,6 @@ class ListEntriesComponent extends Component {
             <tr>
               <td><b>Id: </b></td>
               <td>{this.state.entries[i].idString}</td>
-              // <Route component={ViewDetail} path='/detail' />
-              // <Link to="/login" >Click to login</Link>
             </tr>
 
           </table>
@@ -138,14 +136,18 @@ class ListEntriesComponent extends Component {
                                 <th>Location</th>
                                 <th>Time</th>
                                 <th>Status</th>
+                                <th>Details</th>
                             </tr>
                         </thead>
                         <tbody className="collapse in" style={style}>
                         {
                             this.state.entries
+                                .filter(entry => {
+                                    return entry.identity.toLowerCase().indexOf(searchText.toLowerCase()) >= 0;
+                                })
                                 .map((entry, i) => {
-                                // return <Toggle entry={entry} details={entry.content} onClick={() => {this.props.viewDetail(entry.id)}} />
-                                // console.log(entry);
+                                    // console.log(entry.identity.indexOf(searchText) >= 0);
+
                                 return <Entry entry={entry} details={entry.content} onClick={() => this.viewDetailHandler(i)} />
                         })}
                         </tbody>

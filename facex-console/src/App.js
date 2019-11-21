@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { Jumbotron, Button, Table } from 'react-bootstrap';
+import {
+  Route,
+  NavLink,
+  HashRouter
+} from "react-router-dom";
+import ViewDetail from "./component/ViewDetail";
+import { Jumbotron, Button, Table, Panel, OverlayTrigger, Popover } from 'react-bootstrap';
 import './App.css';
 // import EntriesApp from './component/EntriesApp';
 import Search from './component/Search';
@@ -13,6 +19,7 @@ import Entry from './Entry/Entry';
 import FilterToolbar from './FilterToolbar/FilterToolbar'
 import Toggle from './component/Toggle';
 import './Entry/Entry.css';
+
 
 function renderImage(host, id) {
   const c = host + id
@@ -143,7 +150,31 @@ class App extends Component {
     console.log('entered vdh');
     console.log(this.state.entries[id]);
     // return <Toggle entry={this.state.entries[id]} onClick={() => {this.props.viewDetail(this.state.entries[id])}} />
+    /*     const panelInstance = (
+          <Panel onClick={()=>alert('It works')}>
+            Basic panel example
+          </Panel>
+        );
 
+        React.render(panelInstance, mountNode); */
+    // const popover = (
+    //   <Popover id="popover-basic">
+    //     <Popover.Title as="h3">Popover right</Popover.Title>
+    //     <Popover.Content>
+    //       And here's some <strong>amazing</strong> content. It's very engaging.
+    //       right?
+    //     </Popover.Content>
+    //   </Popover>
+    // );
+    //
+    // const Example = () => (
+    //   <OverlayTrigger trigger="click" placement="right" overlay={popover}>
+    //     <Button variant="success">Click me to see</Button>
+    //   </OverlayTrigger>
+    // );
+    // return <Example />
+
+    // ReactDom.render(<Example />);
   }
 
   onchange = e => {
@@ -172,6 +203,7 @@ class App extends Component {
     console.log('searchText', this.state.searchText);
     console.log('response');
     console.log(this.state.response);
+
     return (
       <div style={{
         backgroundColor: 'black',

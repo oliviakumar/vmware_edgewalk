@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
+import ReactDOM from 'react-dom';
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
+import { Jumbotron, Table, Panel, OverlayTrigger, Popover } from 'react-bootstrap';
+
 import './Entry.css';
 
 const Entry = (props) => {
@@ -15,14 +18,30 @@ const Entry = (props) => {
       // entries.push(i, 0, <tr> details... </tr>);
       // this.setState({entries: entries});
     // }
+    // const popover = (
+    //   <Popover id="popover-basic">
+    //     <Popover.Title as="h3">Popover right</Popover.Title>
+    //     <Popover.Content>
+    //       And here's some <strong>amazing</strong> content. It's very engaging.
+    //       right?
+    //     </Popover.Content>
+    //   </Popover>
+    // );
+    //
+    // const Example = () => (
+    //   <OverlayTrigger trigger="click" placement="right" overlay={popover}>
+    //     <Button variant="success">Click me to see</Button>
+    //   </OverlayTrigger>
+    // );
+    //
+    // ReactDOM.render(<Example />);
 
-      return <tr className="Entry" onClick={props.onClick}>
+      return <tr href="#" className="Entry" onClick={props.onClick}>
             <td> {Math.random()} </td>
             <td> {props.entry.identity} </td>
             <td> {props.entry.location} </td>
             <td> {props.entry.attempted} </td>
-            <td style={{ hover: 'true', backgroundColor: props.entry.accepted === "true" ?  'green' : 'red' }}> {props.entry.accepted === "true" ? "yes" : "no"} </td>
-
+            <td style={{backgroundColor: props.entry.accepted === "true" ?  'green' : 'red' }}> {props.entry.accepted === "true" ? "yes" : "no"} </td>
           </tr>
 }
 
