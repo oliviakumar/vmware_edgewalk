@@ -49,19 +49,19 @@ class Filter extends React.Component {
   };
 
   componentDidMount() {
-      // var options = [{label: "Search By Location"}]
-      var options = [{label: "Search By Location"}, {label: "front"}, {label: "back"}]
+      var options = [{label: "Search By Location"}]
+      // var options = [{label: "Search By Location"}, {label: "front"}, {label: "back"}]
       console.log('hi')
       options.map(opt => {console.log(opt.label)});
       console.log('bye')
 
-      options.filter(o => o.label == "back") ? console.log('true') : console.log('false')
-      
-      // this.props.options.map(opt => {
-      //     console.log(opt.location)
-      //     if (!options.values().includes(opt.location))
-      //       options.push({label: opt.location});
-      // })
+      // options.filter(o => o.label == "back") ? console.log('true') : console.log('false')
+
+      this.props.options.map(opt => {
+          console.log(opt.location)
+          if (options.filter(o => o.label !== opt.location))
+            options.push({label: opt.location});
+      })
       console.log("cdm options");
       console.log(options);
       console.log('yuh')
