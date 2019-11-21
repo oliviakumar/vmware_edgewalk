@@ -71,21 +71,12 @@ class Filter extends React.Component {
       this.props.options.map(opt => {
           if (!labels.includes(opt.location))
             options.push({label: opt.location});
-            console.log('dup opt.location')
-            console.log(opt.location)
-            console.log('/')
             labels.push(opt.location)
 
       })
-      console.log(labels)
-
-      console.log("cdm options");
-      console.log(options);
-      console.log('yuh')
-
-
+      // console.log(options);
       options.map(opt => {
-          // this.setState({options: [{label: opt, value: opt}]});
+          this.setState({options: options});
       })
   }
 
