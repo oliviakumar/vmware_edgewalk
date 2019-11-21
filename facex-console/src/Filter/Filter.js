@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Select from "react-select";
 import './Filter.css';
-import Option from '../Option/Option';
 
 class Filter extends React.Component {
   constructor(props) {
@@ -50,23 +49,16 @@ class Filter extends React.Component {
   };
 
   componentDidMount() {
-      var options = {label: "Search By Location", value: "Search By Location"}
-      this.props.options.label.map(opt => {
-          console.log(opt);
-          // if (!options.includes(opt.location))
-          //   options.push(opt.location, opt.location);
-
-          }
-      )
+      var options = ["Search By Location"]
+      this.props.options.map(opt => {
+          if (!options.includes(opt.location))
+            options.push(opt.location);
+      })
       console.log("cdm options");
       console.log(options);
 
-      options.map((opt, i) => {
+      options.map(opt => {
           this.setState({options: [{label: opt, value: opt}]});
-          // console.log('i, opt');
-          // console.log(i);
-          // console.log(opt);
-          // this.setState({options[i]]: opt});
       })
   }
 
