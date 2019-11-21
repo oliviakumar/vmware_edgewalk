@@ -1,4 +1,4 @@
-import React, { Component, Link } from 'react';
+import React, { Component, Link, FilterOptions } from 'react';
 import {Route, IndexRoute} from 'react-router';
 
 import EntryDataService from '../service/EntryDataService';
@@ -127,7 +127,9 @@ class ListEntriesComponent extends Component {
 
                 <div className="">
                 <p>
-                    <FilterToolbar />
+                    <FilterToolbar options={this.state.entries}>
+                        <FilterOptions data={this.state.data} changeOption={this.handleChange} />
+                    </FilterToolbar>
                     <Table bordered hover>
                         <thead>
                             <tr className="Entry">
@@ -146,8 +148,6 @@ class ListEntriesComponent extends Component {
                                     return entry.identity.toLowerCase().indexOf(searchText.toLowerCase()) >= 0;
                                 })
                                 .map((entry, i) => {
-                                    // console.log(entry.identity.indexOf(searchText) >= 0);
-
                                 return <Entry entry={entry} details={entry.content} onClick={() => this.viewDetailHandler(i)} />
                         })}
                         </tbody>

@@ -12,7 +12,7 @@ import Search from './component/Search';
 import ListEntriesComponent from './component/ListEntriesComponent';
 // import Contacts from './components/Contacts';
 // import Entries from './components/AllEntries';
-// import Entries from './component/Entries';
+// import Filter from './component/Filter';
 import NavBar from './components/NavBar';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import Entry from './Entry/Entry';
@@ -209,7 +209,7 @@ class App extends Component {
         backgroundColor: 'black',
         height: '500px'
       }}>
-          <NavBar />
+          <NavBar> hello </NavBar>
           <div
             className=""
             style={{
