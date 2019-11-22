@@ -28,8 +28,8 @@ class Filter extends React.Component {
   }
 
   filterOption = (option, inputValue) => {
-      console.log(option)
-      console.log(inputValue)
+      // console.log(option)
+      // console.log(inputValue)
       if (option.label === "None") {
         const { options } = this.state;
         const result = options.filter(opt => opt.label.includes(inputValue));
@@ -90,8 +90,8 @@ class Filter extends React.Component {
   }
 
   render() {
-      console.log('inside render()');
-      console.log(this.state.options);
+      // console.log('inside render()');
+      // console.log(this.state.options);
 
     return (
       <div className="filter">
@@ -101,6 +101,7 @@ class Filter extends React.Component {
           placeholder={"Search By Location"}
           filterOption={this.filterOption}
           noOptionsMessage={() => "No more options"}
+
           options={this.state.options}
         />
     }

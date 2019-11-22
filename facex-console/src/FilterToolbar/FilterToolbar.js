@@ -12,7 +12,7 @@ const FilterToolbar = (props) => {
 
   return (
     <Navbar variant="light" bg="light">
-        <Filter options={props.options}/>
+        <Filter options={props.options} onClick={props.onClick}/>
     </Navbar>
   );
 }

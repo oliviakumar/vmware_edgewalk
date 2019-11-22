@@ -30,6 +30,8 @@ class ListEntriesComponent extends Component {
         this.refreshEntries = this.refreshEntries.bind(this)
         this.getImage = this.getImage.bind(this);
         this.getContent = this.getContent.bind(this);
+        this.filterHandler = this.filterHandler.bind(this);
+        this.onClick = this.onClick.bind(this);
         // this.updateEntryClicked = this.updateEntryClicked.bind(this)
         // this.addEntryClicked = this.addEntryClicked.bind(this)
     }
@@ -41,9 +43,19 @@ class ListEntriesComponent extends Component {
         // this.getContent();
     }
 
+    onClick(e) {
+        console.log('onClick reached');
+
+    }
+
     filterHandler = () => {
-        this.setState({isFiltering: true});
+        // this.setState({isFiltering: true});
         console.log('filter handler reached');
+    }
+
+    callbackFn = (childData) => {
+        console.log('cbf reached');
+        this.setState({isFiltering: true});
     }
 
     viewDetailHandler = (i) => {
@@ -135,11 +147,20 @@ class ListEntriesComponent extends Component {
 
                 <div className="">
                 <p>
+                <FilterToolbar options={this.state.entries} onClick={this.filterHandler}>
+                </FilterToolbar>
+
                     {
-                        // <FilterToolbar options={this.state.entries}>
-                        // </FilterToolbar>
+                        // // {this.state.isFiltering === 'true' ? 'worked!' : 'did not work!'} </p>
+                        //
+                        //
+
+                        // <Navbar variant="light" bg="light">
+                        //     <Filter options={this.state.entries}/>
+                        // </Navbar>
+
+                    // <Filter options={this.state.entries} onClick={() => this.filterHandler()}/>
                     }
-                    <Filter options={this.state.entries} onClick={!this.state.isFiltering}/>
                     <Table bordered hover>
                         <thead>
                             <tr className="Entry">
