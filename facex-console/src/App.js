@@ -39,6 +39,7 @@ class App extends Component {
               // { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
             ],
             searchText: '',
+            filterText: [],
             error: null,
             isLoaded: false,
             response: [],
@@ -185,6 +186,12 @@ class App extends Component {
     this.setState({searchText: value});
   }
 
+  filterUpdate(value) {
+    console.log('filterUpdate(value)');
+    console.log(value);
+    this.setState({filterText: value});
+  }
+
   onFileChange = (event) => {
     this.setState({
       file: event.target.files[0]
@@ -223,6 +230,7 @@ class App extends Component {
               entries={this.state.response}
               viewDetail={this.viewDetail}
               searchText={this.state.searchText}
+              filterUpdate={this.filterUpdate.bind(this)} />
             />
           </div>
           <p> hi </p>

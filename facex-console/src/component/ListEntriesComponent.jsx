@@ -1,5 +1,7 @@
-import React, { Component, Link, FilterOptions } from 'react';
+import React, { Component, Link, FilterOptions, Input } from 'react';
 import {Route, IndexRoute} from 'react-router';
+import { Row } from 'reactstrap'
+
 
 import EntryDataService from '../service/EntryDataService';
 import Toggle from './Toggle';
@@ -51,6 +53,13 @@ class ListEntriesComponent extends Component {
     filterHandler = () => {
         // this.setState({isFiltering: true});
         console.log('filter handler reached');
+    }
+
+    filterUpdate() {
+        const val = this.myValue.value;
+        console.log('val');
+        console.log(val);
+        this.props.filterUpdate(val);
     }
 
     callbackFn = (childData) => {
@@ -142,16 +151,20 @@ class ListEntriesComponent extends Component {
                     View history of system entry. Click individual logs for entrant details.
                     <div>
                         <p> searchText value is: {this.props.searchText} </p>
+                        {
+                            // <p> filterText value is: {this.props.filter} </p>
+                        }
                     </div>
                     </p>
 
                 <div className="">
                 <p>
-                <FilterToolbar options={this.state.entries} onClick={this.filterHandler}>
+
+                <FilterToolbar options={this.state.entries} filterUpdate={this.filterUpdate.bind(this)}>
                 </FilterToolbar>
 
                     {
-                        // // {this.state.isFiltering === 'true' ? 'worked!' : 'did not work!'} </p>
+                        // {this.state.isFiltering === 'true' ? 'worked!' : 'did not work!'} </p>
                         //
                         //
 
@@ -159,7 +172,7 @@ class ListEntriesComponent extends Component {
                         //     <Filter options={this.state.entries}/>
                         // </Navbar>
 
-                    // <Filter options={this.state.entries} onClick={() => this.filterHandler()}/>
+                        // <Filter options={this.state.entries} onClick={() => this.filterHandler()}/>
                     }
                     <Table bordered hover>
                         <thead>
