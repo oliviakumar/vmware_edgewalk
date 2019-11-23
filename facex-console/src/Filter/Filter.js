@@ -11,14 +11,20 @@ class Filter extends Component {
       hasExtraValue: false,
       options: [
           {label: '', value: ''}
-      ]
+      ],
+      selectedOption: null
+
     };
     this.filterOption = this.filterOption.bind(this);
   }
 
+
+
   filterOption = (option, inputValue) => {
-      // console.log(option)
-      // console.log(inputValue)
+      console.log('option')
+      console.log(option)
+      console.log('inputValue')
+      console.log(inputValue)
       if (option.label === "None") {
         const { options } = this.state;
         const result = options.filter(opt => opt.label.includes(inputValue));
@@ -29,19 +35,22 @@ class Filter extends Component {
       return option.label.includes(inputValue);
   }
 
-  // temp() {
-  //   console.log('FO this.state.options');
-  //   console.log(this.state.options.label);
-  //   this.state.options.map(o => {
-  //       console.log(o.label)
-  //   });
-  //   return null;
-  //   // console.log('filter option');
-  //   // console.log(option);
-  //   // console.log(inputValue);
-  //
-  // };
+  filterUpdate = selectedOption => {
+      // const val = this.myValue.value;
+      this.setState({ selectedOption },
+        () => console.log(`Option selected:`, this.state.selectedOption)
+      );
+      console.log('filterjs val');
+      console.log(this.state.selectedOption);
+      this.props.filterUpdate(this.state.selectedOption);
+      
+  }
 
+  handleChange = selectedOption => {
+    this.setState({ selectedOption },
+      () => console.log(`Option selected:`, this.state.selectedOption)
+    );
+  };
 
   componentDidMount() {
       var options = []
@@ -79,15 +88,10 @@ class Filter extends Component {
       })
   }
 
-  filterUpdate() {
-      const val = this.myValue.value;
-      console.log(val);
-      this.props.filterUpdate(val);
-  }
-
   render() {
       // console.log('inside render()');
       // console.log(this.state.options);
+    const { selectedOption } = this.state;
 
     return (
         <div>
@@ -104,6 +108,7 @@ class Filter extends Component {
                   isMulti
                   placeholder={"Search By Location"}
                   filterOption={this.filterOption}
+                  onChange={this.filterUpdate.bind(this)}
                   noOptionsMessage={() => "No more options"}
 
                   options={this.state.options}

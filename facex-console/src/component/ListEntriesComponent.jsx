@@ -189,9 +189,9 @@ class ListEntriesComponent extends Component {
                                 .filter(entry => {
                                     return entry.identity.toLowerCase().indexOf(searchText.toLowerCase()) >= 0;
                                 })
-                                .filter(entry => {
-                                    return entry.location.toLowerCase().indexOf(filterText.toLowerCase()) >= 0;
-                                })
+                                // .filter(entry => {
+                                //     return entry.location.toLowerCase().indexOf(filterText.toLowerCase()) >= 0;
+                                // })
                                 .map((entry, i) => {
                                     return <Entry entry={entry} details={entry.content} onClick={() => this.viewDetailHandler(i)} />
                             })
