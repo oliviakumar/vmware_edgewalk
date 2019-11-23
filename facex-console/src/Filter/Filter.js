@@ -12,19 +12,20 @@ class Filter extends Component {
       options: [
           {label: '', value: ''}
       ],
-      selectedOption: null
+      selectedOption: ''
 
     };
     this.filterOption = this.filterOption.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
 
 
   filterOption = (option, inputValue) => {
-      console.log('option')
-      console.log(option)
-      console.log('inputValue')
-      console.log(inputValue)
+      // console.log('option')
+      // console.log(option)
+      // console.log('inputValue')
+      // console.log(inputValue)
       if (option.label === "None") {
         const { options } = this.state;
         const result = options.filter(opt => opt.label.includes(inputValue));
@@ -35,21 +36,27 @@ class Filter extends Component {
       return option.label.includes(inputValue);
   }
 
-  filterUpdate = selectedOption => {
+
+    basicFilterUpdate() {
+        const val = this.myValue.value;
+        console.log(val);
+        this.props.filterUpdate(val);
+    }
+
+  filterUpdate() {
       // const val = this.myValue.value;
-      this.setState({ selectedOption },
-        () => console.log(`Option selected:`, this.state.selectedOption)
-      );
-      console.log('filterjs val');
-      console.log(this.state.selectedOption);
+      // console.log('selectedOption');
+
+      console.log(`filterjs val`, this.state.selectedOption);
       this.props.filterUpdate(this.state.selectedOption);
-      
   }
 
   handleChange = selectedOption => {
-    this.setState({ selectedOption },
+    this.setState(
+      { selectedOption },
       () => console.log(`Option selected:`, this.state.selectedOption)
     );
+    this.filterUpdate();
   };
 
   componentDidMount() {
@@ -100,7 +107,7 @@ class Filter extends Component {
                 <input type="text"
                     ref={ (value) => {this.myValue = value} }
                     placeholder="filter by location..."
-                    onChange={this.filterUpdate.bind(this)}/>
+                    onChange={this.basicFilterUpdate.bind(this)}/>
             </Row>
             <div className="filter">
                 {
@@ -108,7 +115,7 @@ class Filter extends Component {
                   isMulti
                   placeholder={"Search By Location"}
                   filterOption={this.filterOption}
-                  onChange={this.filterUpdate.bind(this)}
+                  onChange={this.handleChange.bind(this)}
                   noOptionsMessage={() => "No more options"}
 
                   options={this.state.options}

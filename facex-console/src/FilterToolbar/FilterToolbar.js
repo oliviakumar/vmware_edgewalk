@@ -20,8 +20,8 @@ class FilterToolbar extends Component {
     render() {
       return (
         <Navbar variant="light" bg="light">
-            <Filter options={this.props.options} filterUpdate={(this.props.filterUpdate.bind(this))} />
-
+            <Filter options={this.props.options} basicFilterUpdate={(this.props.basicFilterUpdate.bind(this))} filterUpdate={(this.props.filterUpdate.bind(this))} />
+            <p>
         </Navbar>
       );
     }
