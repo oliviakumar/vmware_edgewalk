@@ -39,7 +39,7 @@ class App extends Component {
               // { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
             ],
             searchText: '',
-            filterText: [],
+            filterText: '',
             error: null,
             isLoaded: false,
             response: [],
@@ -230,6 +230,7 @@ class App extends Component {
               entries={this.state.response}
               viewDetail={this.viewDetail}
               searchText={this.state.searchText}
+              filterText={this.state.filterText}
               filterUpdate={this.filterUpdate.bind(this)} />
             />
           </div>

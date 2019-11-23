@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Select from "react-select";
 import './Filter.css';
+import { Row } from 'reactstrap';
 
-class Filter extends React.Component {
+class Filter extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,18 +12,6 @@ class Filter extends React.Component {
       options: [
           {label: '', value: ''}
       ]
-      //     [
-      //     // { label: "Label 1", value: 1 },
-      //     // { label: "Label 2", value: 2 },
-      //     // { label: "Label 3", value: 3 },
-      //     // { label: "Label 4", value: 4 },
-      //     // { label: "Label 5", value: 5 },
-      //     // { label: "Label 6", value: 6 },
-      //     // { label: "Label 7", value: 7 },
-      //     // { label: "Label 8", value: 8 },
-          // [label: "Search By Location", value: "other"]
-      // ]
-  // }
     };
     this.filterOption = this.filterOption.bind(this);
   }
@@ -52,6 +41,7 @@ class Filter extends React.Component {
   //   // console.log(inputValue);
   //
   // };
+
 
   componentDidMount() {
       var options = []
@@ -89,26 +79,43 @@ class Filter extends React.Component {
       })
   }
 
+  filterUpdate() {
+      const val = this.myValue.value;
+      console.log(val);
+      this.props.filterUpdate(val);
+  }
+
   render() {
       // console.log('inside render()');
       // console.log(this.state.options);
 
     return (
-      <div className="filter">
-{
-        <Select
-          isMulti
-          placeholder={"Search By Location"}
-          filterOption={this.filterOption}
-          noOptionsMessage={() => "No more options"}
+        <div>
+            <Row>
+                <svg width="15px" height="15px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" aria-hidden="true"><g id="Page-1" stroke="none" fill="none" ><g id="Artboard-1" stroke="#777777" ><g id="Group"><path d="M13.4044,7.0274 C13.4044,10.5494 10.5494,13.4044 7.0274,13.4044 C3.5054,13.4044 0.6504,10.5494 0.6504,7.0274 C0.6504,3.5054 3.5054,0.6504 7.0274,0.6504 C10.5494,0.6504 13.4044,3.5054 13.4044,7.0274 Z" id="Stroke-3"></path><path d="M11.4913,11.4913 L17.8683,17.8683" id="Stroke-7"></path></g></g></g></svg>
+                <input type="text"
+                    ref={ (value) => {this.myValue = value} }
+                    placeholder="filter by location..."
+                    onChange={this.filterUpdate.bind(this)}/>
+            </Row>
+            <div className="filter">
+                {
+                <Select
+                  isMulti
+                  placeholder={"Search By Location"}
+                  filterOption={this.filterOption}
+                  noOptionsMessage={() => "No more options"}
 
-          options={this.state.options}
-        />
-    }
-        {this.state.hasExtraValue && (
-          <p>!</p>
-        )}
-      </div>
+                  options={this.state.options}
+                />
+
+                }
+
+                {this.state.hasExtraValue && (
+                  <p>!</p>
+                )}
+            </div>
+        </div>
     );
   }
 }

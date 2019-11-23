@@ -55,12 +55,12 @@ class ListEntriesComponent extends Component {
         console.log('filter handler reached');
     }
 
-    filterUpdate() {
-        const val = this.myValue.value;
-        console.log('val');
-        console.log(val);
-        this.props.filterUpdate(val);
-    }
+    // filterUpdate() {
+    //     const val = this.myValue.value;
+    //     console.log('val');
+    //     console.log(val);
+    //     this.props.filterUpdate(val);
+    // }
 
     callbackFn = (childData) => {
         console.log('cbf reached');
@@ -141,7 +141,7 @@ class ListEntriesComponent extends Component {
             hover: 'true'
         };
         const images = require.context('../logos', true);
-        const {entries, viewDetail, searchText} = this.props;
+        const {entries, viewDetail, searchText, filterText} = this.props;
 
         return (
             <div>
@@ -151,16 +151,14 @@ class ListEntriesComponent extends Component {
                     View history of system entry. Click individual logs for entrant details.
                     <div>
                         <p> searchText value is: {this.props.searchText} </p>
-                        {
-                            // <p> filterText value is: {this.props.filter} </p>
-                        }
+                        <p> filterText value is: {this.props.filterText} </p>
                     </div>
                     </p>
 
                 <div className="">
                 <p>
 
-                <FilterToolbar options={this.state.entries} filterUpdate={this.filterUpdate.bind(this)}>
+                <FilterToolbar options={this.state.entries} filterUpdate={this.props.filterUpdate.bind(this)}>
                 </FilterToolbar>
 
                     {
@@ -190,6 +188,9 @@ class ListEntriesComponent extends Component {
                             this.state.entries
                                 .filter(entry => {
                                     return entry.identity.toLowerCase().indexOf(searchText.toLowerCase()) >= 0;
+                                })
+                                .filter(entry => {
+                                    return entry.location.toLowerCase().indexOf(filterText.toLowerCase()) >= 0;
                                 })
                                 .map((entry, i) => {
                                     return <Entry entry={entry} details={entry.content} onClick={() => this.viewDetailHandler(i)} />
