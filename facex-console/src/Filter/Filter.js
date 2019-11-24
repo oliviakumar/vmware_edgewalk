@@ -65,10 +65,10 @@ class Filter extends Component {
     if (value.action == 'remove-value') {
         // this.setState({filterText: ''});
         console.log('undefined');
-        // this.filterUpdate('');
+        this.filterUpdate('');
 
     } else if (value.action == 'select-option') {
-        this.setState({filterText: value.option.label});
+        // this.setState({filterText: value.option.label});
         this.filterUpdate(value.option.label);
 
     }
