@@ -70,7 +70,6 @@ class Filter extends Component {
     } else if (value.action == 'select-option') {
         // this.setState({filterText: value.option.label});
         this.filterUpdate(value.option.label);
-
     }
 
   };
