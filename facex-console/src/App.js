@@ -258,7 +258,6 @@ class App extends Component {
               searchUpdate={this.searchUpdate.bind(this)} />
             <SidePanel />
             <ViewEntry />
-            <Info />
             // {renderImage('http://localhost:8080/files/', '5dd5a21befe3b78e670e39ba')}
             <ListEntriesComponent
               entries={this.state.response}
