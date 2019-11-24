@@ -43,24 +43,24 @@ class MyComponent extends React.Component {
   }
 
   componentDidMount() {
-      fetch("http://localhost:8080/5ddade8d2475d02c3b5c78af")
-        .then(res => res.json())
-        .then(
-          (result) => {
-              console.log('content call');
-              this.setState({
-                  isLoaded: true,
-                  response: result,
-            });
-          },
-          (error) => {
-            this.setState({
-              isLoaded: true,
-              error
-            });
-            console.log('error');
-          }
-        )
+      // fetch("http://localhost:8080/entries")
+      //   .then(res => res.json())
+      //   .then(
+      //     (result) => {
+      //         console.log(result);
+      //         this.setState({
+      //             isLoaded: true,
+      //             response: result,
+      //       });
+      //     },
+      //     (error) => {
+      //       this.setState({
+      //         isLoaded: true,
+      //         error
+      //       });
+      //       console.log('error');
+      //     }
+      //   )
 
     // fetch("http://localhost:8080/entries")
     //   .then(res => res.json())
@@ -76,7 +76,7 @@ class MyComponent extends React.Component {
 
   render() {
     const { error, isLoaded, response } = this.state;
-    console.log(response);
+    // console.log(response);
 
     if (error) {
       return <div>Error: {error.message}</div>;
