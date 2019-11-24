@@ -18,6 +18,8 @@ import NavBar from './components/NavBar';
 import Entry from './Entry/Entry';
 import FilterToolbar from './FilterToolbar/FilterToolbar'
 import Toggle from './component/Toggle';
+// import ViewEntry from './ViewDetail/ViewDetail';
+import SidePanel from './SidePanel/SidePanel';
 import './Entry/Entry.css';
 
 
@@ -222,7 +224,7 @@ class App extends Component {
         backgroundColor: 'black',
         height: '500px'
       }}>
-          <NavBar> hello </NavBar>
+          <NavBar />
           <div
             className=""
             style={{
@@ -232,6 +234,7 @@ class App extends Component {
             <Search
               searchText={this.state.searchText}
               searchUpdate={this.searchUpdate.bind(this)} />
+            <SidePanel />
             <ListEntriesComponent
               entries={this.state.response}
               viewDetail={this.viewDetail}
@@ -239,7 +242,6 @@ class App extends Component {
               filterText={this.state.filterText}
               filterUpdate={this.filterUpdate.bind(this)}
               basicFilterUpdate={this.basicFilterUpdate.bind(this)} />
-            />
           </div>
           <p> hi </p>
           <div>
