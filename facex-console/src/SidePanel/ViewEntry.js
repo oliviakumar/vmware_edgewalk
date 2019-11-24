@@ -6,16 +6,21 @@ const ViewEntry = (props) => {
 
   const toggle = () => setIsOpen(!isOpen);
 
+  function renderImage(host, id) {
+    const c = host + id
+    return (
+        <img src={c} />
+      );
+  }
+
   return (
     <div>
       <Button color="primary" onClick={toggle} style={{ marginBottom: '1rem' }}>Toggle</Button>
       <Collapse isOpen={isOpen}>
         <Card>
           <CardBody>
-          Anim pariatur cliche reprehenderit,
-           enim eiusmod high life accusamus terry richardson ad squid. Nihil
-           anim keffiyeh helvetica, craft beer labore wes anderson cred
-           nesciunt sapiente ea proident.
+          // {renderImage('http://localhost:8080/files/', '5dd5a21befe3b78e670e39ba')}
+
           </CardBody>
         </Card>
       </Collapse>

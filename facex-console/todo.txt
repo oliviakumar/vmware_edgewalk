@@ -1,0 +1,3 @@
+Fix new location populating dropdown filter
+fix [yes][no] colors
+ugly toggle ::>>>>> slide over to reveal new info!!!!!!!!

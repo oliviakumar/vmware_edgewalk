@@ -38,7 +38,7 @@ class App extends Component {
             entries: [
               // { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
               // { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
-              // { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
+              // { id: '2', identity: 'Kevin', attempted: '9:00', location: 'x', accepted: 'false' }
             ],
             searchText: '',
             filterText: '',
@@ -68,8 +68,6 @@ class App extends Component {
   // }
 
   componentDidMount() {
-      console.log('did mount');
-      console.log('five');
       fetch("http://localhost:8080/all")
         .then(res => res.json())
         .then(
@@ -81,7 +79,7 @@ class App extends Component {
             });
           },
           (error) => {
-              console.log('error1');
+              console.log('error2');
             this.setState({
               isLoaded: true,
               error
@@ -89,26 +87,27 @@ class App extends Component {
           }
         )
 
-      fetch("http://localhost:8080/5dd59b4cefe3b7861de13556")
-        .then(res => res.json())
-        .then(
-          (result) => {
-              console.log('result-');
-              console.log(result);
-              this.setState({
-                  isLoaded: true,
-                  response: result,
-            });
-          },
-          (error) => {
-            console.log('error2');
-            this.setState({
-              isLoaded: true,
-              error
-            });
-          }
-        )
+      // fetch("http://localhost:8080/entries")
+      //   .then(res => res.json())
+      //   .then(
+      //     (result) => {
+      //         console.log('result-');
+      //         console.log(result);
+      //         this.setState({
+      //             isLoaded: true,
+      //             response: result,
+      //       });
+      //     },
+      //     (error) => {
+      //       console.log('error2');
+      //       this.setState({
+      //         isLoaded: true,
+      //         error
+      //       });
+      //     }
+      //   )
 
+/*
       fetch("http://localhost:8080/content")
         .then(res => res.json())
         .then(
@@ -126,6 +125,28 @@ class App extends Component {
             });
           }
         )
+*/
+      //
+      // fetch("http://localhost:8080/5dd59b4cefe3b7861de13556")
+      //   .then(res => res.json())
+      //   .then(
+      //     (result) => {
+      //         console.log('result-');
+      //         console.log(result);
+      //         this.setState({
+      //             isLoaded: true,
+      //             response: result,
+      //       });
+      //     },
+      //     (error) => {
+      //       console.log('error2');
+      //       this.setState({
+      //         isLoaded: true,
+      //         error
+      //       });
+      //     }
+      //   )
+
     // fetch('http://localhost:3000/edgewalk/liv-entries')
     // .then(res => res.json())
     // .then((data) => {
@@ -236,6 +257,8 @@ class App extends Component {
               searchUpdate={this.searchUpdate.bind(this)} />
             <SidePanel />
             <ViewEntry />
+
+            // {renderImage('http://localhost:8080/files/', '5dd5a21befe3b78e670e39ba')}
             <ListEntriesComponent
               entries={this.state.response}
               viewDetail={this.viewDetail}
@@ -246,7 +269,8 @@ class App extends Component {
           </div>
           <p> hi </p>
           <div>
-            {renderImage('http://localhost:8080/files/', response.idString)}
+            {console.log(`this.state.response: `, this.state.response[0])}
+            {renderImage('http://localhost:8080/files/', this.state.response)}
           </div>
       </div>
     );
