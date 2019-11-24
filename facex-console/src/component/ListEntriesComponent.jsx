@@ -74,7 +74,7 @@ class ListEntriesComponent extends Component {
     }
 
     viewDetailHandler = (i) => {
-        console.log(i);
+        console.log(`i:`, i);
 
         // const entries = this.state.entries.slice();
         // entries.push(i, 0, <tr> details... </tr>);
@@ -95,6 +95,10 @@ class ListEntriesComponent extends Component {
         );
 
         // this.setState({entries: entries});
+    }
+
+    onClickHandler() {
+        console.log('look we made it');
     }
 
     refreshEntries() {
@@ -180,7 +184,7 @@ class ListEntriesComponent extends Component {
                     }
                     <Table bordered hover>
                         <thead>
-                            <tr className="Entry">
+                            <tr className="Entry" onClick={this.onClickHandler()}>
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Location</th>
