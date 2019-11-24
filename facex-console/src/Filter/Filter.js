@@ -12,7 +12,8 @@ class Filter extends Component {
       options: [
           {label: '', value: ''}
       ],
-      selectedOption: ''
+      selectedOption: '',
+      filterText: '',
 
     };
     this.filterOption = this.filterOption.bind(this);
@@ -32,31 +33,38 @@ class Filter extends Component {
         this.setState({ hasExtraValue: !result.length });
         return !result.length;
       }
-
       return option.label.includes(inputValue);
   }
 
-
-    basicFilterUpdate() {
-        const val = this.myValue.value;
-        console.log(val);
-        this.props.filterUpdate(val);
-    }
-
-  filterUpdate() {
-      // const val = this.myValue.value;
-      // console.log('selectedOption');
-
-      console.log(`filterjs val`, this.state.selectedOption);
-      this.props.filterUpdate(this.state.selectedOption);
+  basicFilterUpdate() {
+    const val = this.myValue.value;
+    console.log(`basicFilterUpdate`, val);
+    this.props.filterUpdate(val);
   }
 
-  handleChange = selectedOption => {
+  filterUpdate(query) {
+      // const val = this.myValue.value;
+      // console.log('selectedOption');
+      console.log(`filterUpdate reached `);
+
+      const val = this.myValue.value;
+      console.log(`filterUpdate query:`, query);
+
+      // console.log(`filterjs val`, this.state.selectedOption);
+      this.props.filterUpdate(query);
+  }
+
+  handleChange = (selectedOption, value) => {
     this.setState(
       { selectedOption },
-      () => console.log(`Option selected:`, this.state.selectedOption)
+      () => console.log(`Filterjs Option selected:`, this.state.selectedOption)
     );
-    this.filterUpdate();
+
+    const val = this.myValue.value;
+    console.log(`Filterjs, handleChange val:`, value.option.label);
+    this.setState({filterText: value.option.label});
+
+    this.filterUpdate(value.option.label);
   };
 
   componentDidMount() {
@@ -117,7 +125,7 @@ class Filter extends Component {
                   filterOption={this.filterOption}
                   onChange={this.handleChange.bind(this)}
                   noOptionsMessage={() => "No more options"}
-
+                  value={(value) => {this.myValue = value}}
                   options={this.state.options}
                 />
 

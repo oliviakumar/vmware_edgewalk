@@ -40,6 +40,7 @@ class App extends Component {
             ],
             searchText: '',
             filterText: '',
+            basicFilterText: '',
             error: null,
             isLoaded: false,
             response: [],
@@ -187,9 +188,14 @@ class App extends Component {
   }
 
   filterUpdate(value) {
-    console.log('filterUpdate(value)');
-    console.log(value);
+    console.log(`Appjs filter update:`, value);
     this.setState({filterText: value});
+  }
+
+  basicFilterUpdate(value) {
+      const val = this.myValue.value;
+      console.log(`Appjs basic filter update:`, val);
+      this.setState({basicFilterText: value});
   }
 
   onFileChange = (event) => {
@@ -231,7 +237,8 @@ class App extends Component {
               viewDetail={this.viewDetail}
               searchText={this.state.searchText}
               filterText={this.state.filterText}
-              filterUpdate={this.filterUpdate.bind(this)} />
+              filterUpdate={this.filterUpdate.bind(this)}
+              basicFilterUpdate={this.basicFilterUpdate.bind(this)} />
             />
           </div>
           <p> hi </p>

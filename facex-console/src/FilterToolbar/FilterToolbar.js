@@ -11,17 +11,20 @@ class FilterToolbar extends Component {
         // console.log(option.location);
     // })
     //
-    // filterUpdate() {
-    //     const val = this.myValue.value;
-    //     console.log(val);
-    //     this.props.filterUpdate(val);
-    // }
+    filterUpdate(query) {
+        console.log('reached filterUpdate FilterToolbar');
+
+        // const val = this.myValue.value;
+        // console.log(val);
+        console.log(query);
+
+        // this.props.filterUpdate(val);
+    }
 
     render() {
       return (
         <Navbar variant="light" bg="light">
-            <Filter options={this.props.options} basicFilterUpdate={(this.props.basicFilterUpdate.bind(this))} filterUpdate={(this.props.filterUpdate.bind(this))} />
-            <p>
+            <Filter options={this.props.options} basicFilterUpdate={this.props.basicFilterUpdate.bind(this)} filterUpdate={this.props.filterUpdate.bind(this)} />
         </Navbar>
       );
     }

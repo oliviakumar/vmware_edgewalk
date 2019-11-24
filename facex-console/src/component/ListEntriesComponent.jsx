@@ -55,12 +55,18 @@ class ListEntriesComponent extends Component {
         console.log('filter handler reached');
     }
 
-    // filterUpdate() {
-    //     const val = this.myValue.value;
-    //     console.log('val');
-    //     console.log(val);
-    //     this.props.filterUpdate(val);
-    // }
+    basicFilterUpdate() {
+        const val = this.myValue.value;
+        console.log(val);
+        this.props.filterUpdate(val);
+    }
+
+    filterUpdate() {
+        const val = this.myValue.value;
+        console.log('val');
+        console.log(val);
+        this.props.filterUpdate(val);
+    }
 
     callbackFn = (childData) => {
         console.log('cbf reached');
@@ -158,7 +164,7 @@ class ListEntriesComponent extends Component {
                 <div className="">
                 <p>
 
-                <FilterToolbar options={this.state.entries} filterUpdate={this.props.filterUpdate.bind(this)}>
+                <FilterToolbar options={this.state.entries} basicFilterUpdate={this.props.basicFilterUpdate.bind(this)} filterUpdate={this.props.filterUpdate.bind(this)}>
                 </FilterToolbar>
 
                     {
