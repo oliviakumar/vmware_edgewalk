@@ -13,7 +13,7 @@ class Filter extends Component {
           {label: '', value: ''}
       ],
       selectedOption: '',
-      filterText: '',
+      filterText: null,
 
     };
     this.filterOption = this.filterOption.bind(this);
@@ -60,11 +60,19 @@ class Filter extends Component {
       () => console.log(`Filterjs Option selected:`, this.state.selectedOption)
     );
 
-    const val = this.myValue.value;
-    console.log(`Filterjs, handleChange val:`, value.option.label);
-    this.setState({filterText: value.option.label});
+    // const val = this.myValue.value;
+    console.log(`Filterjs, handleChange val:`, value);
+    if (value.action == 'remove-value') {
+        // this.setState({filterText: ''});
+        console.log('undefined');
+        // this.filterUpdate('');
 
-    this.filterUpdate(value.option.label);
+    } else if (value.action == 'select-option') {
+        this.setState({filterText: value.option.label});
+        this.filterUpdate(value.option.label);
+
+    }
+
   };
 
   componentDidMount() {
