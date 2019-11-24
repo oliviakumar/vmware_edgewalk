@@ -3,6 +3,7 @@ package com.edgewalk.service.services.impl;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -23,7 +24,8 @@ public class EdgeServiceImpl implements EdgeService {
 
 	private final static Sort DEFAULT_SORT = Sort.by(Sort.Direction.DESC, "attempted");
 
-	@Autowired private ResponseRepository responseRepository;
+	@Autowired
+	private ResponseRepository responseRepository;
 
 	@Override
 	public Response processResponse(Response response) {
@@ -58,6 +60,8 @@ public class EdgeServiceImpl implements EdgeService {
 			boolean location = true;
 			boolean type = true;
 			boolean accepted = true;
+			boolean device = true;
+			boolean edgexId = true;
 			if (!filter.getIdentity().equals("")) {
 				identity = r.getIdentity().equalsIgnoreCase(filter.getIdentity());
 			}
@@ -70,7 +74,13 @@ public class EdgeServiceImpl implements EdgeService {
 			if (!filter.getType().equals("")) {
 				type = r.getType().equalsIgnoreCase(filter.getType());
 			}
-			return identity && location && type && accepted;
+			if (!filter.getDevice().equals("")) {
+				device = r.getType().equalsIgnoreCase(filter.getType());
+			}
+			if (!filter.getEdgexId().equals("")) {
+				edgexId = r.getType().equalsIgnoreCase(filter.getType());
+			}
+			return identity && location && type && accepted && device && edgexId;
 		}).collect(Collectors.toList());
 
 		return responses;
@@ -90,5 +100,17 @@ public class EdgeServiceImpl implements EdgeService {
 	public void clear() {
 		LOG.info("Deleting all database entries");
 		responseRepository.deleteAll();
+	}
+
+	@Override
+	public Response getResponseById(String id) {
+		LOG.debug("Recevied a request for id {}", id);
+		Response response = null;
+		try {
+			response = responseRepository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			LOG.error("No element found for id {}", id, e);
+		}
+		return response;
 	}
 }

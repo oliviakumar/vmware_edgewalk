@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -61,5 +62,13 @@ public class MainController {
 		model.addAttribute("filter", filter);
 
 		return "responseTable";
+	}
+
+	@GetMapping("/entry/{id}")
+	public String getInfo(Model model, @PathVariable String id) {
+
+		model.addAttribute("response", edgeService.getResponseById(id));
+
+		return "response";
 	}
 }
