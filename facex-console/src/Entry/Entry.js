@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
 import { Jumbotron, Table, Panel, OverlayTrigger, Popover } from 'react-bootstrap';
+import ViewEntry from '../SidePanel/ViewEntry';
 
 import './Entry.css';
 
@@ -42,6 +43,7 @@ const Entry = (props) => {
             <td> {props.entry.location} </td>
             <td> {props.entry.attempted} </td>
             <td style={{backgroundColor: props.entry.accepted === "true" ?  'green' : 'red' }}> {props.entry.accepted === "true" ? "yes" : "no"} </td>
+            <ViewEntry />
           </tr>
 // return ret + ' entry detail view '
 }

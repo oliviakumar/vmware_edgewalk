@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
 
-const ViewDetail = (props) => {
+const ViewEntry = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -23,4 +23,4 @@ const ViewDetail = (props) => {
   );
 }
 
-export default ViewDetail;
+export default ViewEntry;

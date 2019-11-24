@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './SidePanel.css';
 
-const SidePanel = (props) => {
+const sidePanel = (props) => {
         return (
             <div className={classes.SidePanel}>
                 <nav>
@@ -11,4 +11,4 @@ const SidePanel = (props) => {
         );
 };
 
-export default SidePanel;
+export default sidePanel;

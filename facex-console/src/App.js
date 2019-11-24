@@ -18,7 +18,7 @@ import NavBar from './components/NavBar';
 import Entry from './Entry/Entry';
 import FilterToolbar from './FilterToolbar/FilterToolbar'
 import Toggle from './component/Toggle';
-// import ViewEntry from './ViewDetail/ViewDetail';
+import ViewEntry from './SidePanel/ViewEntry';
 import SidePanel from './SidePanel/SidePanel';
 import './Entry/Entry.css';
 
@@ -235,6 +235,7 @@ class App extends Component {
               searchText={this.state.searchText}
               searchUpdate={this.searchUpdate.bind(this)} />
             <SidePanel />
+            <ViewEntry />
             <ListEntriesComponent
               entries={this.state.response}
               viewDetail={this.viewDetail}
