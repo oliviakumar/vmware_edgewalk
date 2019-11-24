@@ -125,7 +125,6 @@ class Filter extends Component {
                   filterOption={this.filterOption}
                   onChange={this.handleChange.bind(this)}
                   noOptionsMessage={() => "No more options"}
-                  value={(value) => {this.myValue = value}}
                   options={this.state.options}
                 />
 
