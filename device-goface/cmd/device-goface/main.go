@@ -9,9 +9,8 @@
 package main
 
 import (
+	"github.com/vmware-edgewalk/facex/device-goface/driver"
 	"github.com/edgexfoundry/device-sdk-go/pkg/startup"
-	device_goface "github.com/edgexfoundry/vmware_edgewalk/device-goface"
-	"github.com/edgexfoundry/vmware_edgewalk/device-goface/driver"
 )
 
 const (
@@ -21,5 +20,5 @@ const (
 func main() {
 	sd := driver.GofaceDevice{}
 	sd.WriteConfiguration()
-	startup.Bootstrap(serviceName, device_goface.Version, &sd)
+	startup.Bootstrap(serviceName, "0.0.0", &sd)
 }

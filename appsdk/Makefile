@@ -5,7 +5,7 @@ GO=CGO_ENABLED=1 GO111MODULE=on go
 
 VERSION=$(shell cat ./VERSION)
 
-GOFLAGS=-ldflags "-X github.com/vmware-edgewalk/appsdk=$(VERSION)"
+GOFLAGS=-ldflags "-X github.com/vmware-edgewalk/facex/appsdk=$(VERSION)"
 
 GIT_SHA=$(shell git rev-parse HEAD)
 

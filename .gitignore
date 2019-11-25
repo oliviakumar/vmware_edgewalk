@@ -20,6 +20,8 @@
 .DS_Store
 .settings
 .project
+.classpath
 *.logs
 *.log
+device-goface/cmd/device-goface/res/configuration.toml
 
