@@ -1,4 +1,4 @@
-package lib
+package recognition
 
 import  (
     "fmt"
@@ -17,6 +17,7 @@ type TrainStruct struct {
     Name string
 }
 
+//Struct that returns the approval or denial of the image given
 type GofaceData struct {
     Identity  string `json:"identity"`
     Accepted  bool `json:"accepted"`
@@ -25,6 +26,7 @@ type GofaceData struct {
     Imagepath string `json:"imagePath"`
 }
 
+//Global recognizer object
 var rec *face.Recognizer
 
 //Data directory for training the model
@@ -44,30 +46,34 @@ var valid bool
 var found bool
 var approved bool
 
-//Changes the dataDir to given filename
-func ChangeDir(folder string) {
-    dataDir = filepath.Join(dataDir, folder)
-}
-
 //Updates the variables and directory so that it can be resused for training a new person
-func Update() {
-    dataDir = "trainImages"
+func UpdateDescriptor() {
     indSamples = nil
     indTracker = nil
     valid = false
     indCount = indCount + 1
 }
 
-func ReturnModel() (mod map[int]TrainStruct) {
+//Updates the samples and id tracker for the samples so the model can be retrained
+func UpdateSamples() {
+    indCount = 0
+    count = 0
+    samples = nil
+    tracker = nil
+}
+
+//Returns a map of trained identities with their information
+func ReturnModel() (map[int]TrainStruct) {
     return Model
 }
 
+//Return the address of the rec pointer
 func ReturnRec() (*face.Recognizer) {
     return rec
 }
 
 //Traverses through the given file and finds any ".jpg" to train the model with
-func DirTraverse(file string, name string) {
+func DirTraverse(file string) {
     fi, err := os.Stat(file)
     if err != nil {
         fmt.Println(err)
@@ -84,12 +90,14 @@ func DirTraverse(file string, name string) {
 
         for _, f2 := range files {
             newDir := filepath.Join(file, f2.Name())
-            DirTraverse(newDir, name)
+            DirTraverse(newDir)
         }
+
+        pathSplit := strings.Split(file, "/")
 
         //Updating count, which will be used as id
         if (valid == true) {
-            PopulateDescriptor(name)
+            PopulateDescriptor(pathSplit[1])
         }
     //If the file given is a regular file
     case mode.IsRegular():
@@ -121,85 +129,55 @@ func PopulateDescriptor(name string) {
     entry.Name = name
 
     Model[indCount] = entry
+    rec.SetSamples(samples, tracker)
+
+    UpdateDescriptor()
 }
 
+//Training the model from a fixed directory called "trainImages"
 func Train() {
+    UpdateSamples()
     Model = make(map[int]TrainStruct)
     var err error
 
-    //Changing directory and training for Chris
-    ChangeDir("Chris")
     rec, err = face.NewRecognizer(dataDir)
     if (err != nil) {
         log.Fatalf("Error opening directory.")
     }
 
-    var name string = "Chris Smith"
-    //Traversing through Chris directory
-    DirTraverse(dataDir, name)
-    rec.SetSamples(samples, tracker)
-    Update()
-
-    //Changing directory and training for Mushahid
-    ChangeDir("Mushahid")
-    rec, err = face.NewRecognizer(dataDir)
-    if (err != nil) {
-        log.Fatalf("Error opening directory.")
-    }
-
-    name = "Mushahid Hassan"
-    //Traversing through Mushahid directory
-    DirTraverse(dataDir, name)
-    rec.SetSamples(samples, tracker)
-    Update()
-
-    //Changing directory and training for Tanja
-    ChangeDir("Tanja")
-    rec, err = face.NewRecognizer(dataDir)
-    if (err != nil) {
-        log.Fatalf("Error opening directory.")
-    }
-
-    name = "Tanja Nuendel"
-    //Traversing through Tanja directory
-    DirTraverse(dataDir, name)
-    rec.SetSamples(samples, tracker)
-    Update()
-
-    //Changing directory and training for Olivia
-    ChangeDir("Olivia")
-    rec, err = face.NewRecognizer(dataDir)
-    if (err != nil) {
-        log.Fatalf("Error opening directory.")
-    }
-
-    name = "Olivia Kumar"
-    //Traversing through Olivia directory
-    DirTraverse(dataDir, name)
-    rec.SetSamples(samples, tracker)
-    Update()
-
+    DirTraverse(dataDir)
 }
 
+//Testing the model by giving a certain image name within the "testImages" directory
 func Infer(imgPath string) (GofaceData) {
-    // dataDir = "images/testImages"
-    // imgPath = filepath.Join(dataDir, imgPath)
+    newDir := "imgtest"
+    imgPath = filepath.Join(newDir, imgPath)
+    approved = false
+
+    var gofaceData GofaceData
+    gofaceData = GofaceData{
+        Identity: "",
+        Accepted:  approved,
+        Location:  "",
+        Entrytype: "",
+        Imagepath:	imgPath,
+    }
 
     testPic, err := rec.RecognizeSingleFile(imgPath)
+
     if err != nil {
-        log.Fatalf("Can't recognize: %v", err)
+        return gofaceData
     }
 
     if testPic == nil {
-        approved = false
-        log.Fatalf("Picture Match: %t", approved)
+        return gofaceData
     }
 
     picID := rec.ClassifyThreshold(testPic.Descriptor, 0.4)
     if picID < 0 {
-        panic("Can't classify")
-    }
-
+        return gofaceData
+    } 
+    
     approved = true
     var person string
     for i := 0; i < len(Model); i++ {
@@ -210,7 +188,6 @@ func Infer(imgPath string) (GofaceData) {
         }
     }
 
-    var gofaceData GofaceData
     if (approved) {
         location := "Front Door"
         entryType := "I"
@@ -222,17 +199,7 @@ func Infer(imgPath string) (GofaceData) {
             Entrytype: entryType,
             Imagepath:	imgPath,
         }
-    } else {
-        gofaceData = GofaceData{
-            Identity: "",
-            Accepted:  approved,
-            Location:  "",
-            Entrytype: "",
-            Imagepath:	imgPath,
-        }
-    }
-
-    Update()
+    } 
+    
     return gofaceData
-
 }
