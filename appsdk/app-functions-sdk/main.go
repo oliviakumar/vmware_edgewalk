@@ -140,7 +140,9 @@ func SendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, in
 		return false, errors.New("Could not convert to json")
 	}
 	// resp, err := http.Post("http://localhost:8080/", "application/json", bytes.NewReader(data))
-	resp0, err0 := http.Post("http://localhost:8080/edge/clear", "application/json", bytes.NewReader(data))
+	// resp0, err0 := http.Post("http://localhost:8080/edge/clear", "application/json", bytes.NewReader(data))
+	// http.Post("http://localhost:8080/edge/clear", w.FormDataContentType(), b)
+
 	resp, err := http.Post("http://localhost:8080/edge/api", "application/json", bytes.NewReader(data))
 	if err != nil {
 		fmt.Println(err0)

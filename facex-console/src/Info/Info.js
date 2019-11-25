@@ -47,6 +47,7 @@ class MyComponent extends React.Component {
       // if (this.props.toggleOpen == true) {
           // this.getInfo(this.state.response.idString);
       // }
+
   }
 
   getInfo(id) {
@@ -96,7 +97,7 @@ class MyComponent extends React.Component {
   render() {
       return (
         <div>
-
+            {this.getInfo(this.state.response.idString)}
             {renderImage('http://localhost:8080/files/', this.state.response.idString)}
         </div>
     );

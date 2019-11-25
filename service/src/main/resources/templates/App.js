@@ -9,22 +9,22 @@ class App extends Component {
         <div className="App">
           <h1 className="alert alert-warning"> FACEX </h1>
             <h1>testing...</h1>
-            function call() {
-    			$.ajax({
-    				url : '/content',
-    				type : 'GET',
-    				success : function (data) {
-    					$('#container').html(data);
-    				},
-    				error : function (error) {
-    					alert(error);
-    				}
-    			});
-    		}
-
-    		setInterval(function() {
-    			call();
-    		}, 1000)
+            // function call() {
+    		// 	$.ajax({
+    		// 		url : '/content',
+    		// 		type : 'GET',
+    		// 		success : function (data) {
+    		// 			$('#container').html(data);
+    		// 		},
+    		// 		error : function (error) {
+    		// 			alert(error);
+    		// 		}
+    		// 	});
+    		// }
+            //
+    		// setInterval(function() {
+    		// 	call();
+    		// }, 1000)
         </div>
       </Router>
     );

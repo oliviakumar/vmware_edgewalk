@@ -30,8 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 // import org.apache.commons.io.IOUtils
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-
-@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "*" })
 @RequestMapping("/files")
 @EnableWebMvc
 @RestController
@@ -125,16 +124,16 @@ public class FileController {
 		IOUtils.copy(in, response.getOutputStream());
 	}
 
-	@RequestMapping(value = "/5dcf20d60830d315b04b3d69", method = RequestMethod.GET,
-		produces = MediaType.IMAGE_JPEG_VALUE)
-
-	public void getImage(HttpServletResponse response) throws IOException {
-
-		var imgFile = new ClassPathResource("/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/service/5dcf20d60830d315b04b3d69.jpg");
-
-		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-		StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
-	}
+	// @RequestMapping(value = "/5dcf20d60830d315b04b3d69", method = RequestMethod.GET,
+	// 	produces = MediaType.IMAGE_JPEG_VALUE)
+	//
+	// public void getImage(HttpServletResponse response) throws IOException {
+	//
+	// 	var imgFile = new ClassPathResource("/Users/oliviakumar/Documents/Fall19/SeniorTeam/vmware_edgewalk/service/5dcf20d60830d315b04b3d69.jpg");
+	//
+	// 	response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+	// 	StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
+	// }
 	// @RequestMapping("/photo")
 	// public void getPhoto(HttpServletResponse response) throws IOException {
 	// 	// // ServletContext servletContext = null;
@@ -149,7 +148,7 @@ public class FileController {
 	// 	String id = response.getId().toHexString() + ".jpg";
 	// 	Files.copy(file.getInputStream(), this.path.resolve(id),
 	// 	StandardCopyOption.REPLACE_EXISTING);
-		
+
 	// }
 
 	// @RequestMapping(value = "/getImage", method = RequestMethod.GET)

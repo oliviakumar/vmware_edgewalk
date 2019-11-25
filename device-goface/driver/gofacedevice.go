@@ -73,11 +73,13 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 		for s.scanner.Scan() {
 			// split lines and split line data points at comma
 			splitLine := strings.Split(s.scanner.Text(), ",")
+			fmt.Println(splitLine)
 			if len(splitLine) > 0 {
 				if splitLine[0] == "$GF" {
 					tempGofaceData := parseGofaceLine(splitLine)
 					s.mux.Lock()
 					s.gofacedata = tempGofaceData
+					fmt.Println(s.gofacedata)
 					s.mux.Unlock()
 					time.Sleep(1000 * time.Millisecond)
 				}
