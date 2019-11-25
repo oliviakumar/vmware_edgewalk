@@ -46,57 +46,59 @@ class MyComponent extends React.Component {
       console.log('hello info cdm');
 
   }
-
   render() {
-    const { error, isLoaded, response } = this.state;
-    // console.log(response);
-
-    if (error) {
-      return <div>Error: {error.message}</div>;
-    } else if (!isLoaded) {
-      return <div>Loading.....</div>;
-    } else {
-      return (
-        <div>
-        <table>
-          <tr>
-            <td><b>Id: </b></td>
-            <td>{response.idString}</td>
-          </tr>
-          <tr>
-            <td><b>EdgeX Id: </b></td>
-            <td>{response.edgexId}</td>
-          </tr>
-          <tr>
-            <td><b>Identity: </b></td>
-            <td>{response.identityCapital}</td>
-          </tr>
-          <tr>
-            <td><b>Location: </b></td>
-            <td>{response.locationCapital}</td>
-          </tr>
-          <tr>
-            <td><b>Device: </b></td>
-            <td>{response.device}</td>
-          </tr>
-          <tr>
-            <td><b>Type: </b></td>
-            {renderType(response.typeCapital)}
-          </tr>
-          <tr>
-            <td><b>Time: </b></td>
-            <td>{response.attempted}</td>
-          </tr>
-          <tr>
-            <td><b>Accepted: </b></td>
-            {renderColor(response.accepted)}
-          </tr>
-        </table>
-        {renderImage('http://localhost:8080/files/', response.idString)}
-      </div>
-      );
-    }
+      {renderImage('http://localhost:8080/files/', response.idString)}
   }
+  // render() {
+  //   const { error, isLoaded, response } = this.state;
+  //   // console.log(response);
+  //
+  //   if (error) {
+  //     return <div>Error: {error.message}</div>;
+  //   } else if (!isLoaded) {
+  //     return <div>Loading.....</div>;
+  //   } else {
+  //     return (
+  //       <div>
+  //       <table>
+  //         <tr>
+  //           <td><b>Id: </b></td>
+  //           <td>{response.idString}</td>
+  //         </tr>
+  //         <tr>
+  //           <td><b>EdgeX Id: </b></td>
+  //           <td>{response.edgexId}</td>
+  //         </tr>
+  //         <tr>
+  //           <td><b>Identity: </b></td>
+  //           <td>{response.identityCapital}</td>
+  //         </tr>
+  //         <tr>
+  //           <td><b>Location: </b></td>
+  //           <td>{response.locationCapital}</td>
+  //         </tr>
+  //         <tr>
+  //           <td><b>Device: </b></td>
+  //           <td>{response.device}</td>
+  //         </tr>
+  //         <tr>
+  //           <td><b>Type: </b></td>
+  //           {renderType(response.typeCapital)}
+  //         </tr>
+  //         <tr>
+  //           <td><b>Time: </b></td>
+  //           <td>{response.attempted}</td>
+  //         </tr>
+  //         <tr>
+  //           <td><b>Accepted: </b></td>
+  //           {renderColor(response.accepted)}
+  //         </tr>
+  //       </table>
+  //       {renderImage('http://localhost:8080/files/', response.idString)}
+  //     </div>
+  //     );
+  //   }
+  // }
 }
 
 function Info() {

@@ -213,7 +213,8 @@ class ListEntriesComponent extends Component {
                                     return entry.location.toLowerCase().indexOf(filterText.toLowerCase()) >= 0;
                                 })
                                 .map((entry, i) => {
-                                    return <Entry entry={entry} index={i} onClick={() => this.viewDetailHandler(i)} />
+                                    // console.log(`entry.idString:`, entry.idString);
+                                    return <Entry entry={entry} idStr={entry.idString} onClick={() => this.viewDetailHandler(i)} />
                             })
                         }
                         </tbody>
