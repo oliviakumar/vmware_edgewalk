@@ -43,6 +43,7 @@ class MyComponent extends React.Component {
   }
 
   componentDidMount() {
+      console.log('hello info cdm');
 
   }
 

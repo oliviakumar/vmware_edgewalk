@@ -36,6 +36,8 @@ const Entry = (props) => {
     // );
     //
     // ReactDOM.render(<Example />);
+    console.log(`props.details:`, props.details);
+    // console.log(`state from LEC:`, props.state.entries);
         // const ret =
       return <tr href="#" className="Entry" onClick={props.onClick}>
             <td> {Math.random()} </td>
@@ -43,6 +45,7 @@ const Entry = (props) => {
             <td> {props.entry.location} </td>
             <td> {props.entry.attempted} </td>
             <td style={{backgroundColor: props.entry.accepted === "true" ?  'green' : 'red' }}> {props.entry.accepted === "true" ? "yes" : "no"} </td>
+
             <ViewEntry />
           </tr>
 // return ret + ' entry detail view '

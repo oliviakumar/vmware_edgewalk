@@ -7,6 +7,8 @@ const ViewEntry = (props) => {
 
   const toggle = () => setIsOpen(!isOpen);
 
+  // console.log(`props.details: `, props.details);
+
   return (
     <div>
       <Button color="primary" onClick={toggle} style={{ marginBottom: '1rem' }}>Toggle</Button>

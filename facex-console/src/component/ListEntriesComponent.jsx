@@ -80,21 +80,28 @@ class ListEntriesComponent extends Component {
         // entries.push(i, 0, <tr> details... </tr>);
 
         console.log('this.state.entries[i]');
-        console.log(this.state.entries[i]);
-        // console.log(this.state.entries[i].idString);
-        return (
-          <div>
-          <table>
-            <tr>
-              <td><b>Id: </b></td>
-              <td>{this.state.entries[i].idString}</td>
-            </tr>
+        console.log(this.state.entries[i].idString);
 
-          </table>
-        </div>
-        );
+        // const c = host + id
+        // return (
+        //     <img src={c} />
+        //   );
+        /*
+        // console.log(this.state.entries[i].idString);
+        // return (
+        //   <div>
+        //   <table>
+        //     <tr>
+        //       <td><b>Id: </b></td>
+        //       <td>{this.state.entries[i].idString}</td>
+        //     </tr>
+        //
+        //   </table>
+        // </div>
+        // );
 
         // this.setState({entries: entries});
+        */
     }
 
 
@@ -206,7 +213,7 @@ class ListEntriesComponent extends Component {
                                     return entry.location.toLowerCase().indexOf(filterText.toLowerCase()) >= 0;
                                 })
                                 .map((entry, i) => {
-                                    return <Entry entry={entry} details={entry.content} onClick={() => this.viewDetailHandler(i)} />
+                                    return <Entry entry={entry} index={i} onClick={() => this.viewDetailHandler(i)} />
                             })
                         }
                         </tbody>
