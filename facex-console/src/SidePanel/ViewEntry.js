@@ -15,7 +15,7 @@ const ViewEntry = (props) => {
       <Collapse isOpen={isOpen}>
         <Card>
           <CardBody>
-            <Info />
+            <Info/>
           </CardBody>
         </Card>
       </Collapse>

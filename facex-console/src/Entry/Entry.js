@@ -45,7 +45,7 @@ const Entry = (props) => {
             <td> {props.entry.location} </td>
             <td> {props.entry.attempted} </td>
             <td style={{backgroundColor: props.entry.accepted === "true" ?  'green' : 'red' }}> {props.entry.accepted === "true" ? "yes" : "no"} </td>
-            
+
             <ViewEntry idStr={props.entry.idString}/>
           </tr>
 // return ret + ' entry detail view '
@@ -56,5 +56,5 @@ export default Entry;
 /*
 
 return <tr onClick={props.click} style={{ marginBottom: '1rem', width: '100%'}}>
-
+console.log(props.entry.idString)
 */

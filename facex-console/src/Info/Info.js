@@ -43,11 +43,43 @@ class MyComponent extends React.Component {
   }
 
   componentDidMount() {
-      console.log('hello info cdm');
-
+      console.log('info cdm');
+      if (this.props.toggleOpen == true) {
+          this.getInfo(this.state.response.idString);
+      }
   }
+
+  getInfo(id) {
+      console.log(`Infojs getinfo (id):`, id);
+
+      fetch("http://localhost:8080/{id}")
+        .then(res => res.json())
+        .then(
+          (result) => {
+              console.log('result-');
+              console.log(result);
+              this.setState({
+                  isLoaded: true,
+                  response: result,
+            });
+          },
+          (error) => {
+            console.log('error2');
+            this.setState({
+              isLoaded: true,
+              error
+            });
+          }
+        )
+  }
+
   render() {
-      {renderImage('http://localhost:8080/files/', response.idString)}
+      return (
+        <div>
+
+            {renderImage('http://localhost:8080/files/', this.state.response.idString)}
+        </div>
+    );
   }
   // render() {
   //   const { error, isLoaded, response } = this.state;
