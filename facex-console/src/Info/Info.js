@@ -49,41 +49,40 @@ class Info extends React.Component {
       // if (this.props.toggleOpen == true) {
           // this.getInfo(this.state.response.idString);
       // }
-
   }
 
   getInfo(id) {
-    // console.log(`Infojs getinfo (id):`, id);
-    const fetchUrl = "http://localhost:8080/" + id;
-    // console.log(`id:`, id);
-    // console.log(`fetchUrl:`, fetchUrl);
-        fetch(fetchUrl)
-          .then(res => res.json())
-          .then(
-            (result) => {
-                console.log('content call');
-                this.setState({
-                    isLoaded: true,
-                    response: result,
-              });
-            },
-            (error) => {
-              this.setState({
-                isLoaded: true,
-                error
-              });
-              console.log('error');
-            }
-          )
+      console.log(`getInfo id:`, id);
+      /*
+      backend.js:6 Uncaught RangeError: Maximum call stack size exceeded
+          at Set.has (<anonymous>)
+      */
+    // const fetchUrl = "http://localhost:8080/" + id;
+        // fetch(fetchUrl)
+        //   .then(res => res.json())
+        //   .then(
+        //     (result) => {
+        //         console.log(`result:`, result);
+        //         this.setState({
+        //             isLoaded: true,
+        //             response: result,
+        //       });
+        //     },
+        //     (error) => {
+        //       this.setState({
+        //         isLoaded: true,
+        //         error
+        //       });
+        //       // console.log('error');
+        //     }
+        //   )
   }
 
   render() {
       return (
         <div>
-            // <p> {this.props.idStr} hi </p>
-            // {console.log(this.props.idStr)}
             {this.getInfo(this.props.idStr)}
-            {renderImage('http://localhost:8080/files/', this.props.idStr)}
+            // {renderImage('http://localhost:8080/files/', this.props.idStr)}
         </div>
     );
   }

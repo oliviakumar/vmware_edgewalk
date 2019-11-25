@@ -47,7 +47,8 @@ class App extends Component {
             error: null,
             isLoaded: false,
             response: [],
-            content: []
+            content: [],
+            fetchId: ''
         };
     }
 
@@ -69,18 +70,19 @@ class App extends Component {
   // }
 
   componentDidMount() {
-      fetch("http://localhost:8080/")
+      const fetchUrl = "http://localhost:8080/" + this.state.fetchId;
+      fetch(fetchUrl)
         .then(res => res.json())
         .then(
           (result) => {
-            console.log(result);
+            console.log(`result:`, result);
             this.setState({
               isLoaded: true,
               response: result
             });
           },
           (error) => {
-              console.log('error2');
+              console.log('erroneous');
             this.setState({
               isLoaded: true,
               error
