@@ -43,16 +43,16 @@ class MyComponent extends React.Component {
   }
 
   componentDidMount() {
-      console.log('info cdm');
-      if (this.props.toggleOpen == true) {
-          this.getInfo(this.state.response.idString);
-      }
+      // console.log('info cdm');
+      // if (this.props.toggleOpen == true) {
+          // this.getInfo(this.state.response.idString);
+      // }
   }
 
   getInfo(id) {
-      console.log(`Infojs getinfo (id):`, id);
+    console.log(`Infojs getinfo (id):`, id);
 
-      fetch("http://localhost:8080/{id}")
+    fetch("http://localhost:8080/{id}")
         .then(res => res.json())
         .then(
           (result) => {
@@ -71,6 +71,26 @@ class MyComponent extends React.Component {
             });
           }
         )
+    //
+    // fetch("http://localhost:8080/all")
+    //     .then(res => res.json())
+    //     .then(
+    //     (result) => {
+    //         console.log('result-');
+    //         console.log(result);
+    //         this.setState({
+    //             isLoaded: true,
+    //             response: result,
+    //       });
+    //     },
+    //     (error) => {
+    //       console.log('error2');
+    //       this.setState({
+    //         isLoaded: true,
+    //         error
+    //       });
+    //     }
+    //     )
   }
 
   render() {
