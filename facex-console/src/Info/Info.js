@@ -53,52 +53,13 @@ class MyComponent extends React.Component {
   getInfo(id) {
     console.log(`Infojs getinfo (id):`, id);
 
-    // fetch(`http://localhost:8080/=${id}`)
-    //     .then(res => res.json())
-    //     .then(
-    //       (result) => {
-    //           console.log('result-');
-    //           console.log(result);
-    //           this.setState({
-    //               isLoaded: true,
-    //               response: result,
-    //         });
-    //       },
-    //       (error) => {
-    //         console.log('error2');
-    //         this.setState({
-    //           isLoaded: true,
-    //           error
-    //         });
-    //       }
-    //     )
-    //
-    // fetch("http://localhost:8080/all")
-    //     .then(res => res.json())
-    //     .then(
-    //     (result) => {
-    //         console.log('result-');
-    //         console.log(result);
-    //         this.setState({
-    //             isLoaded: true,
-    //             response: result,
-    //       });
-    //     },
-    //     (error) => {
-    //       console.log('error2');
-    //       this.setState({
-    //         isLoaded: true,
-    //         error
-    //       });
-    //     }
-    //     )
+
   }
 
   render() {
       return (
         <div>
-            {this.getInfo(this.state.response.idString)}
-            {renderImage('http://localhost:8080/files/', this.state.response.idString)}
+            <p> hi </p>
         </div>
     );
   }

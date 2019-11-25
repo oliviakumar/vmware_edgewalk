@@ -69,7 +69,7 @@ class App extends Component {
   // }
 
   componentDidMount() {
-      fetch("http://localhost:8080/all")
+      fetch("http://localhost:8080/")
         .then(res => res.json())
         .then(
           (result) => {

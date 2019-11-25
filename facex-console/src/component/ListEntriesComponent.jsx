@@ -106,7 +106,7 @@ class ListEntriesComponent extends Component {
 
 
     onClickHandler() {
-        console.log('look we made it');
+        // console.log('look we made it');
     }
 
     refreshEntries() {
