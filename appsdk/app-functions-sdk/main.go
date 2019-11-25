@@ -11,11 +11,12 @@ import (
 	"io"
 	"strings"
 
+	"github.com/vmware-edgewalk/facex/device-goface/driver"
+
 	"github.com/edgexfoundry/app-functions-sdk-go/pkg/transforms"
 	"github.com/edgexfoundry/app-functions-sdk-go/appcontext"
 	"github.com/edgexfoundry/app-functions-sdk-go/appsdk"
 	"github.com/edgexfoundry/go-mod-core-contracts/models"
-	"github.com/edgexfoundry/device-goface/driver"
 )
 
 const (
@@ -57,37 +58,13 @@ func main() {
 		SendImage,
 	)
 
-	// 5) shows how to access the application's specific configuration settings.
-	//appSettings := edgexSdk.ApplicationSettings()
-	//if appSettings != nil {
-	//	appName, ok := appSettings["ApplicationName"]
-	//	if ok {
-	//		edgexSdk.LoggingClient.Info(fmt.Sprintf("%s now running...", appName))
-	//	} else {
-	//		edgexSdk.LoggingClient.Error("ApplicationName application setting not found")
-	//		os.Exit(-1)
-	//	}
-	//} else {
-	//	edgexSdk.LoggingClient.Error("No application settings found")
-	//	os.Exit(-1)
-	//}
-
-	// 6) Lastly, we'll go ahead and tell the SDK to "start" and begin listening for events to trigger the pipeline.
+	// 5) Lastly, we'll go ahead and tell the SDK to "start" and begin listening for events to trigger the pipeline.
 	if err := edgexSdk.MakeItRun(); err != nil {
 		edgexSdk.LoggingClient.Error("MakeItRun returned error: ", err.Error())
 		os.Exit(-1)
 	}
 
 	os.Exit(0)
-}
-
-func printJSONToConsole(edgexcontext *appcontext.Context, params ...interface{}) (bool,interface{}) {
-	if len(params) < 1 {
-		// We didn't receive a result
-		return false, errors.New("No Data Received")
-	}
-	println(params[0].(string))
-	return true, params[0].(string)
 }
 
 func GetDataFromJSON(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
