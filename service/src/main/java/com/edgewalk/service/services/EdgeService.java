@@ -15,5 +15,7 @@ public interface EdgeService {
 
 	List<Response> retrieveAll();
 
+	Response getResponseById(String id);
+
 	void clear();
 }

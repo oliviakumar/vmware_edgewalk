@@ -1,7 +1,7 @@
-$GF, Mushahid, true, back door, I
+$GF, Anonymous, false, back door, I, ../../model-goface/images/testImages/test5.jpg
 
-$GF, Chris, true, front door, O
+$GF, Chris, true, front door, O, ../../model-goface/images/testImages/test10.jpg
 
-$GF, Doug, true, back door, I
+$GF, Olivia, true, back door, I, ../../model-goface/images/testImages/test7.jpg
 
-$GF, Doug, false, front door, O
+$GF, Mushahid, true, front door, O, ../../model-goface/images/testImages/test2.jpg

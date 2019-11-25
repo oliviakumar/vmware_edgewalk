@@ -1,0 +1,25 @@
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+# Unignore Makefile
+!Makefile
+
+# Don't track thes folders
+*/target/
+*/logs/
+*/bin/
+
+# Don't track these files
+*.class
+.DS_Store
+.settings
+.project
+*.logs
+*.log
+
