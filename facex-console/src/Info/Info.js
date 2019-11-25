@@ -32,7 +32,7 @@ function renderColor(accepted) {
   }
 }
 
-class MyComponent extends React.Component {
+class Info extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,7 +43,9 @@ class MyComponent extends React.Component {
   }
 
   componentDidMount() {
-      // console.log('info cdm');
+      console.log(this.props);
+
+      console.log('info cdm');
       // if (this.props.toggleOpen == true) {
           // this.getInfo(this.state.response.idString);
       // }
@@ -51,15 +53,37 @@ class MyComponent extends React.Component {
   }
 
   getInfo(id) {
-    console.log(`Infojs getinfo (id):`, id);
-
-
+    // console.log(`Infojs getinfo (id):`, id);
+    const fetchUrl = "http://localhost:8080/" + id;
+    // console.log(`id:`, id);
+    // console.log(`fetchUrl:`, fetchUrl);
+        fetch(fetchUrl)
+          .then(res => res.json())
+          .then(
+            (result) => {
+                console.log('content call');
+                this.setState({
+                    isLoaded: true,
+                    response: result,
+              });
+            },
+            (error) => {
+              this.setState({
+                isLoaded: true,
+                error
+              });
+              console.log('error');
+            }
+          )
   }
 
   render() {
       return (
         <div>
-            <p> hi </p>
+            // <p> {this.props.idStr} hi </p>
+            // {console.log(this.props.idStr)}
+            {this.getInfo(this.props.idStr)}
+            {renderImage('http://localhost:8080/files/', this.props.idStr)}
         </div>
     );
   }
@@ -115,14 +139,14 @@ class MyComponent extends React.Component {
   // }
 }
 
-function Info() {
-  return (
-    <div className="Info">
-      <header className="Info-header">
-        <MyComponent />
-      </header>
-    </div>
-  );
-}
+// function Info() {
+//   return (
+//     <div className="Info">
+//       <header className="Info-header">
+//         <MyComponent />
+//       </header>
+//     </div>
+//   );
+// }
 
 export default Info;
