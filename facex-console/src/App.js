@@ -75,7 +75,7 @@ class App extends Component {
         .then(res => res.json())
         .then(
           (result) => {
-            console.log(`result:`, result);
+            console.log(`appjs result:`, result);
             this.setState({
               isLoaded: true,
               response: result

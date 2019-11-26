@@ -1,6 +1,7 @@
 import React from 'react';
 // import './App.css';
-import noauth from '../unauthId.png'
+// import noauth from '../unauth.png';
+import logo from "../logos/facex_logo.png";
 
 const successStyle = {
   backgroundColor: 'chartreuse',
@@ -11,9 +12,10 @@ const failStyle = {
 }
 
 function renderImage(host, id) {
+  console.log(`renderImage id:`, id);
   const c = host + id
   return (
-      <img src={c} />
+      <img src={c} onerror="this.src={logo}" height="50" width="50"/>
     );
 }
 
@@ -106,15 +108,10 @@ class Info extends React.Component {
       console.log(`this.state.error: `, this.state.error)
       console.log(`this.state.isLoaded: `, this.state.isLoaded)
       console.log(`this.state.response: `, this.state.response)
-      if (!this.state.response.accepted) {
           return (
               <div>
                 {renderImage('http://localhost:8080/files/', this.props.idStr)}
               </div>
-          );
-      } else {
-          return (
-              <img src={noauth}/>
           );
       }
   }
@@ -181,7 +178,7 @@ class Info extends React.Component {
   //     );
   //   }
   // }
-}
+ // }
 
 // function Info() {
 //   return (
