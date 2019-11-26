@@ -32,6 +32,8 @@ function renderColor(accepted) {
   }
 }
 
+const temp = 'http://localhost:8080/files/';
+
 class Info extends React.Component {
   constructor(props) {
     super(props);
@@ -45,10 +47,29 @@ class Info extends React.Component {
   componentDidMount() {
       // console.log(this.props);
 
-      // console.log('info cdm');
+      console.log(`'info cdm'`, this.props.idStr);
       // if (this.props.toggleOpen == true) {
           // this.getInfo(this.state.response.idString);
       // }
+      let url = 'http://localhost:8080/' + this.props.idStr;
+      fetch(url)
+        .then(res => res.json())
+        .then(
+          (result) => {
+              console.log('content call');
+              this.setState({
+                  isLoaded: true,
+                  response: result,
+            });
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error
+            });
+            // console.log('error');
+          }
+        )
   }
 
   getInfo() {
@@ -57,7 +78,9 @@ class Info extends React.Component {
       backend.js:6 Uncaught RangeError: Maximum call stack size exceeded
           at Set.has (<anonymous>)
       */
-    const fetchUrl = "http://localhost:8080/5ddc6a0ae695521851756eb2";
+    let suffix = this.props.idStr; /*"5ddc6a0ae695521851756eb2"; */
+    console.log(`suffix:`,suffix);
+    let fetchUrl = "http://localhost:8080/all";
         fetch(fetchUrl)
           .then(res => res.json())
           .then(
@@ -80,14 +103,24 @@ class Info extends React.Component {
 
   render() {
       return (
-        <div>
-            <p> {this.props.idStr}
-            {this.getInfo()}
-            {renderImage('http://localhost:8080/files/', '5ddc6a0ae695521851756eb2')}
-            </p>
-        </div>
+          <div>
+            {renderImage('http://localhost:8080/files/', this.props.idStr)}
+          </div>
     );
   }
+
+  /*
+  {
+
+  // <div>
+  //     <p>
+  //     {`this.props.idStr:`, this.props.idStr}
+  //     {this.getInfo()}
+  //     {renderImage('http://localhost:8080/files/', this.props.idStr)}
+  //     </p>
+  // </div>
+  }
+  */
   // render() {
   //   const { error, isLoaded, response } = this.state;
   //   // console.log(response);

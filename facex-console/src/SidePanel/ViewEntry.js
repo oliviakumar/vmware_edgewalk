@@ -8,7 +8,7 @@ const ViewEntry = (props) => {
 
   const toggle = () => setIsOpen(!isOpen);
 
-  // console.log(`props.details: `, props.details);
+  console.log(`props.details: `, props.idStr);
 
   return (
     <div>
@@ -16,7 +16,7 @@ const ViewEntry = (props) => {
       <Collapse isOpen={isOpen}>
         <Card>
           <CardBody>
-            <Info />
+          <Info idStr={props.idStr} />
           </CardBody>
         </Card>
       </Collapse>
