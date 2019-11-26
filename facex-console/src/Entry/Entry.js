@@ -69,7 +69,6 @@ export default Entry;
 
 /*
 <td> {props.entry.accepted.toString() === "true" ? "approved" : "denied"} </td>
-
 return <tr onClick={props.click} style={{ marginBottom: '1rem', width: '100%'}}>
 console.log(props.entry.idString)
 */
