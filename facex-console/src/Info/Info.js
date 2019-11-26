@@ -81,10 +81,10 @@ class Info extends React.Component {
   render() {
       return (
         <div>
-            <p> {this.props.idStr} </p>
+            <p> {this.props.idStr}
             {this.getInfo()}
             {renderImage('http://localhost:8080/files/', '5ddc6a0ae695521851756eb2')}
-
+            </p>
         </div>
     );
   }
