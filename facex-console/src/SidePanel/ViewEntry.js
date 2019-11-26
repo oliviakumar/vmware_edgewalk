@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
 import Info from '../Info/Info';
+import Detail from '../Detail';
 
 const ViewEntry = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +16,7 @@ const ViewEntry = (props) => {
       <Collapse isOpen={isOpen}>
         <Card>
           <CardBody>
-            <Info idStr={props.idStr} />
+            <Info />
           </CardBody>
         </Card>
       </Collapse>
@@ -24,3 +25,8 @@ const ViewEntry = (props) => {
 }
 
 export default ViewEntry;
+
+
+/*
+// <Info idStr={props.idStr} />
+*/

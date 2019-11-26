@@ -43,46 +43,48 @@ class Info extends React.Component {
   }
 
   componentDidMount() {
-      console.log(this.props);
+      // console.log(this.props);
 
-      console.log('info cdm');
+      // console.log('info cdm');
       // if (this.props.toggleOpen == true) {
           // this.getInfo(this.state.response.idString);
       // }
   }
 
-  getInfo(id) {
-      console.log(`getInfo id:`, id);
+  getInfo() {
+      // console.log(`getInfo id:`, id);
       /*
       backend.js:6 Uncaught RangeError: Maximum call stack size exceeded
           at Set.has (<anonymous>)
       */
-    // const fetchUrl = "http://localhost:8080/" + id;
-        // fetch(fetchUrl)
-        //   .then(res => res.json())
-        //   .then(
-        //     (result) => {
-        //         console.log(`result:`, result);
-        //         this.setState({
-        //             isLoaded: true,
-        //             response: result,
-        //       });
-        //     },
-        //     (error) => {
-        //       this.setState({
-        //         isLoaded: true,
-        //         error
-        //       });
-        //       // console.log('error');
-        //     }
-        //   )
+    const fetchUrl = "http://localhost:8080/5ddc6a0ae695521851756eb2";
+        fetch(fetchUrl)
+          .then(res => res.json())
+          .then(
+            (result) => {
+                console.log(`result:`, result);
+                this.setState({
+                    isLoaded: true,
+                    response: result,
+              });
+            },
+            (error) => {
+              this.setState({
+                isLoaded: true,
+                error
+              });
+              // console.log('error');
+            }
+          )
   }
 
   render() {
       return (
         <div>
-            {this.getInfo(this.props.idStr)}
-            // {renderImage('http://localhost:8080/files/', this.props.idStr)}
+            <p> {this.props.idStr} </p>
+            {this.getInfo()}
+            {renderImage('http://localhost:8080/files/', this.props.idString)}
+
         </div>
     );
   }
