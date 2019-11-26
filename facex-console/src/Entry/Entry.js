@@ -13,10 +13,13 @@ const Entry = (props) => {
 
     const successStyle = {
       backgroundColor: 'chartreuse',
+      width: '50px'
     }
 
     const failStyle = {
       backgroundColor: 'red',
+      width: '50px'
+      
     }
 
     function renderColor(accepted) {

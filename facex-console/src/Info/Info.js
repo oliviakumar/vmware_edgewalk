@@ -1,5 +1,6 @@
 import React from 'react';
 // import './App.css';
+import noauth from '../unauthId.png'
 
 const successStyle = {
   backgroundColor: 'chartreuse',
@@ -102,11 +103,20 @@ class Info extends React.Component {
   }
 
   render() {
-      return (
-          <div>
-            {renderImage('http://localhost:8080/files/', this.props.idStr)}
-          </div>
-    );
+      console.log(`this.state.error: `, this.state.error)
+      console.log(`this.state.isLoaded: `, this.state.isLoaded)
+      console.log(`this.state.response: `, this.state.response)
+      if (!this.state.response.accepted) {
+          return (
+              <img src={noauth}/>
+          );
+      } else {
+          return (
+              <div>
+                {renderImage('http://localhost:8080/files/', this.props.idStr)}
+              </div>
+          );
+      }
   }
 
   /*
