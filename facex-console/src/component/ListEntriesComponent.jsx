@@ -21,9 +21,9 @@ class ListEntriesComponent extends Component {
         super(props)
         this.state = {
             entries: [
-                { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
-                { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
-                { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: 'false' }
+                { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: true },
+                { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: true },
+                { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: false }
             ],
             message: null,
             imgpath: '',

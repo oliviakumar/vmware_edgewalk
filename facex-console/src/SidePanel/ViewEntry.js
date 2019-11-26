@@ -8,7 +8,7 @@ const ViewEntry = (props) => {
 
   const toggle = () => setIsOpen(!isOpen);
 
-  console.log(`props.details: `, props.idStr);
+  // console.log(`props.details: `, props.idStr);
 
   return (
     <div>

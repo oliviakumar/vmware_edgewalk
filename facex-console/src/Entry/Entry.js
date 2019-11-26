@@ -10,8 +10,22 @@ const Entry = (props) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggle = () => setIsOpen(!isOpen);
-    // const statusColor = () => setStatusColor(!isApproved)
-    const style = 'red'
+
+    const successStyle = {
+      backgroundColor: 'chartreuse',
+    }
+
+    const failStyle = {
+      backgroundColor: 'red',
+    }
+
+    function renderColor(accepted) {
+      if (accepted) {
+        return <td style={successStyle}></td>
+      } else {
+        return <td style={failStyle}></td>
+      }
+    }
 
     // viewDetailHandler = (i) => {
       // console.log('from entry: ' + i);
@@ -44,7 +58,7 @@ const Entry = (props) => {
             <td> {props.entry.identity} </td>
             <td> {props.entry.location} </td>
             <td> {props.entry.attempted} </td>
-            <td style={{backgroundColor: props.entry.accepted === "true" ?  'green' : 'red' }}> {props.entry.accepted === "true" ? "yes" : "no"} </td>
+            <td> {renderColor(!props.entry.accepted)} </td>
 
             <ViewEntry idStr={props.entry.idString}/>
           </tr>
@@ -54,6 +68,7 @@ const Entry = (props) => {
 export default Entry;
 
 /*
+<td> {props.entry.accepted.toString() === "true" ? "approved" : "denied"} </td>
 
 return <tr onClick={props.click} style={{ marginBottom: '1rem', width: '100%'}}>
 console.log(props.entry.idString)
