@@ -108,13 +108,13 @@ class Info extends React.Component {
       console.log(`this.state.response: `, this.state.response)
       if (!this.state.response.accepted) {
           return (
-              <img src={noauth}/>
-          );
-      } else {
-          return (
               <div>
                 {renderImage('http://localhost:8080/files/', this.props.idStr)}
               </div>
+          );
+      } else {
+          return (
+              <img src={noauth}/>
           );
       }
   }
