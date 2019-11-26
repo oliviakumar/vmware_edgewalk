@@ -70,23 +70,43 @@ class App extends Component {
   // }
 
   componentDidMount() {
-      const fetchUrl = "http://localhost:8080/" + this.state.fetchId;
-      fetch(fetchUrl)
+      // const fetchUrl = "http://localhost:8080/" + this.state.fetchId;
+      // fetch(fetchUrl)
+      //   .then(res => res.json())
+      //   .then(
+      //     (result) => {
+      //       console.log(`appjs result:`, result);
+      //       this.setState({
+      //         isLoaded: true,
+      //         response: result
+      //       });
+      //     },
+      //     (error) => {
+      //         console.log('erroneous');
+      //       this.setState({
+      //         isLoaded: true,
+      //         error
+      //       });
+      //     }
+      //   )
+      console.log(`--- CDM appjs content ---`);
+      let url = 'http://localhost:8080/content';
+      fetch(url)
         .then(res => res.json())
         .then(
           (result) => {
-            console.log(`appjs result:`, result);
-            this.setState({
-              isLoaded: true,
-              response: result
-            });
+              console.log(`content call:`, result);
+            //   this.setState({
+            //       isLoaded: true,
+            //       response: result,
+            // });
           },
           (error) => {
-              console.log('erroneous');
-            this.setState({
-              isLoaded: true,
-              error
-            });
+            // this.setState({
+            //   isLoaded: true,
+            //   error
+            // });
+            console.log(`error:`, error);
           }
         )
 
