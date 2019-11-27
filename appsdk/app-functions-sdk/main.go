@@ -13,13 +13,13 @@ import (
 	"strings"
 	"path/filepath"
 
-	"github.com/oliviakumar/vmware_edgewalk/model-goface/recognition"
-	dModels"github.com/oliviakumar/vmware_edgewalk/models"
-
 	"github.com/edgexfoundry/app-functions-sdk-go/pkg/transforms"
 	"github.com/edgexfoundry/app-functions-sdk-go/appcontext"
 	"github.com/edgexfoundry/app-functions-sdk-go/appsdk"
 	"github.com/edgexfoundry/go-mod-core-contracts/models"
+
+	"github.com/oliviakumar/vmware_edgewalk/model-goface/recognition"
+	dModels"github.com/oliviakumar/vmware_edgewalk/models"
 )
 
 const (

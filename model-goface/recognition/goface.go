@@ -1,19 +1,19 @@
 package recognition
 
-import  (
+import (
     "fmt"
     "log"
     "os"
     "io/ioutil"
     "strings"
     "path/filepath"
-    "github.com/Kagami/go-face"
     "time"
     "errors"
 
-    "github.com/oliviakumar/vmware_edgewalk/models"
-
+    "github.com/Kagami/go-face"
     "github.com/edgexfoundry/app-functions-sdk-go/appcontext"
+
+    "github.com/oliviakumar/vmware_edgewalk/models"
 )
 
 //Struct for storing individual samples, id, and name
