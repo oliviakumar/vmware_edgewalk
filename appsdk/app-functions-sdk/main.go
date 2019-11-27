@@ -9,9 +9,11 @@ import (
 	"bytes"
 	"mime/multipart"
 	"io"
+	"io/ioutil"
 	"strings"
+	"path/filepath"
 
-	"github.com/vmware-edgewalk/facex/device-goface/driver"
+	"github.com/vmware-edgewalk/facex/model-goface/recognition"
 
 	"github.com/edgexfoundry/app-functions-sdk-go/pkg/transforms"
 	"github.com/edgexfoundry/app-functions-sdk-go/appcontext"
@@ -49,11 +51,15 @@ func main() {
 	// like to search for, we'll go ahead and define that now.
 	deviceNames := []string{"device-goface-01"}
 
+
+
 	// 4) This is our pipeline configuration, the collection of functions to
 	// execute every time an event is triggered.
 	edgexSdk.SetFunctionsPipeline(
 		transforms.NewFilter(deviceNames).FilterByDeviceName,
-		GetDataFromJSON,
+		SaveImage,
+		ProcessImage,
+		//GetDataFromJSON,
 		SendData,
 		SendImage,
 	)
@@ -67,32 +73,63 @@ func main() {
 	os.Exit(0)
 }
 
-func GetDataFromJSON(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
+func SaveImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
 	if len(params) < 1 {
 		return false, errors.New("No data received")
 	}
 	model := params[0].(models.Event)
 	for _, reading := range model.Readings {
-		b := []byte(reading.Value)
-		data := driver.NewData()
-		err := json.Unmarshal(b, &data)
-		if err != nil {
-			fmt.Println(err)
-			return false, errors.New("Could not unpack data")
+		if (len(reading.BinaryValue) == 0) {
+			return false, errors.New("No file received")
 		}
-		send := SendingData{
-			Identity: data.Identity,
-			Accepted: data.Accepted,
-			Location: data.Location,
-			Entrytype: data.Entrytype,
+		filepath := "../../model-goface/testImages" + reading.Id + ".jpg"
+		ab, err := filepath.Abs(filepath)
+		fmt.Println("Abs:", ab)
+		fmt.Println("Path", filepath)
+		// err = ioutil.WriteFile(filepath, reading.BinaryValue, 0755)
+		send := SendingData {
 			Device: reading.Device,
 			Edgexid: reading.Id,
-			Imagepath: data.Imagepath,
+			Imagepath: filepath,
 		}
-		return true, send;
+		return true, SendingData
 	}
 	return false, errors.New("No readings received")
 }
+
+func ProcessImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
+	if len(params) < 1 {
+		return false, errors.New("No data received")
+	}
+
+}
+
+// func GetDataFromJSON(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
+// 	if len(params) < 1 {
+// 		return false, errors.New("No data received")
+// 	}
+// 	model := params[0].(models.Event)
+// 	for _, reading := range model.Readings {
+// 		b := []byte(reading.Value)
+// 		data := driver.NewData()
+// 		err := json.Unmarshal(b, &data)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 			return false, errors.New("Could not unpack data")
+// 		}
+// 		send := SendingData{
+// 			Identity: data.Identity,
+// 			Accepted: data.Accepted,
+// 			Location: data.Location,
+// 			Entrytype: data.Entrytype,
+// 			Device: reading.Device,
+// 			Edgexid: reading.Id,
+// 			Imagepath: data.Imagepath,
+// 		}
+// 		return true, send;
+// 	}
+// 	return false, errors.New("No readings received")
+// }
 
 func SendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
 	if len(params) < 1 {

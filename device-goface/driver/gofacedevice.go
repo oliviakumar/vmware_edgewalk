@@ -21,7 +21,7 @@ import (
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	contract "github.com/edgexfoundry/go-mod-core-contracts/models"
 	// import goface functionality, to be called on by using "GF.funcName()"
-	GF "github.com/edgexfoundry/vmware_edgewalk/model-goface/recognition"
+	GF "github.com/vmware_edgewalk/facex/model-goface/recognition"
 )
 
 // external data struct
