@@ -48,6 +48,9 @@ class App extends Component {
 
   componentDidMount() {
       document.getElementById('button-root').addEventListener('click', () => {
+        document.getElementById('mainview').style.display = "none"
+        document.getElementById('header').style.display = "none"
+
         ReactDOM.render(<Main />, document.getElementById('container'));
       });
 
@@ -59,15 +62,9 @@ class App extends Component {
     // const { } = this.state;
 
     return (
-        <div id="app">
+        <div id="app" style={{textAlign: 'center'}}>
             <header class="masthead" width="100%">
-            <div class="container">
-            <div class="intro-text">
-              <button id="button-root"> Read More </button>
 
-              <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Tell Me More</a>
-            </div>
-            </div>
             </header>
 
             <br />
