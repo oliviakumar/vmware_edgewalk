@@ -29,21 +29,16 @@
     <title>FACEX</title>
   </head>
   <body>
+      <h1> hello there be happy </h1>
       <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root"></div>
-        <h1> hello there be happy </h1>
+
       </body>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+      <div id="container">
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+      </div>
+      <!-- /<div id="container" th:include="content :: display" style="width:100%;height:100%;text-align:center;margin:0;"></div>
       <script type="text/javascript">
 
           function call() {
@@ -51,7 +46,7 @@
                   url : '/content',
                   type : 'GET',
                   success : function (data) {
-                      $('#container').html(data);
+                      console.log(`ajax success content:`, $('#container').html(data));
                   },
                   error : function (error) {
                       alert(error);
@@ -62,7 +57,8 @@
           setInterval(function() {
               call();
           }, 1000)
-        </script>
+        </script> -->
+
     </body>
 
 </html>

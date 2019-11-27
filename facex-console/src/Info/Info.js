@@ -48,8 +48,9 @@ class Info extends React.Component {
   }
 
   componentDidMount() {
-
-      console.log(`'info cdm'`, this.props.idStr);
+{
+      // console.log(`'info cdm'`, this.props.idStr);
+}
       let url = 'http://localhost:8080/' + this.props.idStr;
       fetch(url)
         .then(res => res.json())
