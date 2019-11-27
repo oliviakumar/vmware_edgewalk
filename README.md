@@ -40,3 +40,30 @@ $ ./device-goface
 Watch the logs in the terminal to see if it works and check in Postman or browser: http://localhost:48080/api/v1/event/device/RandNum-Device-01/100
 
 For any more help, consider the tutorial at: https://docs.edgexfoundry.org/Ch-GettingStartedSDK-Go.html
+
+# Goface  
+
+## Necessary Prerequisites  
+
+To compile go-face you need to have dlib (>= 19.10) and libjpeg development packages installed.  
+
+### MacOS  
+
+Make sure you have Homebrew installed.
+```
+brew install pkg-config dlib
+sed -i '' 's/^Libs: .*/& -lblas -llapack/' /usr/local/lib/pkgconfig/dlib-1.pc
+```  
+Currently shape_predictor_5_face_landmarks.dat, mmod_human_face_detector.dat and dlib_face_recognition_resnet_model_v1.dat are required. You may download them from dlib-models repo:   
+
+### Models
+```
+mkdir models && cd models
+wget https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2
+bunzip2 shape_predictor_5_face_landmarks.dat.bz2
+wget https://github.com/davisking/dlib-models/raw/master/dlib_face_recognition_resnet_model_v1.dat.bz2
+bunzip2 dlib_face_recognition_resnet_model_v1.dat.bz2
+wget https://github.com/davisking/dlib-models/raw/master/mmod_human_face_detector.dat.bz2
+bunzip2 mmod_human_face_detector.dat.bz2
+```  
+### Usage
