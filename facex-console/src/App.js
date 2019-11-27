@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+
 import {
   Route,
   NavLink,
@@ -22,299 +24,50 @@ import ViewEntry from './SidePanel/ViewEntry';
 import SidePanel from './SidePanel/SidePanel';
 import './Entry/Entry.css';
 import Info from './Info/Info';
-import axios from 'axios'
+import axios from 'axios';
+import Main from './Main';
 
 const ORGANIZATION = 'edgewalk'
 const ORG_API_URL = 'http://localhost:8080'
-
-function renderImage(host, id) {
-  const c = host + id
-  return (
-      <img src={c} />
-    );
-}
+const Temp = () => (
+  <p>Mounted!</p>
+);
 
 class App extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            entries: [
-              // { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: 'true' },
-              // { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: 'true' },
-              // { id: '2', identity: 'Kevin', attempted: '9:00', location: 'x', accepted: 'false' }
-            ],
-            searchText: '',
-            filterText: '',
-            basicFilterText: '',
-            error: null,
-            isLoaded: false,
-            response: [],
-            content: [],
-            fetchId: ''
         };
     }
-    contentResponse() {
-        console.log(`--- CDM appjs content ---`);
-        fetch("http://localhost:8080/content")
-          .then(res => res.json())
-          .then(
-            (result) => {
-              console.log(`appjs result:`, result);
-              // this.setState({
-              //   isLoaded: true,
-              //   response: result
-              // });
-            },
-            (error) => {
-                console.log('erroneous');
-              // this.setState({
-              //   isLoaded: true,
-              //   error
-              // });
-            }
-          )
-    }
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     contacts: [],
-  //     entries: [
-  //       {id: 1, content: 'first entry log', name: 'bob'},
-  //       {id: 2, content: 'second entry log', name: 'doug'},
-  //       {id: 2, content: 'second entry log', name: 'alex'}
-  //     ],
-  //     file: '',
-  //     error: '',
-  //     msg: '',
-  //     searchText: 'hello',
-  //     isLoading: ''
-  //   }
-  // }
 
   componentDidMount() {
-      // console.log(`app mounted`);
-      // axios.get(`${ORG_API_URL}/contentResponse`)
-      // .then(
-      //     response => {
-      //         // console.log("");
-      //         console.log(`app cdm content -----:`, response);
-      //         // this.setState({imgpath: response});
-      //         // return <div> response </div>;
-      //     }
-      // )
-      // console.log('cdm');
+      console.log(`testing 123`);
+      document.getElementById('button-root').addEventListener('click', () => {
+        ReactDOM.render(<Main />, document.getElementById('app'));
+      });
 
-      // const fetchUrl = "http://localhost:8080/" + this.state.fetchId;
-
-      // let url = 'http://localhost:8080/content';
-      // fetch(url)
-      //   .then(res => res.json())
-      //   .then(
-      //     (result) => {
-      //         console.log(`content call:`, result);
-      //       //   this.setState({
-      //       //       isLoaded: true,
-      //       //       response: result,
-      //       // });
-      //     },
-      //     (error) => {
-      //       // this.setState({
-      //       //   isLoaded: true,
-      //       //   error
-      //       // });
-      //       console.log(`error:`, error);
-      //     }
-      //   )
-
-      // fetch("http://localhost:8080/entries")
-      //   .then(res => res.json())
-      //   .then(
-      //     (result) => {
-      //         console.log('result-');
-      //         console.log(result);
-      //         this.setState({
-      //             isLoaded: true,
-      //             response: result,
-      //       });
-      //     },
-      //     (error) => {
-      //       console.log('error2');
-      //       this.setState({
-      //         isLoaded: true,
-      //         error
-      //       });
-      //     }
-      //   )
-
-/*
-      fetch("http://localhost:8080/content")
-        .then(res => res.json())
-        .then(
-          (result) => {
-              console.log('content-');
-              console.log(result);
-              this.setState({
-                  content: result,
-            });
-          },
-          (error) => {
-            console.log('no content');
-            this.setState({
-              error
-            });
-          }
-        )
-*/
-      //
-      // fetch("http://localhost:8080/5dd59b4cefe3b7861de13556")
-      //   .then(res => res.json())
-      //   .then(
-      //     (result) => {
-      //         console.log('result-');
-      //         console.log(result);
-      //         this.setState({
-      //             isLoaded: true,
-      //             response: result,
-      //       });
-      //     },
-      //     (error) => {
-      //       console.log('error2');
-      //       this.setState({
-      //         isLoaded: true,
-      //         error
-      //       });
-      //     }
-      //   )
-
-    // fetch('http://localhost:3000/edgewalk/liv-entries')
-    // .then(res => res.json())
-    // .then((data) => {
-    //   // this.setState({ contacts: data })
-    //   this.setState({ entries: data })
-    // })
-    // .catch(console.log)
-    //
-    // fetch('http://localhost:8080/edge/api')
-    // .then(response => response.json())
-    // .then(data => this.setState({beers: data, isLoading: false}));
-    //
-    // this.setState({isLoading: true});
-    //
-    // fetch('http://localhost:8080/content')
-    //   .then(response => response.json())
-    //   .then(data => this.setState({entries: data, isLoading: false}));
   }
 
-  viewDetail = (id) => {
-    console.log("entered view detail");
-    console.log(id);
+  onClick() {
+      console.log(`returning main`);
+      return <div> <Main /> </div>;
   }
 
-  viewDetailHandler = (id) => {
-    console.log('entered vdh');
-    console.log(this.state.entries[id]);
-    // return <Toggle entry={this.state.entries[id]} onClick={() => {this.props.viewDetail(this.state.entries[id])}} />
-    /*     const panelInstance = (
-          <Panel onClick={()=>alert('It works')}>
-            Basic panel example
-          </Panel>
-        );
 
-        React.render(panelInstance, mountNode); */
-    // const popover = (
-    //   <Popover id="popover-basic">
-    //     <Popover.Title as="h3">Popover right</Popover.Title>
-    //     <Popover.Content>
-    //       And here's some <strong>amazing</strong> content. It's very engaging.
-    //       right?
-    //     </Popover.Content>
-    //   </Popover>
-    // );
-    //
-    // const Example = () => (
-    //   <OverlayTrigger trigger="click" placement="right" overlay={popover}>
-    //     <Button variant="success">Click me to see</Button>
-    //   </OverlayTrigger>
-    // );
-    // return <Example />
 
-    // ReactDom.render(<Example />);
-  }
 
-  onchange = e => {
-    this.setState({ search: e.target.value });
-  }
-
-  searchUpdate(value) {
-    this.setState({searchText: value});
-  }
-
-  filterUpdate(value) {
-    console.log(`Appjs filter update:`, value);
-    this.setState({filterText: value});
-  }
-
-  basicFilterUpdate(value) {
-      const val = this.myValue.value;
-      console.log(`Appjs basic filter update:`, val);
-      this.setState({basicFilterText: value});
-  }
-
-  onFileChange = (event) => {
-    this.setState({
-      file: event.target.files[0]
-    });
-  }
-
-  render() {
-    const { error, isLoaded, response } = this.state;
-
-    const style = {
-      backgroundColor: 'lightgrey',
-      font: 'inherit',
-      border: '1x solid lightblue',
-      padding: 'pointer'
-    };
-    console.log('searchText', this.state.searchText);
-    console.log('response');
-    console.log(this.state.response);
+    render() {
+    // const { } = this.state;
 
     return (
-      <div style={{
-        backgroundColor: 'black',
-        height: '500px'
-      }}>
-          <NavBar />
-          <div
-            className=""
-            style={{
-              backgroundColor: 'lightgrey',
-            }}>
-
-            <Search
-              searchText={this.state.searchText}
-              searchUpdate={this.searchUpdate.bind(this)} />
-            <SidePanel />
-            <button onClick={this.contentResponse.bind(this)}> click for content </button>
-            <ViewEntry />
-            // {renderImage('http://localhost:8080/files/', '5dd5a21befe3b78e670e39ba')}
-            <ListEntriesComponent
-              entries={this.state.response}
-              viewDetail={this.viewDetail}
-              searchText={this.state.searchText}
-              filterText={this.state.filterText}
-              filterUpdate={this.filterUpdate.bind(this)}
-              basicFilterUpdate={this.basicFilterUpdate.bind(this)} />
-          </div>
-          <p> hi </p>
-          <div>
-            {console.log(`this.state.response: `, this.state.response[0])}
-            {renderImage('http://localhost:8080/files/', this.state.response)}
-          </div>
-      </div>
+        <div id="app">
+            <button id="button-root"> hi </button>
+        </div>
     );
   }
+
 }
+
 
 export default App;

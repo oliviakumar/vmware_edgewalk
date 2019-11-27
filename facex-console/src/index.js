@@ -12,7 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //    document.getElementById('welcomeDiv').style.display = "block";
 // }
 
-ReactDOM.render(<AppTwo />, document.getElementById('container'));
+ReactDOM.render(<App />, document.getElementById('container'));
 // ReactDOM.render(<Test />, document.getElementById('root'));
 // axios({
 //     method: 'get',
