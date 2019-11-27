@@ -8,6 +8,7 @@ import  (
     "strings"
     "path/filepath"
     "github.com/Kagami/go-face"
+    "time"
 )
 
 //Struct for storing individual samples, id, and name
@@ -136,6 +137,8 @@ func PopulateDescriptor(name string) {
 
 //Training the model from a fixed directory called "trainImages"
 func Train() {
+    start := time.Now()
+
     UpdateSamples()
     Model = make(map[int]TrainStruct)
     var err error
@@ -146,11 +149,14 @@ func Train() {
     }
 
     DirTraverse(dataDir)
+    Benchmark("Training", start)
 }
 
 //Testing the model by giving a certain image name within the "testImages" directory
 func Infer(imgPath string) (GofaceData) {
-    newDir := "imgtest"
+    start := time.Now()
+
+    newDir := "testImages"
     imgPath = filepath.Join(newDir, imgPath)
     approved = false
 
@@ -166,15 +172,18 @@ func Infer(imgPath string) (GofaceData) {
     testPic, err := rec.RecognizeSingleFile(imgPath)
 
     if err != nil {
+        Benchmark("Inference", start)
         return gofaceData
     }
 
     if testPic == nil {
+        Benchmark("Inference", start)
         return gofaceData
     }
 
     picID := rec.ClassifyThreshold(testPic.Descriptor, 0.4)
     if picID < 0 {
+        Benchmark("Inference", start)
         return gofaceData
     } 
     
@@ -201,5 +210,11 @@ func Infer(imgPath string) (GofaceData) {
         }
     } 
     
+    Benchmark("Inference", start)
     return gofaceData
+}
+
+func Benchmark(funcName string, start time.Time) {
+    elapsed := time.Since(start)
+    log.Printf("%s took: %s", funcName, elapsed)
 }
