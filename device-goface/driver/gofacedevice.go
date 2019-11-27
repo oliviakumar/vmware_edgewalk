@@ -10,9 +10,16 @@
 package driver
 
 import (
+	"bytes"
 	"encoding/json"
+	"bufio"
 	"fmt"
+	lib "github.com/edgexfoundry/vmware_edgewalk/model-goface/facedetect"
+	"image"
+	"image/jpeg"
+	"image/png"
 	"github.com/Kagami/go-face"
+	"os"
 	"os/exec"
 	"sync"
 	"time"
@@ -29,7 +36,7 @@ type GofaceDevice struct {
 	lc         logger.LoggingClient
 	asyncCh    chan<- *dsModels.AsyncValues
 	mux        sync.Mutex
-	gofacedata string
+	imagePath	string
 }
 
 func (s *GofaceDevice) DisconnectDevice(deviceName string, protocols map[string]contract.ProtocolProperties) error {
@@ -42,83 +49,76 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	s.lc = lc
 	s.asyncCh = asyncCh
 
-	// call on goface.go to init model training
-	GF.Train()
-	rec := GF.ReturnRec()
 	// start routine operating camera to check for faces with current rec instance
 	// OperateCamera will call on OperateGoface to recognize the faces
 	// OperateGoface will call on parseStruct to get the info of the recognized picture
-	go s.OperateCamera(rec)
+	go s.OperateCamera()
 
 	return nil
 }
 
-// method that will be initialized in Init() but will run as a routine to constantly take in new image paths
-func (s *GofaceDevice) OperateGoface(imgPath string, rec *face.Recognizer) {
-	// anon routine for reading the goface data and saving it to s.gofacedata
-	go func() {
-		// check if a face was detected in
-		if imgPath != "no face detected" {
-			// read in struct and parse as JSON
-			// rec.Infer() gives back a struct of GofaceData type that is parsed into a JSON-formatted string
-			tempGofaceData := parseStruct(GF.Infer(imgPath))
-			s.mux.Lock()
-			s.gofacedata = tempGofaceData
-			s.mux.Unlock()
-			//sleep for 10 millisecs to give other routines the opportunity to run
-			time.Sleep(10 * time.Millisecond)
-		} else {
-			// sleep for 1 sec to catch next picture
-			time.Sleep(1000 * time.Millisecond)
+func getImageBytes(imgFile string, buf *bytes.Buffer) error {
+	// Read existing image from file
+	img, err := os.Open(imgFile)
+	if err != nil {
+		return err
+	}
+	defer img.Close()
+
+	// read in opened img file
+	// Expects "jpeg" or "png" image type
+	imageData, imageType, err := image.Decode(img)
+	if err != nil {
+		return err
+	}
+	// Finished with file. Reset file pointer
+	_, err = img.Seek(0, 0)
+
+	// case handling of jpeg vs png, decides on which pipeline to encode
+	if imageType == "jpeg" {
+		err = jpeg.Encode(buf, imageData, nil)
+		if err != nil {
+			return err
 		}
-	}()
+	} else if imageType == "png" {
+		err = png.Encode(buf, imageData)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
+
+// method that will be initialized in Init() but will run as a routine to constantly take in new image paths
+
 
 // device service method to operate the camera, gets called with current rec instance
 // returns the last path with a face in it
-func (s *GofaceDevice) OperateCamera(rec *face.Recognizer) string {
+func (s *GofaceDevice) OperateCamera() string {
 	// init path var that will be reused throughout the whole program
-	var imgPath string
 
 	for {
-		// @TODO to be filled with actual path
-		exec.Command("raspistill", "dir/mycameraoutput")
-		// @TODO takeShot() to be written, depending on library being used
-		// raspistill.takeShot()
-		// @TODO to be filled with actual path
-		imgPath = "dir/mycameraoutput"
-		hasFace := GF.TestForFace(imgPath)
-		fmt.Println("imgPath: ", imgPath)
-		// if there is a face in the picture, give path of picture to Infer() to recognize it
+		/*args := "-o model-goface/testImages/Test%08.jpg"
+		exec.Command("raspistill", args)
+		*/
+
+		// testing with hardcoded image path
+		s.imagePath = "/testImages/Test1.jpg"
+		var hasFace = lib.TestForFace(s.imagePath)
 		if hasFace == true {
-			go s.OperateGoface(imgPath, rec)
-			return imgPath
+			return s.imagePath
 		}
 		// then sleep for 1 sec
 		time.Sleep(1000 * time.Millisecond)
 		// path of last photo
-		return "no face detected"
+		return s.imagePath
 	}
 }
 
-// parse struct into string input to send into EdgeX
-func parseStruct(data GF.GofaceData) string {
-	// convert to JSON
-	resp, err := json.Marshal(data)
-
-	// print error if something has gone wrong
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	// return the JSON-parsed response as a string
-	return string(resp)
-}
-
-// function to take in pictures from current
 
 // HandleReadCommands triggers a protocol Read operation for the specified device.
 func (s *GofaceDevice) HandleReadCommands(deviceName string, protocols map[string]contract.ProtocolProperties, reqs []dsModels.CommandRequest) (res []*dsModels.CommandValue, err error) {
+	//fmt.Fprintf(os.Stdout,  "....... %s .......\n", reqs[0].DeviceResourceName)
 	if len(reqs) != 1 {
 		err = fmt.Errorf("GofaceDevice.HandleReadCommands; too many command requests; only one supported")
 		return
@@ -128,10 +128,11 @@ func (s *GofaceDevice) HandleReadCommands(deviceName string, protocols map[strin
 	res = make([]*dsModels.CommandValue, 1)
 	now := time.Now().UnixNano() / int64(time.Millisecond)
 
-	// reads in the devices data in the form of s.gofacedata string
+	// define case that goface device calls on driver - send image bytes
 	if reqs[0].DeviceResourceName == "goface" {
+		buf := new(bytes.Buffer)
 		s.mux.Lock()
-		cv := dsModels.NewStringValue(reqs[0].DeviceResourceName, now, s.gofacedata)
+		cv, _ := dsModels.NewBinaryValue(reqs[0].DeviceResourceName, now, buf.Bytes())
 		s.mux.Unlock()
 		res[0] = cv
 	}
