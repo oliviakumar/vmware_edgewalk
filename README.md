@@ -76,3 +76,6 @@ To use go-face in your go code:
 import "github.com/Kagami/go-face"  
 ```  
 
+## Go-face Training and Inference  
+* Train()  
+** Traverses through a fixed directory called "trainImages" and trains for every folder found. 
