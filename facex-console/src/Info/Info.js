@@ -48,18 +48,14 @@ class Info extends React.Component {
   }
 
   componentDidMount() {
-      // console.log(this.props);
 
       console.log(`'info cdm'`, this.props.idStr);
-      // if (this.props.toggleOpen == true) {
-          // this.getInfo(this.state.response.idString);
-      // }
       let url = 'http://localhost:8080/' + this.props.idStr;
       fetch(url)
         .then(res => res.json())
         .then(
           (result) => {
-              console.log('content call');
+              // console.log('content call');
               this.setState({
                   isLoaded: true,
                   response: result,
@@ -116,78 +112,5 @@ class Info extends React.Component {
       }
   }
 
-  /*
-  {
-
-  // <div>
-  //     <p>
-  //     {`this.props.idStr:`, this.props.idStr}
-  //     {this.getInfo()}
-  //     {renderImage('http://localhost:8080/files/', this.props.idStr)}
-  //     </p>
-  // </div>
-  }
-  */
-  // render() {
-  //   const { error, isLoaded, response } = this.state;
-  //   // console.log(response);
-  //
-  //   if (error) {
-  //     return <div>Error: {error.message}</div>;
-  //   } else if (!isLoaded) {
-  //     return <div>Loading.....</div>;
-  //   } else {
-  //     return (
-  //       <div>
-  //       <table>
-  //         <tr>
-  //           <td><b>Id: </b></td>
-  //           <td>{response.idString}</td>
-  //         </tr>
-  //         <tr>
-  //           <td><b>EdgeX Id: </b></td>
-  //           <td>{response.edgexId}</td>
-  //         </tr>
-  //         <tr>
-  //           <td><b>Identity: </b></td>
-  //           <td>{response.identityCapital}</td>
-  //         </tr>
-  //         <tr>
-  //           <td><b>Location: </b></td>
-  //           <td>{response.locationCapital}</td>
-  //         </tr>
-  //         <tr>
-  //           <td><b>Device: </b></td>
-  //           <td>{response.device}</td>
-  //         </tr>
-  //         <tr>
-  //           <td><b>Type: </b></td>
-  //           {renderType(response.typeCapital)}
-  //         </tr>
-  //         <tr>
-  //           <td><b>Time: </b></td>
-  //           <td>{response.attempted}</td>
-  //         </tr>
-  //         <tr>
-  //           <td><b>Accepted: </b></td>
-  //           {renderColor(response.accepted)}
-  //         </tr>
-  //       </table>
-  //       {renderImage('http://localhost:8080/files/', response.idString)}
-  //     </div>
-  //     );
-  //   }
-  // }
- // }
-
-// function Info() {
-//   return (
-//     <div className="Info">
-//       <header className="Info-header">
-//         <MyComponent />
-//       </header>
-//     </div>
-//   );
-// }
 
 export default Info;

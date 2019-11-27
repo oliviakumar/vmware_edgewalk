@@ -42,7 +42,7 @@ class ListEntriesComponent extends Component {
         // console.log('did mount');
         this.refreshEntries();
         // this.getImage();
-        // this.getContent();
+        this.getContent();
     }
 
     onClick(e) {
@@ -142,9 +142,10 @@ class ListEntriesComponent extends Component {
         EntryDataService.retrieveContent()
             .then(
                 response => {
-                    console.log("content -----");
-                    console.log(response);
+                    // console.log("");
+                    console.log(`content -----:`, response);
                     this.setState({imgpath: response});
+                    return <div> response </div>;
                 }
             )
 

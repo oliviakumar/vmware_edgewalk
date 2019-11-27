@@ -42,14 +42,14 @@ class EntryDataService {
 
             //     this.setState({imgpath: path});
         //   });;
-          
+
     }
 
     retrieveContent() {
         // console.log("inside retrieve content");
         // console.log(axios.get(`@{ORG_API_URL}/contentResponse`));
         // return axios.get(`@{ORG_API_URL}/contentResponse`);
-        
+
         console.log("inside retrieve content");
         // console.log(axios.get(`${ORG_API_URL}/default-filtered`));
         // return axios.get(`${ORG_API_URL}/default-filtered`);
@@ -69,7 +69,8 @@ class EntryDataService {
         // console.log(axios.get(`@{ORG_API_URL}/files/liv-entries`));
         // return axios.get(`@{ORG_API_URL}/files/liv-entries`);
 
-        return axios.get(`${ORG_API_URL}/files/{filename}`);
+        // return axios.get(`${ORG_API_URL}/files/{filename}`);
+        return axios.get(`${ORG_API_URL}/contentResponse`);
 
     }
     // retrieveEntry(name, id) {

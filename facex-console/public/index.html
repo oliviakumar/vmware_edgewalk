@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
     <meta charset="utf-8" />
     <meta name="theme-color" content="#000000" />
     <meta
@@ -8,8 +10,8 @@
       content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="logo192.png" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <!-- <script src="js/bootstrap.min.js"></script> -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -27,8 +29,11 @@
     <title>FACEX</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+      <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root"></div>
+        <h1> hello there be happy </h1>
+      </body>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -39,5 +44,25 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
+      <script type="text/javascript">
+
+          function call() {
+              $.ajax({
+                  url : '/content',
+                  type : 'GET',
+                  success : function (data) {
+                      $('#container').html(data);
+                  },
+                  error : function (error) {
+                      alert(error);
+                  }
+              });
+          }
+
+          setInterval(function() {
+              call();
+          }, 1000)
+        </script>
+    </body>
+
 </html>

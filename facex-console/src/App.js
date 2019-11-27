@@ -22,7 +22,10 @@ import ViewEntry from './SidePanel/ViewEntry';
 import SidePanel from './SidePanel/SidePanel';
 import './Entry/Entry.css';
 import Info from './Info/Info';
+import axios from 'axios'
 
+const ORGANIZATION = 'edgewalk'
+const ORG_API_URL = 'http://localhost:8080'
 
 function renderImage(host, id) {
   const c = host + id
@@ -51,7 +54,27 @@ class App extends Component {
             fetchId: ''
         };
     }
-
+    contentResponse() {
+        console.log(`--- CDM appjs content ---`);
+        fetch("http://localhost:8080/content")
+          .then(res => res.json())
+          .then(
+            (result) => {
+              console.log(`appjs result:`, result);
+              // this.setState({
+              //   isLoaded: true,
+              //   response: result
+              // });
+            },
+            (error) => {
+                console.log('erroneous');
+              // this.setState({
+              //   isLoaded: true,
+              //   error
+              // });
+            }
+          )
+    }
   // constructor(props) {
   //   super(props);
   //   this.state = {
@@ -70,45 +93,39 @@ class App extends Component {
   // }
 
   componentDidMount() {
+      // console.log(`app mounted`);
+      // axios.get(`${ORG_API_URL}/contentResponse`)
+      // .then(
+      //     response => {
+      //         // console.log("");
+      //         console.log(`app cdm content -----:`, response);
+      //         // this.setState({imgpath: response});
+      //         // return <div> response </div>;
+      //     }
+      // )
+      // console.log('cdm');
+
       // const fetchUrl = "http://localhost:8080/" + this.state.fetchId;
-      // fetch(fetchUrl)
+
+      // let url = 'http://localhost:8080/content';
+      // fetch(url)
       //   .then(res => res.json())
       //   .then(
       //     (result) => {
-      //       console.log(`appjs result:`, result);
-      //       this.setState({
-      //         isLoaded: true,
-      //         response: result
-      //       });
+      //         console.log(`content call:`, result);
+      //       //   this.setState({
+      //       //       isLoaded: true,
+      //       //       response: result,
+      //       // });
       //     },
       //     (error) => {
-      //         console.log('erroneous');
-      //       this.setState({
-      //         isLoaded: true,
-      //         error
-      //       });
+      //       // this.setState({
+      //       //   isLoaded: true,
+      //       //   error
+      //       // });
+      //       console.log(`error:`, error);
       //     }
       //   )
-      console.log(`--- CDM appjs content ---`);
-      let url = 'http://localhost:8080/content';
-      fetch(url)
-        .then(res => res.json())
-        .then(
-          (result) => {
-              console.log(`content call:`, result);
-            //   this.setState({
-            //       isLoaded: true,
-            //       response: result,
-            // });
-          },
-          (error) => {
-            // this.setState({
-            //   isLoaded: true,
-            //   error
-            // });
-            console.log(`error:`, error);
-          }
-        )
 
       // fetch("http://localhost:8080/entries")
       //   .then(res => res.json())
@@ -279,6 +296,7 @@ class App extends Component {
               searchText={this.state.searchText}
               searchUpdate={this.searchUpdate.bind(this)} />
             <SidePanel />
+            <button onClick={this.contentResponse.bind(this)}> click for content </button>
             <ViewEntry />
             // {renderImage('http://localhost:8080/files/', '5dd5a21befe3b78e670e39ba')}
             <ListEntriesComponent
