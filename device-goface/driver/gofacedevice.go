@@ -21,17 +21,8 @@ import (
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	contract "github.com/edgexfoundry/go-mod-core-contracts/models"
 	// import goface functionality, to be called on by using "GF.funcName()"
-	GF "github.com/vmware_edgewalk/facex/model-goface/recognition"
+	GF "github.com/oliviakumar/vmware_edgewalk/model-goface/facedetect"
 )
-
-// external data struct
-type GofaceData struct {
-	Identity  string `json:"identity"`
-	Accepted  bool   `json:"accepted"`
-	Location  string `json:"location"`
-	Entrytype string `json:"type"`
-	Imagepath string `json:"imagePath"`
-}
 
 // internal data struct
 type GofaceDevice struct {
@@ -39,16 +30,6 @@ type GofaceDevice struct {
 	asyncCh    chan<- *dsModels.AsyncValues
 	mux        sync.Mutex
 	gofacedata string
-}
-
-// instantiate struct
-type Rec struct {
-	*face.Recognizer
-}
-
-// constructor used by App SDK to call on data struct from device service
-func NewData() GofaceData {
-	return GofaceData{}
 }
 
 func (s *GofaceDevice) DisconnectDevice(deviceName string, protocols map[string]contract.ProtocolProperties) error {

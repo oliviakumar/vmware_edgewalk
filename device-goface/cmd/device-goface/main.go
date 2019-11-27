@@ -9,7 +9,7 @@
 package main
 
 import (
-	"github.com/vmware-edgewalk/facex/device-goface/driver"
+	"github.com/oliviakumar/vmware_edgewalk/device-goface/driver"
 	"github.com/edgexfoundry/device-sdk-go/pkg/startup"
 )
 

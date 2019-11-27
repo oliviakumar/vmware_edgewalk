@@ -9,6 +9,11 @@ import  (
     "path/filepath"
     "github.com/Kagami/go-face"
     "time"
+    "errors"
+
+    "github.com/oliviakumar/vmware_edgewalk/models"
+
+    "github.com/edgexfoundry/app-functions-sdk-go/appcontext"
 )
 
 //Struct for storing individual samples, id, and name
@@ -18,20 +23,11 @@ type TrainStruct struct {
     Name string
 }
 
-//Struct that returns the approval or denial of the image given
-type GofaceData struct {
-    Identity  string `json:"identity"`
-    Accepted  bool `json:"accepted"`
-    Location  string `json:"location"`
-    Entrytype string `json:"type"`
-    Imagepath string `json:"imagePath"`
-}
-
 //Global recognizer object
 var rec *face.Recognizer
 
 //Data directory for training the model
-var dataDir = "trainImages"
+var dataRoot = "../../model-goface"
 
 //Map that contains all the trained entries, makes it easier to retrieve info
 var Model map[int]TrainStruct
@@ -138,6 +134,7 @@ func PopulateDescriptor(name string) {
 //Training the model from a fixed directory called "trainImages"
 func Train() {
     start := time.Now()
+    dataDir := filepath.Join(dataRoot, "trainImages")
 
     UpdateSamples()
     Model = make(map[int]TrainStruct)
@@ -145,6 +142,7 @@ func Train() {
 
     rec, err = face.NewRecognizer(dataDir)
     if (err != nil) {
+        fmt.Println(err)
         log.Fatalf("Error opening directory.")
     }
 
@@ -153,38 +151,37 @@ func Train() {
 }
 
 //Testing the model by giving a certain image name within the "testImages" directory
-func Infer(imgPath string) (GofaceData) {
+func Infer(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
+    if (len(params) < 1) {
+        return false, errors.New("Did not receive data")
+    }
     start := time.Now()
 
-    newDir := "testImages"
-    imgPath = filepath.Join(newDir, imgPath)
+    send := params[0].(models.SendingData)
+    send.Identity = "anonymous"
+    send.Accepted = false
+    send.Location = "front door"
+    send.Entrytype = "I"
+    newDir := filepath.Join(dataRoot, "testImages")
+    imgPath := filepath.Join(newDir, send.Imagepath)
     approved = false
-
-    var gofaceData GofaceData
-    gofaceData = GofaceData{
-        Identity: "",
-        Accepted:  approved,
-        Location:  "",
-        Entrytype: "",
-        Imagepath:	imgPath,
-    }
 
     testPic, err := rec.RecognizeSingleFile(imgPath)
 
     if err != nil {
         Benchmark("Inference", start)
-        return gofaceData
+        return false, errors.New("Path not correct")
     }
 
     if testPic == nil {
         Benchmark("Inference", start)
-        return gofaceData
+        return false, errors.New("cannot read image/metadata")
     }
 
     picID := rec.ClassifyThreshold(testPic.Descriptor, 0.4)
     if picID < 0 {
         Benchmark("Inference", start)
-        return gofaceData
+        return true, send
     } 
     
     approved = true
@@ -201,17 +198,14 @@ func Infer(imgPath string) (GofaceData) {
         location := "Front Door"
         entryType := "I"
 
-        gofaceData = GofaceData{
-            Identity: person,
-            Accepted:  approved,
-            Location:  location,
-            Entrytype: entryType,
-            Imagepath:	imgPath,
-        }
-    } 
-    
+        send.Identity = person
+        send.Accepted = approved
+        send.Location = location
+        send.Entrytype = entryType
+    }
     Benchmark("Inference", start)
-    return gofaceData
+    
+    return true, send
 }
 
 func Benchmark(funcName string, start time.Time) {

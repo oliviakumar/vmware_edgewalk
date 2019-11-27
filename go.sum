@@ -16,13 +16,8 @@ github.com/eclipse/paho.mqtt.golang v1.2.0 h1:1F8mhG9+aO5/xpdtFkW4SxOJB67ukuDC3t
 github.com/eclipse/paho.mqtt.golang v1.2.0/go.mod h1:H9keYFcgq3Qr5OUJm/JZI/i6U7joQ8SYLhZwfeOo6Ts=
 github.com/edgexfoundry/app-functions-sdk-go v0.2.0-dev.50 h1:61wbVCKHgpDvAtkwLyiiH5gvFWPObyLVVD1NE1D3s0g=
 github.com/edgexfoundry/app-functions-sdk-go v0.2.0-dev.50/go.mod h1:wMftW29ux62kvArnoto/+yhDOoOe4FxPS9E4NgPGJWM=
-github.com/edgexfoundry/device-sdk-go v1.0.0 h1:82XS3EZfoioXOi2+PhIqlEz370zY9eNFQ1AqkafF/rA=
-github.com/edgexfoundry/device-sdk-go v1.0.0/go.mod h1:3+nlqnZF2ZKeqObUZZbF/2ZJVQCAW5uu9qbCbyR2AJ8=
 github.com/edgexfoundry/device-sdk-go v1.1.0 h1:jEGTV2su8nQCB7gneU8MpQSvBM6EktDbEhvN+iKF6Ko=
 github.com/edgexfoundry/device-sdk-go v1.1.0/go.mod h1:G0m5+jIWm6hjTKahDNmeyN6Ir7b8qDXmNgq+HcvGb8M=
-github.com/edgexfoundry/go-mod-core-contracts v0.1.0/go.mod h1:wUlH4D1HdWNExL6Tel9enMmiWMpVnfPnyVttZ9Ap32M=
-github.com/edgexfoundry/go-mod-core-contracts v0.1.16/go.mod h1:wUlH4D1HdWNExL6Tel9enMmiWMpVnfPnyVttZ9Ap32M=
-github.com/edgexfoundry/go-mod-core-contracts v0.1.25 h1:Jl7R+PBqOzWlY7gsU5wkR/3uKZxytqYyXPu+Bu36A3Q=
 github.com/edgexfoundry/go-mod-core-contracts v0.1.25/go.mod h1:1bdaXB48tEwWFJGecFC/Oszy53xcGW6RA6Sw5T9v+9g=
 github.com/edgexfoundry/go-mod-core-contracts v0.1.31 h1:FW+TSj3D7U8QD5iay9c+YvazmtC14gmhXtOcZ1cW9xE=
 github.com/edgexfoundry/go-mod-core-contracts v0.1.31/go.mod h1:1bdaXB48tEwWFJGecFC/Oszy53xcGW6RA6Sw5T9v+9g=

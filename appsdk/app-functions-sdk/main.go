@@ -9,11 +9,12 @@ import (
 	"bytes"
 	"mime/multipart"
 	"io"
-	"io/ioutil"
+	// "io/ioutil"
 	"strings"
 	"path/filepath"
 
-	"github.com/vmware-edgewalk/facex/model-goface/recognition"
+	"github.com/oliviakumar/vmware_edgewalk/model-goface/recognition"
+	dModels"github.com/oliviakumar/vmware_edgewalk/models"
 
 	"github.com/edgexfoundry/app-functions-sdk-go/pkg/transforms"
 	"github.com/edgexfoundry/app-functions-sdk-go/appcontext"
@@ -24,16 +25,6 @@ import (
 const (
 	serviceKey = "imageWebService"
 )
-
-type SendingData struct {
-	Identity  string `json:"identity"`
-	Accepted  bool `json:"accepted"`
-	Location  string `json:"location"`
-	Entrytype string `json:"type"`
-	Device string `json:"device"`
-	Edgexid string `json:"edgexId"`
-	Imagepath string
-}
 
 func main() {
 
@@ -51,14 +42,14 @@ func main() {
 	// like to search for, we'll go ahead and define that now.
 	deviceNames := []string{"device-goface-01"}
 
-
+	recognition.Train()
 
 	// 4) This is our pipeline configuration, the collection of functions to
 	// execute every time an event is triggered.
 	edgexSdk.SetFunctionsPipeline(
 		transforms.NewFilter(deviceNames).FilterByDeviceName,
 		SaveImage,
-		ProcessImage,
+		recognition.Infer,
 		//GetDataFromJSON,
 		SendData,
 		SendImage,
@@ -82,60 +73,31 @@ func SaveImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, i
 		if (len(reading.BinaryValue) == 0) {
 			return false, errors.New("No file received")
 		}
-		filepath := "../../model-goface/testImages" + reading.Id + ".jpg"
-		ab, err := filepath.Abs(filepath)
+		imgName := reading.Id + ".jpg"
+		fpath := "../../model-goface/testImages/" + imgName
+		ab, err := filepath.Abs(fpath)
+		if err != nil {
+			return false, errors.New("Cannot find path")
+		}
 		fmt.Println("Abs:", ab)
-		fmt.Println("Path", filepath)
+		fmt.Println("Path", fpath)
+		return false, errors.New("Testing if image path is correct")
 		// err = ioutil.WriteFile(filepath, reading.BinaryValue, 0755)
-		send := SendingData {
+		send := dModels.SendingData {
 			Device: reading.Device,
 			Edgexid: reading.Id,
-			Imagepath: filepath,
+			Imagepath: imgName,
 		}
-		return true, SendingData
+		return true, send
 	}
 	return false, errors.New("No readings received")
 }
-
-func ProcessImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
-	if len(params) < 1 {
-		return false, errors.New("No data received")
-	}
-
-}
-
-// func GetDataFromJSON(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
-// 	if len(params) < 1 {
-// 		return false, errors.New("No data received")
-// 	}
-// 	model := params[0].(models.Event)
-// 	for _, reading := range model.Readings {
-// 		b := []byte(reading.Value)
-// 		data := driver.NewData()
-// 		err := json.Unmarshal(b, &data)
-// 		if err != nil {
-// 			fmt.Println(err)
-// 			return false, errors.New("Could not unpack data")
-// 		}
-// 		send := SendingData{
-// 			Identity: data.Identity,
-// 			Accepted: data.Accepted,
-// 			Location: data.Location,
-// 			Entrytype: data.Entrytype,
-// 			Device: reading.Device,
-// 			Edgexid: reading.Id,
-// 			Imagepath: data.Imagepath,
-// 		}
-// 		return true, send;
-// 	}
-// 	return false, errors.New("No readings received")
-// }
 
 func SendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
 	if len(params) < 1 {
 		return false, errors.New("No data recevied")
 	}
-	send := params[0].(SendingData)
+	send := params[0].(dModels.SendingData)
 	data, err := json.Marshal(send)
 	if err != nil {
 		fmt.Println(err)
@@ -159,9 +121,10 @@ func SendImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, i
 	if len(params) < 1 {
 		return false, errors.New("No data recevied")
 	}
-	send := params[0].(SendingData)
+	send := params[0].(dModels.SendingData)
 	if send.Imagepath != "" {
-		file, err := os.Open(send.Imagepath)
+		imgPath := filepath.Join("../../model-goface/testImages", send.Imagepath)
+		file, err := os.Open(imgPath)
 		if err != nil {
 			fmt.Println(err)
 			return false, errors.New("Image could not be opened")

@@ -1,8 +1,9 @@
-module github.com/vmware-edgewalk/facex
+module github.com/oliviakumar/vmware_edgewalk
 
 go 1.13
 
 require (
+	github.com/Kagami/go-face v0.0.0-20191005110546-01156987f993
 	github.com/edgexfoundry/app-functions-sdk-go v0.2.0-dev.50
 	github.com/edgexfoundry/device-sdk-go v1.1.0
 	github.com/edgexfoundry/go-mod-core-contracts v0.1.31
