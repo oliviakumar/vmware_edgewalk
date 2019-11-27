@@ -2,12 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import AppTwo from './AppTwo';
 import Test from './Test';
 
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// function showDiv() {
+//    document.getElementById('welcomeDiv').style.display = "block";
+// }
+
+ReactDOM.render(<AppTwo />, document.getElementById('container'));
 // ReactDOM.render(<Test />, document.getElementById('root'));
 // axios({
 //     method: 'get',
