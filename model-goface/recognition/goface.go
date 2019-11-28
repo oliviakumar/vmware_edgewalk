@@ -94,7 +94,7 @@ func DirTraverse(file string) {
 
         //Updating count, which will be used as id
         if (valid == true) {
-            PopulateDescriptor(pathSplit[1])
+            PopulateDescriptor(pathSplit[len(pathSplit) - 1])
         }
     //If the file given is a regular file
     case mode.IsRegular():
@@ -152,11 +152,10 @@ func Train() {
 
 //Testing the model by giving a certain image name within the "testImages" directory
 func Infer(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
-    start := time.Now()
-
     if (len(params) < 1) {
         return false, errors.New("Did not receive data")
     }
+    start := time.Now()
 
     send := params[0].(models.SendingData)
     send.Identity = "anonymous"
@@ -170,6 +169,7 @@ func Infer(edgexcontext *appcontext.Context, params ...interface{}) (bool, inter
     testPic, err := rec.RecognizeSingleFile(imgPath)
 
     if err != nil {
+        fmt.Println(err)
         Benchmark("Inference", start)
         return false, errors.New("Path not correct")
     }

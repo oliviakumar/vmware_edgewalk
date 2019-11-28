@@ -9,9 +9,10 @@ import (
 	"bytes"
 	"mime/multipart"
 	"io"
-	// "io/ioutil"
+	"io/ioutil"
 	"strings"
 	"path/filepath"
+	"os/exec"
 
 	"github.com/edgexfoundry/app-functions-sdk-go/pkg/transforms"
 	"github.com/edgexfoundry/app-functions-sdk-go/appcontext"
@@ -73,19 +74,21 @@ func SaveImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, i
 		if (len(reading.BinaryValue) == 0) {
 			return false, errors.New("No file received")
 		}
-		imgName := reading.Id + ".jpg"
+		out, err := exec.Command("uuidgen").Output()
+		if err != nil {
+			fmt.Println(err)
+			return false, errors.New("error generating uuid")
+		}
+		uuid := strings.TrimSuffix(string(out), "\n")
+		imgName := uuid + ".jpg"
 		fpath := "../../model-goface/testImages/" + imgName
-		ab, err := filepath.Abs(fpath)
 		if err != nil {
 			return false, errors.New("Cannot find path")
 		}
-		fmt.Println("Abs:", ab)
-		fmt.Println("Path", fpath)
-		return false, errors.New("Testing if image path is correct")
-		// err = ioutil.WriteFile(filepath, reading.BinaryValue, 0755)
+		err = ioutil.WriteFile(fpath, reading.BinaryValue, 0755)
 		send := dModels.SendingData {
 			Device: reading.Device,
-			Edgexid: reading.Id,
+			Edgexid: uuid,
 			Imagepath: imgName,
 		}
 		return true, send
