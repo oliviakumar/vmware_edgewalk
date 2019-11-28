@@ -281,7 +281,6 @@ class Main extends Component {
             // <SidePanel />
             // <button onClick={this.contentResponse.bind(this)}> click for content </button>
             }
-
             {
             // <ViewEntry />
             // {renderImage('http://localhost:8080/files/', '5dd5a21befe3b78e670e39ba')}

@@ -116,7 +116,6 @@ class App extends Component {
         };
     }
 
-
   componentDidMount() {
       document.getElementById('button-console').addEventListener('click', () => {
         clicked = true;
