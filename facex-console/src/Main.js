@@ -75,23 +75,6 @@ class Main extends Component {
             }
           )
     }
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     contacts: [],
-  //     entries: [
-  //       {id: 1, content: 'first entry log', name: 'bob'},
-  //       {id: 2, content: 'second entry log', name: 'doug'},
-  //       {id: 2, content: 'second entry log', name: 'alex'}
-  //     ],
-  //     file: '',
-  //     error: '',
-  //     msg: '',
-  //     searchText: 'hello',
-  //     isLoading: ''
-  //   }
-  // }
-
   componentDidMount() {
       console.log(`main mounted`);
       // axios.get(`${ORG_API_URL}/contentResponse`)
@@ -285,18 +268,20 @@ class Main extends Component {
         backgroundColor: 'black',
         height: '500px'
       }}>
-          <NavBar />
+          <NavBar/>
           <div
             className=""
             style={{
               backgroundColor: 'lightgrey',
             }}>
-
             <Search
               searchText={this.state.searchText}
               searchUpdate={this.searchUpdate.bind(this)} />
-            <SidePanel />
-            <button onClick={this.contentResponse.bind(this)}> click for content </button>
+              {
+            // <SidePanel />
+            // <button onClick={this.contentResponse.bind(this)}> click for content </button>
+            }
+
             {
             // <ViewEntry />
             // {renderImage('http://localhost:8080/files/', '5dd5a21befe3b78e670e39ba')}
@@ -309,10 +294,12 @@ class Main extends Component {
               filterUpdate={this.filterUpdate.bind(this)}
               basicFilterUpdate={this.basicFilterUpdate.bind(this)} />
           </div>
-          <p> hi </p>
           <div>
-            {console.log(`this.state.response: `, this.state.response[0])}
-            {renderImage('http://localhost:8080/files/', this.state.response)}
+            {
+            // {console.log(`content call:`)}
+            // {console.log(`http://localhost:8080/` + this.state.content)}
+            // {renderImage('http://localhost:8080/', this.state.content)}
+            }
           </div>
       </div>
     );

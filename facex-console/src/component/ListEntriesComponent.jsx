@@ -13,6 +13,8 @@ import '../Entry/Entry.css';
 import '../App.css';
 import Filter from '../Filter/Filter';
 import './ListEntriesComponent.css';
+import Search from './Search';
+
 
 const ORGANIZATION = 'edgewalk';
 
@@ -28,6 +30,8 @@ class ListEntriesComponent extends Component {
             message: null,
             imgpath: '',
             isFiltering: false,
+            searchText: '',
+
         }
         this.refreshEntries = this.refreshEntries.bind(this)
         this.getImage = this.getImage.bind(this);
@@ -66,6 +70,10 @@ class ListEntriesComponent extends Component {
         console.log('val');
         console.log(val);
         this.props.filterUpdate(val);
+    }
+
+    searchUpdate(value) {
+      this.setState({searchText: value});
     }
 
     callbackFn = (childData) => {
@@ -164,9 +172,11 @@ class ListEntriesComponent extends Component {
 
         return (
             <div>
+            <FilterToolbar options={this.state.entries} basicFilterUpdate={this.props.basicFilterUpdate.bind(this)} filterUpdate={this.props.filterUpdate.bind(this)}>
+            </FilterToolbar>
                 <Jumbotron>
-                <h1>ENTRY LOGS</h1>
-                    <p>
+                <h1 style={{textAlign: 'center'}}>ENTRY LOGS</h1>
+                    <p style={{textAlign: 'center'}}>
                     View history of system entry. Click individual logs for entrant details.
                     {
                         // <div>
@@ -179,8 +189,7 @@ class ListEntriesComponent extends Component {
                 <div className="">
                 <p>
 
-                <FilterToolbar options={this.state.entries} basicFilterUpdate={this.props.basicFilterUpdate.bind(this)} filterUpdate={this.props.filterUpdate.bind(this)}>
-                </FilterToolbar>
+
 
                     {
                         // {this.state.isFiltering === 'true' ? 'worked!' : 'did not work!'} </p>
