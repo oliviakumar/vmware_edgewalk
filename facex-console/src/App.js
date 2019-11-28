@@ -26,6 +26,8 @@ import './Entry/Entry.css';
 import Info from './Info/Info';
 import axios from 'axios';
 import Main from './Main';
+import Team from './Team/Team';
+import rpi from "./rpi.jpg";
 
 const ORGANIZATION = 'edgewalk'
 const ORG_API_URL = 'http://localhost:8080'
@@ -35,6 +37,7 @@ const ORG_API_URL = 'http://localhost:8080'
 
 const left = document.querySelector('.left');
 const container = document.querySelector('.container');
+var clicked = false;
 
 const TypeWriter = function(txtElement, words, wait = 200) {
     this.txtElement = txtElement;
@@ -83,7 +86,9 @@ TypeWriter.prototype.type = function() {
 
     }
 
-    setTimeout(() => this.type(), typeSpeed)
+    if (clicked !== true) {
+        setTimeout(() => this.type(), typeSpeed)
+    }
 }
 
 
@@ -110,11 +115,19 @@ class App extends Component {
 
 
   componentDidMount() {
-      document.getElementById('button-root').addEventListener('click', () => {
-        // document.getElementById('mainview').style.display = "none"
+      document.getElementById('button-console').addEventListener('click', () => {
+        clicked = true;
         document.getElementById('banner').style.display = "none"
 
         ReactDOM.render(<Main />, document.getElementById('container'));
+      });
+      document.getElementById('button-team').addEventListener('click', () => {
+        clicked = true;
+        document.getElementById('banner').style.display = "none"
+        console.log(`about`);
+{
+        ReactDOM.render(<Team title={`Team Edgewalk`} imgsrc={rpi}/>, document.getElementById('container'));
+}
       });
 
 
