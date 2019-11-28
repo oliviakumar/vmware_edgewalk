@@ -47,7 +47,7 @@ class Filter extends Component {
       // console.log('selectedOption');
       console.log(`filterUpdate reached `);
 
-      const val = this.myValue.value;
+      // const val = this.myValue.value;
       console.log(`filterUpdate query:`, query);
 
       // console.log(`filterjs val`, this.state.selectedOption);

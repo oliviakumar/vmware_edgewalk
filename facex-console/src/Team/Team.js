@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import Bio from '../Bio/Bio';
 // import FullPost from '../../components/FullPost/FullPost';
@@ -11,9 +12,27 @@ import chris from '../logos/Chris.jpg';
 
 class Team extends Component {
     state = {
-        names: ["Mushahid", "Tanja", "Olivia", "Chris"]
+        names: ["Mushahid", "Tanja", "Olivia", "Chris"],
+        content: []
+    }
+
+    componentDidMount() {
+        // const posts = axios.get('http://localhost:8080/content')
+        //     .then(response => {
+        //         this.setState({content: response.data});
+        //         {
+        //         // console.log(`response:`, response.data.getElementById('content'));
+        //         console.log(`response:`, response);
+        //         }
+        //     }
+        //
+        // );
+
     }
     render () {
+        // const content = this.state.content.map(c => {
+        //     return <Bio name={c}/>
+        // })
         return (
             <div>
                 <section style={{backgroundColor: 'black'}}>

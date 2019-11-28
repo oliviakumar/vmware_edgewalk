@@ -10,7 +10,7 @@ body {
     height: 100vh;
     background: #333 url('cam4.jpg') no-repeat center center / cover;
     color: purple;
-    overflow: hidden;
+    /* overflow: hidden; */
 
 }
 
