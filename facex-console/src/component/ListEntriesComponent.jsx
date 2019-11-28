@@ -168,10 +168,12 @@ class ListEntriesComponent extends Component {
                 <h1>ENTRY LOGS</h1>
                     <p>
                     View history of system entry. Click individual logs for entrant details.
-                    <div>
-                        <p> searchText value is: {this.props.searchText} </p>
-                        <p> filterText value is: {this.props.filterText} </p>
-                    </div>
+                    {
+                        // <div>
+                        // <p> searchText value is: {this.props.searchText} </p>
+                        // <p> filterText value is: {this.props.filterText} </p>
+                    // </div>
+                    }
                     </p>
 
                 <div className="">

@@ -297,8 +297,10 @@ class Main extends Component {
               searchUpdate={this.searchUpdate.bind(this)} />
             <SidePanel />
             <button onClick={this.contentResponse.bind(this)}> click for content </button>
-            <ViewEntry />
+            {
+            // <ViewEntry />
             // {renderImage('http://localhost:8080/files/', '5dd5a21befe3b78e670e39ba')}
+            }
             <ListEntriesComponent
               entries={this.state.response}
               viewDetail={this.viewDetail}

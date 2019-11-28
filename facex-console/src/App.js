@@ -66,7 +66,7 @@ TypeWriter.prototype.type = function() {
     // let typeSpeed = 300;
 
     if(this.isDeleting) {
-        typeSpeed /= 4;
+        typeSpeed /= 2;
     }
 
     if(!this.isDeleting && this.txt === fulltxt) {
@@ -111,8 +111,8 @@ class App extends Component {
 
   componentDidMount() {
       document.getElementById('button-root').addEventListener('click', () => {
-        document.getElementById('mainview').style.display = "none"
-        document.getElementById('header').style.display = "none"
+        // document.getElementById('mainview').style.display = "none"
+        document.getElementById('banner').style.display = "none"
 
         ReactDOM.render(<Main />, document.getElementById('container'));
       });

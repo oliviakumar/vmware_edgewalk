@@ -1,18 +1,21 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:200,100,400');
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700');
-@import url('https://fonts.googleapis.com/css?family=Quattrocento&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Quattrocento');
+@import url('https://fonts.googleapis.com/css?family=Inherit');
+@import url('https://fonts.googleapis.com/css?family=Khand');
+
 body {
-    font-family: 'Quattrocento', sans-serif;
+    font-family: 'Khand', sans-serif;
     font-size: 100%;
     height: 100vh;
-    background: #333 url('frbg.jpg') no-repeat center center / cover;
+    background: #333 url('cam4.jpg') no-repeat center center / cover;
     color: purple;
     overflow: hidden;
 
 }
 
 .txt-type > .txt {
-    border-right: 0.2rem solid #777;
+    border-right: 0.2em solid #777;
 }
 
 .container {
@@ -20,24 +23,55 @@ body {
     flex-direction: column;
     justify-content: center;
     height: 100%;
-    padding: 0 3rem;
-    background-color: lightblue;
+    width: 70%;
+    padding: 0 3em;
+    background-color: black;
+    /* border: 2px solid #dadada; */
+    box-shadow: 0 0 10px #9ecaed;
+    border-radius: 7px;
+
 }
 
-h1, h2 {
-    font-family: 'Quattrocento', sans-serif;
-    font-weight: 200;
-    font-size: 25;
-
-    margin: 0.4rem;
+#banner {
+    background-color: black;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    color: #d8d8d8;
+    padding: 5em 3em 3em 3em;
+    text-align: center;
+    position: relative;
 }
 
 h1 {
-    font-size: 5rem;
+    font-family: 'Khand', sans-serif;
+    font-size: 1.5em;
+    /* font-size: 48px; */
+    color: grey;
+
 
 }
 
-h2 {
-    font-size: 2rem;
+.btn {
+    display: inline-block;
+    padding: 8px 18px 10px;
+    text-transform: uppercase;
+    border: 1px solid;
+}
+
+/* h2 {
+    font-family: 'Khand', sans-serif;
+    font-size: 1em;
     color: purple;
+} */
+
+.large {
+   font-family:'Khand', sans-serif;
+   font-size: 48px;
+   color: white;
+}
+
+.small {
+   font-family:'Khand', sans-serif;
+   color: purple;
 }
