@@ -17,16 +17,16 @@ class Team extends Component {
     }
 
     componentDidMount() {
-        // const posts = axios.get('http://localhost:8080/content')
-        //     .then(response => {
-        //         this.setState({content: response.data});
-        //         {
-        //         // console.log(`response:`, response.data.getElementById('content'));
-        //         console.log(`response:`, response);
-        //         }
-        //     }
-        //
-        // );
+        const posts = axios.get('http://localhost:8080/content')
+            .then(response => {
+                // this.setState({content: response.data});
+                {
+                // console.log(`response:`, response.data.getElementById('content'));
+                console.log(`response:`, JSON.stringify(response.data));
+                }
+            }
+
+        );
 
     }
     render () {
@@ -34,9 +34,18 @@ class Team extends Component {
         //     return <Bio name={c}/>
         // })
         return (
-            <div>
+            <div className="Team">
+                <header>
+                    <nav>
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/new-entrant">New Entrant</a></li>
+                        </ul>
+                    </nav>
+                </header>
                 <section style={{backgroundColor: 'black'}}>
                     <h1 className="title"> TEAM EDGEWALK </h1>
+
                     <section className="Bios">
                         {this.state.names.map(name => {
                             console.log(name + `.jpg`);

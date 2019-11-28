@@ -12,3 +12,27 @@
     font-size: 100px;
     color: lavender;
 }
+
+.Team ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.Team li {
+    display: inline-block;
+    margin: 20px;
+}
+
+.Team a {
+    text-decoration: none;
+    color: black;
+}
+
+.Team a:hover,
+.Team a:active, {
+    background-color: #f5ebfc;
+
+}

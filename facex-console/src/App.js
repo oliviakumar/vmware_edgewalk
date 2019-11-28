@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 
 import {
@@ -127,6 +128,8 @@ class App extends Component {
         clicked = true;
         document.getElementById('banner').style.display = "none"
         console.log(`about`);
+
+
         ReactDOM.render(<Team title={`About Team Edgewalk`} imgsrc={rpi}/>, document.getElementById('container'));
       });
       document.getElementById('button-project').addEventListener('click', () => {
