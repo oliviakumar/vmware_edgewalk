@@ -6,3 +6,9 @@
     margin: auto;
     text-align: center;
 }
+
+.title {
+    text-align: center;
+    font-size: 100px;
+    color: lavender;
+}
