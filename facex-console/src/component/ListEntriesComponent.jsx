@@ -12,7 +12,7 @@ import Entry from '../Entry/Entry'
 import '../Entry/Entry.css';
 import '../App.css';
 import Filter from '../Filter/Filter';
-
+import './ListEntriesComponent.css';
 
 const ORGANIZATION = 'edgewalk';
 
@@ -153,7 +153,7 @@ class ListEntriesComponent extends Component {
 
     render() {
         const style = {
-            backgroundColor: 'grey',
+            backgroundColor: 'white',
             font: 'inherit',
             border: '1x solid lightblue',
             padding: 'pointer',
@@ -204,7 +204,7 @@ class ListEntriesComponent extends Component {
                                 <th>Details</th>
                             </tr>
                         </thead>
-                        <tbody className="collapse in" style={style}>
+                        <tbody className="collapse in shadow" style={style}>
                         {
                             this.state.entries
                                 .filter(entry => {
