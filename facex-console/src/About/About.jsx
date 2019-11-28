@@ -2,6 +2,7 @@ import React from "react";
 // import "./card-style.css";
 
 const About = props => {
+  document.getElementById('banner').style.display = "none"
   return (
     <div className='card text-center shadow'>
       <div className='overflow'>

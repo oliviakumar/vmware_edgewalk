@@ -17,6 +17,7 @@ class Team extends Component {
     }
 
     componentDidMount() {
+        document.getElementById('banner').style.display = "none"
         const posts = axios.get('http://localhost:8080/content')
             .then(response => {
                 // this.setState({content: response.data});

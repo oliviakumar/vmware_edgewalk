@@ -13,7 +13,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // }
 
 ReactDOM.render(<App />, document.getElementById('container'));
-// ReactDOM.render(<Test />, document.getElementById('root'));
+// ReactDOM.render(<App />, document.getElementById('root'));
+
 // axios({
 //     method: 'get',
 //     url: `${ORG_API_URL}/files/liv-get-photo`

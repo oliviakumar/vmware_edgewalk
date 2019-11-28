@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import ReactDOM, {render} from 'react-dom';
 // import {Router, Route} from 'react-router';
 
@@ -118,26 +118,31 @@ class App extends Component {
     }
 
   componentDidMount() {
-      // document.getElementById('button-console').addEventListener('click', () => {
-      //   clicked = true;
-      //   document.getElementById('banner').style.display = "none"
-      //
-      //   ReactDOM.render(<Main />, document.getElementById('container'));
-      // });
-      // document.getElementById('button-team').addEventListener('click', () => {
-      //   clicked = true;
-      //   document.getElementById('banner').style.display = "none"
-      //   console.log(`about`);
-      //
-      //
-      //   ReactDOM.render(<Team title={`About Team Edgewalk`} imgsrc={rpi}/>, document.getElementById('container'));
-      // });
-      // document.getElementById('button-project').addEventListener('click', () => {
-      //   clicked = true;
-      //   document.getElementById('banner').style.display = "none"
-      //   console.log(`about`);
-      //   ReactDOM.render(<About title={`About Project FaceX`} imgsrc={rpi}/>, document.getElementById('container'));
-      // });
+      document.getElementById('button-console').addEventListener('click', () => {
+
+        clicked = true;
+        document.getElementById('banner').style.display = "none"
+        ReactDOM.render(<Main />, document.getElementById('container'));
+        // ReactDOM.render(<Main />, document.getElementById('root'));
+
+
+      });
+      document.getElementById('button-team').addEventListener('click', () => {
+        clicked = true;
+        document.getElementById('banner').style.display = "none"
+        console.log(`about`);
+
+
+        ReactDOM.render(<Team title={`About Team Edgewalk`} imgsrc={rpi}/>, document.getElementById('container'));
+        // ReactDOM.render(<Team title={`About Team Edgewalk`} imgsrc={rpi}/>, document.getElementById('root'));
+      });
+      document.getElementById('button-project').addEventListener('click', () => {
+        clicked = true;
+        document.getElementById('banner').style.display = "none"
+        console.log(`about`);
+        ReactDOM.render(<About title={`About Project FaceX`} imgsrc={rpi}/>, document.getElementById('container'));
+        // ReactDOM.render(<About title={`About Project FaceX`} imgsrc={rpi}/>, document.getElementById('root'));
+      });
   }
 
     render() {
@@ -154,7 +159,23 @@ class App extends Component {
                 {
                     // <Route path="/securityLog" component={Main} />
                 }
+            <nav>
+                <h3> LOGO </h3>
+                <ul className="nav-links">
+                    <Link to='/team'>
+                        <li className="btn btn-outline-light" id="button-team"> Team Edge yeet </li>
+                    </Link>
+                    <span />
+                    <Link to='/facex'>
+                        <li className="btn btn-outline-light" id="button-project"> Project FaceX yeet </li>
+                    </Link>
+                </ul>
+            </nav>
             </Router>
+
+            <button className="btn btn-outline-light" id="button-team"> Team Edgewalk </button>
+            <span />
+            <button className="btn btn-outline-light" id="button-project"> Project FaceX </button>
             {
             // <div id="app" style={{textAlign: 'center', fontSize: '40px'}}>
             //     <header className="Cards" width="100%">
@@ -166,14 +187,14 @@ class App extends Component {
             //         </nav>
             //     </header>
             // </div>
+            // <div style={{textAlign: 'center'}}>
+            //     <button> 1 </button>
+            //     <button> 2 </button>
+            //     <button> 3 </button>
+            //     <br />
+            //     <br />
+            // </div>
             }
-            <div style={{textAlign: 'center'}}>
-                <button> 1 </button>
-                <button> 2 </button>
-                <button> 3 </button>
-                <br />
-                <br />
-            </div>
         </div>
 
     );

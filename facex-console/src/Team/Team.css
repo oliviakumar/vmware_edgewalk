@@ -27,6 +27,7 @@
 }
 
 .Team a {
+    width: 100%;
     text-decoration: none;
     color: black;
 }

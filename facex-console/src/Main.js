@@ -77,7 +77,7 @@ class Main extends Component {
     }
   componentDidMount() {
       console.log(`main mounted`);
-        document.getElementById('banner').style.display = "none"
+      document.getElementById('banner').style.display = "none"
 
       // axios.get(`${ORG_API_URL}/contentResponse`)
       // .then(
