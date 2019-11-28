@@ -155,16 +155,18 @@ class App extends Component {
                     // <Route path="/securityLog" component={Main} />
                 }
             </Router>
-            <div id="app" style={{textAlign: 'center', fontSize: '40px'}}>
-                <header className="Cards" width="100%">
-                    <nav>
-                        <ul>
-                            <a href="/"> E N T E R </a>
-                            <a href="/about"> About </a>
-                        </ul>
-                    </nav>
-                </header>
-            </div>
+            {
+            // <div id="app" style={{textAlign: 'center', fontSize: '40px'}}>
+            //     <header className="Cards" width="100%">
+            //         <nav>
+            //             <ul>
+            //                 <a href="/"> E N T E R </a>
+            //                 <a href="/about"> About </a>
+            //             </ul>
+            //         </nav>
+            //     </header>
+            // </div>
+            }
             <div style={{textAlign: 'center'}}>
                 <button> 1 </button>
                 <button> 2 </button>
