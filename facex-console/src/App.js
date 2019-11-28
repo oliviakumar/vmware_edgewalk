@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import ReactDOM, {render} from 'react-dom';
 // import {Router, Route} from 'react-router';
+import { Row } from 'reactstrap'
 
 import {
   // Route,
@@ -24,7 +25,7 @@ import FilterToolbar from './FilterToolbar/FilterToolbar'
 import Toggle from './component/Toggle';
 import ViewEntry from './SidePanel/ViewEntry';
 import SidePanel from './SidePanel/SidePanel';
-import './Entry/Entry.css';
+// import './Entry/Entry.css';
 import Info from './Info/Info';
 import axios from 'axios';
 import Main from './Main';
@@ -127,22 +128,26 @@ class App extends Component {
 
 
       });
-      document.getElementById('button-team').addEventListener('click', () => {
-        clicked = true;
-        document.getElementById('banner').style.display = "none"
-        console.log(`about`);
+      // document.getElementById('button-team').addEventListener('click', () => {
+      //   clicked = true;
+      //   document.getElementById('banner').style.display = "none"
+      //   console.log(`about`);
+      //
+      //
+      //   ReactDOM.render(<Team title={`About Team Edgewalk`} />, document.getElementById('container'));
+      //
+      // });
+      // document.getElementById('button-project').addEventListener('click', () => {
+      //   clicked = true;
+      //   document.getElementById('banner').style.display = "none"
+      //   console.log(`about`);
+      //   ReactDOM.render(<About title={`About Project FaceX`} imgsrc={rpi}/>, document.getElementById('container'));
+      //
+      // });
+  }
 
-
-        ReactDOM.render(<Team title={`About Team Edgewalk`} imgsrc={rpi}/>, document.getElementById('container'));
-        // ReactDOM.render(<Team title={`About Team Edgewalk`} imgsrc={rpi}/>, document.getElementById('root'));
-      });
-      document.getElementById('button-project').addEventListener('click', () => {
-        clicked = true;
-        document.getElementById('banner').style.display = "none"
-        console.log(`about`);
-        ReactDOM.render(<About title={`About Project FaceX`} imgsrc={rpi}/>, document.getElementById('container'));
-        // ReactDOM.render(<About title={`About Project FaceX`} imgsrc={rpi}/>, document.getElementById('root'));
-      });
+  renderFaceX() {
+      return (<About title={`About Project FaceX`} imgsrc={rpi}/>);
   }
 
     render() {
@@ -150,33 +155,49 @@ class App extends Component {
 
     return (
         <div>
-            <Router>
-                <Switch>
-                    <Route path="/logs" component={Main} />
-                    <Route path="/facex" component={About} />
-                    <Route path="/team" component={Team} />
-                </Switch>
-                {
-                    // <Route path="/securityLog" component={Main} />
-                }
+        {
+                <Router>
+                        <Row style={{textAlign: 'center'}}>
+                            <li className="btn btn-outline-light" id="button-project"><a href="/facex">FaceX</a>
+                                <Route path="/facex" component={this.renderFaceX} />
+                            </li>
+                            <li className="btn btn-outline-light" id="button-team"><a href="/team">Team</a>
+                                <Route path="/team" component={Team} />
+                            </li>
+                        </Row>
+                </Router>
+
+        }
+
             <nav>
                 <h3> LOGO </h3>
-                <ul className="nav-links">
-                    <Link to='/team'>
-                        <li className="btn btn-outline-light" id="button-team"> Team Edge yeet </li>
-                    </Link>
-                    <span />
-                    <Link to='/facex'>
-                        <li className="btn btn-outline-light" id="button-project"> Project FaceX yeet </li>
-                    </Link>
-                </ul>
-            </nav>
-            </Router>
+                {
+                    // <header>
+                //     <nav>
+                //         <ul>
+                //             <li className="btn btn-outline-light" id="button-project"><a href="/facex">FaceX</a>
+                //             </li>
+                //             <li className="btn btn-outline-light" id="button-team"><a href="/team">Team</a></li>
+                //         </ul>
+                //     </nav>
+                // </header>
 
-            <button className="btn btn-outline-light" id="button-team"> Team Edgewalk </button>
-            <span />
-            <button className="btn btn-outline-light" id="button-project"> Project FaceX </button>
-            {
+                    // <ul className="nav-links">
+                //     <Link to='/team' params={{ title: "About Team YEET"}}>
+                //         <li className="btn btn-outline-light" id="button-team"> Team Edge yeet </li>
+                //     </Link>
+                //     <span />
+                //     <Link to='/facex'>
+                //         <li className="btn btn-outline-light" id="button-project"> Project FaceX yeet </li>
+                //     </Link>
+                // </ul>
+                }
+            </nav>
+
+
+            // <button className="btn btn-outline-light" id="button-team"> Team Edgewalk </button>
+            // <span />
+            // <button className="btn btn-outline-light" id="button-project"> Project FaceX </button>
             // <div id="app" style={{textAlign: 'center', fontSize: '40px'}}>
             //     <header className="Cards" width="100%">
             //         <nav>
