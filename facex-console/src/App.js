@@ -26,7 +26,9 @@ import './Entry/Entry.css';
 import Info from './Info/Info';
 import axios from 'axios';
 import Main from './Main';
+// import Team from './Team/Team';
 import Team from './Team/Team';
+import About from './About/About';
 import rpi from "./rpi.jpg";
 
 const ORGANIZATION = 'edgewalk'
@@ -125,28 +127,40 @@ class App extends Component {
         clicked = true;
         document.getElementById('banner').style.display = "none"
         console.log(`about`);
-{
-        ReactDOM.render(<Team title={`Team Edgewalk`} imgsrc={rpi}/>, document.getElementById('container'));
-}
+        ReactDOM.render(<Team title={`About Team Edgewalk`} imgsrc={rpi}/>, document.getElementById('container'));
       });
-
-
-
+      document.getElementById('button-project').addEventListener('click', () => {
+        clicked = true;
+        document.getElementById('banner').style.display = "none"
+        console.log(`about`);
+        ReactDOM.render(<About title={`About Project FaceX`} imgsrc={rpi}/>, document.getElementById('container'));
+      });
   }
 
     render() {
     // const { } = this.state;
 
     return (
-        <div id="app" style={{textAlign: 'center'}}>
-            <header className="masthead" width="100%">
-
-            </header>
-
-            <br />
-            <br />
-
+        <div>
+            <div id="app" style={{textAlign: 'center', fontSize: '40px'}}>
+                <header className="Cards" width="100%">
+                    <nav>
+                        <ul>
+                            <a href="/"> E N T E R </a>
+                            <a href="/about"> About </a>
+                        </ul>
+                    </nav>
+                </header>
+            </div>
+            <div style={{textAlign: 'center'}}>
+                <button> 1 </button>
+                <button> 2 </button>
+                <button> 3 </button>
+                <br />
+                <br />
+            </div>
         </div>
+
     );
   }
 
