@@ -36,21 +36,17 @@ class Team extends Component {
         // })
         return (
             <div className="Team">
-{
-                //     <header>
-                //     <nav>
-                //         <ul>
-                //             <li><a href="/">Home</a></li>
-                //             <li><a href="/facex">About Project FaceX</a></li>
-                //         </ul>
-                //     </nav>
-                // </header>
-}
-                <div style={{backgroundColor: 'black'}}>
-                    <h1 className="title"> {this.props.title} </h1>
-                    {
-                    // <h1 className="title"> TEAM EDGEWALK </h1>
-}
+                <header>
+                    <nav>
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/new-entrant">New Entrant</a></li>
+                        </ul>
+                    </nav>
+                </header>
+                <section style={{backgroundColor: 'black'}}>
+                    <h1 className="title"> TEAM EDGEWALK </h1>
+
                     <section className="Bios">
                         {this.state.names.map(name => {
                             console.log(name + `.jpg`);
@@ -59,15 +55,7 @@ class Team extends Component {
                         }
 
                     </section>
-                </div>
-{
-                // <section>
-                //     <FullPost />
-                // </section>
-                // <section>
-                //     <NewPost />
-                // </section>
-}
+                </section>
             </div>
         );
     }

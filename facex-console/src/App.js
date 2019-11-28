@@ -159,16 +159,42 @@ class App extends Component {
     return (
         <div>
         {
-                <Router>
-                        <Row style={{textAlign: 'center'}}>
-
-                            <Route path="/facex" component={this.renderFaceX} />
-
-                            <Route path="/team" component={this.renderTeam} />
-                        </Row>
-                </Router>
+                // <Router>
+                //         <Row style={{textAlign: 'center'}}>
+                //
+                //             <Route path="/facex" component={this.renderFaceX} />
+                //
+                //             <Route path="/team" component={this.renderTeam} />
+                //         </Row>
+                // </Router>
 
         }
+            <Router>
+                <Switch>
+                    <Route path="/logs" component={Main} />
+                    <Route path="/facex" component={About} />
+                    <Route path="/team" component={Team} />
+                </Switch>
+                {
+                    // <Route path="/securityLog" component={Main} />
+                }
+            <nav>
+                <h3> LOGO </h3>
+                <ul className="nav-links">
+                    <Link to='/team'>
+                        <li className="btn btn-outline-light" id="button-team"> Team Edge yeet </li>
+                    </Link>
+                    <span />
+                    <Link to='/facex'>
+                        <li className="btn btn-outline-light" id="button-project"> Project FaceX yeet </li>
+                    </Link>
+                </ul>
+            </nav>
+            </Router>
+
+            <button className="btn btn-outline-light" id="button-team"> Team Edgewalk </button>
+            <span />
+            <button className="btn btn-outline-light" id="button-project"> Project FaceX </button>
 
             <nav>
                 <h3> LOGO </h3>
