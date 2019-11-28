@@ -35,26 +35,39 @@ class Team extends Component {
         //     return <Bio name={c}/>
         // })
         return (
-            <div className='overflow'>
-
-            {
-                // <nav>
-                //     <ul>
-                //         <li><a href="/">Home</a></li>
-                //         <li><a href="/facex">About Project FaceX</a></li>
-                //     </ul>
-                // </nav>
-            }
-                <section className="Bios" style={{backgroundColor: 'black'}}>
-
+            <div className="Team">
+{
+                //     <header>
+                //     <nav>
+                //         <ul>
+                //             <li><a href="/">Home</a></li>
+                //             <li><a href="/facex">About Project FaceX</a></li>
+                //         </ul>
+                //     </nav>
+                // </header>
+}
+                <div style={{backgroundColor: 'black'}}>
                     <h1 className="title"> {this.props.title} </h1>
-                    <div>
-                    {this.state.names.map(name => {
-                        console.log(name + `.jpg`);
-                        return <Bio name={name} imgsrc={name}/>;
-                    })}
-                    </div>
-                </section>
+                    {
+                    // <h1 className="title"> TEAM EDGEWALK </h1>
+}
+                    <section className="Bios">
+                        {this.state.names.map(name => {
+                            console.log(name + `.jpg`);
+                            return <Bio name={name} imgsrc={name}/>;
+                        })
+                        }
+
+                    </section>
+                </div>
+{
+                // <section>
+                //     <FullPost />
+                // </section>
+                // <section>
+                //     <NewPost />
+                // </section>
+}
             </div>
         );
     }

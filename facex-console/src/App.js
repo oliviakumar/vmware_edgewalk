@@ -149,6 +149,9 @@ class App extends Component {
   renderFaceX() {
       return (<About title={`About Project FaceX`} imgsrc={rpi}/>);
   }
+  renderTeam() {
+      return (<Team title={`About Team Edgewalk`} />);
+  }
 
     render() {
     // const { } = this.state;
@@ -158,12 +161,10 @@ class App extends Component {
         {
                 <Router>
                         <Row style={{textAlign: 'center'}}>
-                            <li className="btn btn-outline-light" id="button-project"><a href="/facex">FaceX</a>
-                                <Route path="/facex" component={this.renderFaceX} />
-                            </li>
-                            <li className="btn btn-outline-light" id="button-team"><a href="/team">Team</a>
-                                <Route path="/team" component={Team} />
-                            </li>
+
+                            <Route path="/facex" component={this.renderFaceX} />
+
+                            <Route path="/team" component={this.renderTeam} />
                         </Row>
                 </Router>
 
@@ -172,6 +173,10 @@ class App extends Component {
             <nav>
                 <h3> LOGO </h3>
                 {
+                    // <p className="btn btn-outline-light" id="button-project"><a href="/facex">FaceX</a>
+                    // </p>
+                    // <p className="btn btn-outline-light" id="button-team"><a href="/team">Team</a>
+                    // </p>
                     // <header>
                 //     <nav>
                 //         <ul>
