@@ -110,7 +110,6 @@ class ListEntriesComponent extends Component {
         */
     }
 
-
     onClickHandler() {
         // console.log('look we made it');
     }

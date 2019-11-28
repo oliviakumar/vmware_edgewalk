@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import ReactDOM, {render} from 'react-dom';
+// import {Router, Route} from 'react-router';
 
 import {
-  Route,
+  // Route,
   NavLink,
   HashRouter
 } from "react-router-dom";
@@ -117,26 +118,26 @@ class App extends Component {
     }
 
   componentDidMount() {
-      document.getElementById('button-console').addEventListener('click', () => {
-        clicked = true;
-        document.getElementById('banner').style.display = "none"
-
-        ReactDOM.render(<Main />, document.getElementById('container'));
-      });
-      document.getElementById('button-team').addEventListener('click', () => {
-        clicked = true;
-        document.getElementById('banner').style.display = "none"
-        console.log(`about`);
-
-
-        ReactDOM.render(<Team title={`About Team Edgewalk`} imgsrc={rpi}/>, document.getElementById('container'));
-      });
-      document.getElementById('button-project').addEventListener('click', () => {
-        clicked = true;
-        document.getElementById('banner').style.display = "none"
-        console.log(`about`);
-        ReactDOM.render(<About title={`About Project FaceX`} imgsrc={rpi}/>, document.getElementById('container'));
-      });
+      // document.getElementById('button-console').addEventListener('click', () => {
+      //   clicked = true;
+      //   document.getElementById('banner').style.display = "none"
+      //
+      //   ReactDOM.render(<Main />, document.getElementById('container'));
+      // });
+      // document.getElementById('button-team').addEventListener('click', () => {
+      //   clicked = true;
+      //   document.getElementById('banner').style.display = "none"
+      //   console.log(`about`);
+      //
+      //
+      //   ReactDOM.render(<Team title={`About Team Edgewalk`} imgsrc={rpi}/>, document.getElementById('container'));
+      // });
+      // document.getElementById('button-project').addEventListener('click', () => {
+      //   clicked = true;
+      //   document.getElementById('banner').style.display = "none"
+      //   console.log(`about`);
+      //   ReactDOM.render(<About title={`About Project FaceX`} imgsrc={rpi}/>, document.getElementById('container'));
+      // });
   }
 
     render() {
@@ -144,6 +145,16 @@ class App extends Component {
 
     return (
         <div>
+            <Router>
+                <Switch>
+                    <Route path="/logs" component={Main} />
+                    <Route path="/facex" component={About} />
+                    <Route path="/team" component={Team} />
+                </Switch>
+                {
+                    // <Route path="/securityLog" component={Main} />
+                }
+            </Router>
             <div id="app" style={{textAlign: 'center', fontSize: '40px'}}>
                 <header className="Cards" width="100%">
                     <nav>
