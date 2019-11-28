@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
 import { Jumbotron, Table, Panel, OverlayTrigger, Popover } from 'react-bootstrap';
 import ViewEntry from '../SidePanel/ViewEntry';
+import Info from '../Info/Info';
+import noauth from "../unauthId.png";
 
 import './Entry.css';
 
@@ -19,11 +21,12 @@ const Entry = (props) => {
     const failStyle = {
       backgroundColor: 'red',
       width: '50px'
-      
+
     }
 
     function renderColor(accepted) {
-      if (accepted) {
+        console.log(`accepted, rendercolor:`, accepted)
+      if (accepted === true) {
         return <td style={successStyle}></td>
       } else {
         return <td style={failStyle}></td>
@@ -57,13 +60,17 @@ const Entry = (props) => {
     // console.log(`state from LEC:`, props.state.entries);
         // const ret =
       return <tr href="#" className="Entry" onClick={props.onClick}>
-            <td> {Math.random()} </td>
+      {
+            // <td> {Math.random()} </td>
+      }
             <td> {props.entry.identity} </td>
             <td> {props.entry.location} </td>
             <td> {props.entry.attempted} </td>
-            <td> {renderColor(!props.entry.accepted)} </td>
-
+            <td> {renderColor(props.entry.accepted)} </td>
+            <Info idStr={props.idStr} />
+            {
             <ViewEntry idStr={props.entry.idString}/>
+            }
           </tr>
 // return ret + ' entry detail view '
 }

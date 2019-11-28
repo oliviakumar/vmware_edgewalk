@@ -27,12 +27,4 @@ class Search extends Component {
         )
     }
 }
-// const Search = () => {
-//     return (
-//         <div>
-//             <Input label="Search" icon="/Users/oliviakumar/Documents/PetProjects/facex/public/logo512.png" onChange={this.onchange}/>
-//         </div>
-//     )<Row>
-// }
-
 export default Search;

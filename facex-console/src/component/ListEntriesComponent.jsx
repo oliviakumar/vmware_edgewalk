@@ -1,8 +1,6 @@
 import React, { Component, Link, FilterOptions, Input } from 'react';
 import {Route, IndexRoute} from 'react-router';
 import { Row } from 'reactstrap'
-
-
 import EntryDataService from '../service/EntryDataService';
 import Toggle from './Toggle';
 import ViewDetail from './ViewDetail';
@@ -185,12 +183,8 @@ class ListEntriesComponent extends Component {
                     // </div>
                     }
                     </p>
-
                 <div className="">
                 <p>
-
-
-
                     {
                         // {this.state.isFiltering === 'true' ? 'worked!' : 'did not work!'} </p>
                         //
@@ -203,16 +197,18 @@ class ListEntriesComponent extends Component {
                         // <Filter options={this.state.entries} onClick={() => this.filterHandler()}/>
                     }
                     <Table bordered hover>
-                        <thead>
-                            <tr className="Entry" onClick={this.onClickHandler()}>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Location</th>
-                                <th>Time</th>
-                                <th>Status</th>
-                                <th>Details</th>
-                            </tr>
-                        </thead>
+{
+                        //     <thead>
+                        //     <tr className="Entry" onClick={this.onClickHandler()}>
+                        //         <th>#</th>
+                        //         <th>Name</th>
+                        //         <th>Location</th>
+                        //         <th>Time</th>
+                        //         <th>Status</th>
+                        //         <th>Details</th>
+                        //     </tr>
+                        // </thead>
+}
                         <tbody className="collapse in shadow" style={style}>
                         {
                             this.state.entries
@@ -232,11 +228,13 @@ class ListEntriesComponent extends Component {
                         </tbody>
 
                     </Table>
-                    </p>
+                </p>
+                <Row>
                     <Button variant="primary">Learn more</Button>
                     <div className="row">
                         <button className="btn btn-success" onClick={this.addEntryClicked}>Return to Dashboard</button>
                     </div>
+                </Row>
                 </div>
                 </Jumbotron>
 

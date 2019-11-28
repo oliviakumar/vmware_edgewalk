@@ -1,7 +1,7 @@
 import React from 'react';
 // import './App.css';
 // import noauth from '../unauth.png';
-import logo from "../logos/facex_logo.png";
+import noauth from "../unauthId.png";
 
 const successStyle = {
   backgroundColor: 'chartreuse',
@@ -15,7 +15,7 @@ function renderImage(host, id) {
   console.log(`renderImage id:`, id);
   const c = host + id
   return (
-      <img src={c} onerror="this.src={logo}" height="50" width="50"/>
+      <img src={c} onerror="this.src={noauth}" height="50" width="50"/>
     );
 }
 
@@ -57,16 +57,17 @@ class Info extends React.Component {
         .then(
           (result) => {
               // console.log('content call');
-              this.setState({
-                  isLoaded: true,
-                  response: result,
-            });
+              console.log(`result:`, result);
+            //   this.setState({
+            //       isLoaded: true,
+            //       response: result,
+            // });
           },
           (error) => {
-            this.setState({
-              isLoaded: true,
-              error
-            });
+            // this.setState({
+            //   isLoaded: true,
+            //   error
+            // });
             // console.log('error');
           }
         )
@@ -79,7 +80,7 @@ class Info extends React.Component {
           at Set.has (<anonymous>)
       */
     let suffix = this.props.idStr; /*"5ddc6a0ae695521851756eb2"; */
-    console.log(`suffix:`,suffix);
+    // console.log(`suffix:`,suffix);
     let fetchUrl = "http://localhost:8080/all";
         fetch(fetchUrl)
           .then(res => res.json())
@@ -102,9 +103,9 @@ class Info extends React.Component {
   }
 
   render() {
-      console.log(`this.state.error: `, this.state.error)
-      console.log(`this.state.isLoaded: `, this.state.isLoaded)
-      console.log(`this.state.response: `, this.state.response)
+      // console.log(`this.state.error: `, this.state.error)
+      // console.log(`this.state.isLoaded: `, this.state.isLoaded)
+      console.log(`infojs this.state.response: `, this.state.response)
           return (
               <div>
                 {renderImage('http://localhost:8080/files/', this.props.idStr)}
@@ -115,3 +116,7 @@ class Info extends React.Component {
 
 
 export default Info;
+
+/*
+    <img src={noauth}/>
+*/
