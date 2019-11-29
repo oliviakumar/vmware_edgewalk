@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import ReactDOM, {render} from 'react-dom';
-import { Navbar } from 'react-bootstrap';
+import { Navbar, Container } from 'react-bootstrap';
 
 // import {Router, Route} from 'react-router';
 import { Row } from 'reactstrap'
@@ -21,13 +21,11 @@ import ListEntriesComponent from './component/ListEntriesComponent';
 // import Entries from './components/AllEntries';
 // import Filter from './component/Filter';
 import NavBar from './components/NavBar';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import Entry from './Entry/Entry';
 import FilterToolbar from './FilterToolbar/FilterToolbar'
 import Toggle from './component/Toggle';
 import ViewEntry from './SidePanel/ViewEntry';
 import SidePanel from './SidePanel/SidePanel';
-// import './Entry/Entry.css';
 import Info from './Info/Info';
 import axios from 'axios';
 import Main from './Main';
@@ -36,7 +34,6 @@ import Team from './Team/Team';
 import Footer from './Footer/Footer';
 import About from './About/About';
 import rpi from "./rpi.jpg";
-import './App.css';
 
 const ORGANIZATION = 'edgewalk'
 const ORG_API_URL = 'http://localhost:8080'
@@ -165,27 +162,31 @@ class App extends Component {
 
     return (
         <div>
-            <Navbar id="verypretentious" fixed="bottom">
+            <div id="verypretentious" fixed="bottom">
                 <Router>
                     <Switch>
                         <Route path="/logs" component={Main} />
                         <Route path="/about" component={About} />
                         <Route path="/team" component={Team} />
                     </Switch>
+                    <Container id="dude" style={{textAlign: 'center', backgroundColor: 'transparent'}}>
+                        <div >
+                            <li className="nav-links" onClick={this.hideMe}>
+                                <Link id="veryimportant" to='/team'>
+                                    <li className="btn btn-outline-light bro" id="button-team" > Meet Team Edgewalk </li>
+                                </Link>
 
-                    <ul className="nav-links" onClick={this.hideMe}>
-                        <Link to='/team'>
-                            <li className="btn btn-outline-light" id="button-team"> Meet Team Edgewalk </li>
-                        </Link>
-                        <span />
-                        <Link to='/about'>
-                            <li className="btn btn-outline-light" id="button-project"> About Project FaceX </li>
-                        </Link>
-                    </ul>
+                                <Link id="veryimportant" to='/about'>
+                                    <li className="btn btn-outline-light bro" id="button-project"> <img src={rpi} height="100px" width="150px" style={{opacity: 0.5}}/> About Project FaceX
+                                    </li>
+                                </Link>
+                            </li>
+                        </div>
+                    </Container>
+
                 </Router>
-            </Navbar>
+            </div>
             <Footer title={"hi"}/>
-
         </div>
 
     );

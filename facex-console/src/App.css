@@ -1,28 +1,43 @@
-/* @import url(https://unpkg.com/bootstrap@4.1.0/dist/css/bootstrap.min.css) */
 
-/*
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-.App {
-  text-align: center;
+.nav-links li {
+    /* border: 1px solid; */
+    /* margin: 1em 0; */
+
 }
 
-.App-logo {
-  height: 40vmin;
-}
-.App-link {
-  color: #09d3ac;
+/* ul {
+    padding: 0;
+    margin: 0;
+    width: 10em;
 } */
 
-/* .footer {
-    height: 100%;
-    width: 960px;
-} */
+
+#verypretentious {
+    position: fixed;
+    width: 100%;
+    bottom: 30px;
+    align: center;
+    justify-content: center;
+
+}
+
+#veryimportant {
+    padding: 8px 18px 5px 10px;
+}
+
+#dude {
+    box-shadow: 0 0 0 0;
+    /* height: 100px; */
+
+}
+
+.btn {
+    hover: true;
+}
+
+.bro {
+    height: 100px;
+    width: 150px;
+
+    /* padding: 8px 18px 5px 10px; */
+}
