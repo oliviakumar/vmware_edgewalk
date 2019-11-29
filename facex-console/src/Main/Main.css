@@ -1,4 +1,8 @@
+.logs {
+    font-family: 'Khand', sans-serif;
+    font-size: 100%;
+    color: purple;
+    overflowY: 'scroll';
+    background-color: #1e1f23;
 
-.overflow {
-  overflow: hidden;
 }

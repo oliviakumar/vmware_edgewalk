@@ -8,7 +8,7 @@ body {
     font-family: 'Khand', sans-serif;
     font-size: 100%;
     color: purple;
-    overflow: hidden;
+    /* overflow: hidden; */
     background-color: #1e1f23;
 
 }

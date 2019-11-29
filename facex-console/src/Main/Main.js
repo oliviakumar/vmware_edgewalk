@@ -258,7 +258,7 @@ class Main extends Component {
     const style = {
       backgroundColor: 'lightgrey',
       font: 'inherit',
-      border: '1x solid lightblue',
+      border: 'solid lightblue',
       padding: 'pointer'
     };
     console.log('searchText', this.state.searchText);
@@ -266,7 +266,7 @@ class Main extends Component {
     console.log(this.state.response);
 
     return (
-      <div style={{
+      <div className="logs" style={{
         backgroundColor: 'black',
         height: '500px'
       }}>
@@ -293,7 +293,9 @@ class Main extends Component {
               searchText={this.state.searchText}
               filterText={this.state.filterText}
               filterUpdate={this.filterUpdate.bind(this)}
-              basicFilterUpdate={this.basicFilterUpdate.bind(this)} />
+              basicFilterUpdate={this.basicFilterUpdate.bind(this)}>
+              </ListEntriesComponent>
+
           </div>
           <div>
             {

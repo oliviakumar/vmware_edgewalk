@@ -5,7 +5,7 @@ import search from "../logos/search.png";
 
 export default function NavBar() {
     return (
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="light">
         <Navbar.Brand href="#home">
             <img
                 alt=""
@@ -33,7 +33,7 @@ export default function NavBar() {
                 </NavDropdown>
 
                 <FormControl type="text" placeholder="Search" />
-                
+
                 <Button variant="outline-success"> <img src={search} width="12px"/> </Button>
             </Form>
         </Navbar.Collapse>
@@ -50,6 +50,6 @@ export default function NavBar() {
         //     </button>
         // </div>
         // </nav>
-        
+
     )
 }
