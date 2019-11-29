@@ -28,16 +28,16 @@ class FilterToolbar extends Component {
   <div style={{backgroundColor: 'black'}}>
   <Row>
     <Col>1 of 3</Col>
-    <Col xs={6}>2 of 3 (wider)</Col>
-    <Col>3 of 3</Col>
+    <Col xs={6}>        <Search searchText={this.props.searchText} searchUpdate={this.props.searchUpdate.bind(this)} />
+</Col>
+    <Col>        <Filter options={this.props.options} filterUpdate={this.props.filterUpdate.bind(this)} />
+</Col>
   </Row>
   <Row>
     <Col>1 of 3</Col>
     <Col xs={5}>
-        <Search searchText={this.props.searchText} searchUpdate={this.props.searchUpdate.bind(this)} />
     </Col>
-    <Col>
-        <Filter options={this.props.options} filterUpdate={this.props.filterUpdate.bind(this)} />
+    <Col xs={5}>
 
     </Col>
   </Row>
