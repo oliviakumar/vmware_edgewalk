@@ -1,6 +1,6 @@
 import React, { useState, Component } from 'react';
-import { Button, CardBody, Card, Container, Row, Col } from 'reactstrap';
-import { Navbar, NavItem, NavDropdown, MenuItem, Nav, Form, FormControl } from 'react-bootstrap';
+// import { Button, CardBody, Card, Container, Row, Col } from 'reactstrap';
+import { Container, Navbar, NavItem, NavDropdown, MenuItem, Nav, Form, FormControl, Row, Col } from 'react-bootstrap';
 import Filter from '../Filter/Filter';
 import Search from '../component/Search';
 
@@ -24,13 +24,29 @@ class FilterToolbar extends Component {
 
     render() {
       return (
-          <div>
-              <Row style={{backgroundColor: 'black', textAlign: 'center'}}>
-                <Col sm={{ size: 'auto', offset: 1 }}>
-                    <Search searchText={this.props.searchText} searchUpdate={this.props.searchUpdate.bind(this)} />
+          <div style={{textAlign: 'center'}}>
+  <div style={{backgroundColor: 'black'}}>
+  <Row>
+    <Col>1 of 3</Col>
+    <Col xs={6}>2 of 3 (wider)</Col>
+    <Col>3 of 3</Col>
+  </Row>
+  <Row>
+    <Col>1 of 3</Col>
+    <Col xs={5}>
+        <Search searchText={this.props.searchText} searchUpdate={this.props.searchUpdate.bind(this)} />
+    </Col>
+    <Col>
+        <Filter options={this.props.options} filterUpdate={this.props.filterUpdate.bind(this)} />
+
+    </Col>
+  </Row>
+</div>
+              <Row>
+                <Col>
+
                 </Col>
-                <Col sm={{ size: 'auto', offset: 1 }}>
-                    <Filter options={this.props.options} filterUpdate={this.props.filterUpdate.bind(this)} />
+                <Col >
                 </Col>
 
               </Row>
