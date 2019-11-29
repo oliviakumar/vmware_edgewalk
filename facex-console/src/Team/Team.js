@@ -36,7 +36,7 @@ class Team extends Component {
         //     return <Bio name={c}/>
         // })
         return (
-            <div className="Team">
+            <div className="Team rpi">
                 <RoutedNav/>
                 <section style={{backgroundColor: 'black'}}>
                     <h1 className="title"> TEAM EDGEWALK </h1>

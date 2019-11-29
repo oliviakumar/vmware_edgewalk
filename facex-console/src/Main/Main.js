@@ -7,6 +7,7 @@ import {
 import ViewDetail from "../component/ViewDetail";
 import { Jumbotron, Button, Table, Panel, OverlayTrigger, Popover } from 'react-bootstrap';
 import '../App.css';
+import './Main.css';
 // import EntriesApp from './component/EntriesApp';
 import Search from '../component/Search';
 import ListEntriesComponent from '../component/ListEntriesComponent';
@@ -14,6 +15,8 @@ import ListEntriesComponent from '../component/ListEntriesComponent';
 // import Entries from './components/AllEntries';
 // import Filter from './component/Filter';
 import NavBar from '../components/NavBar';
+import RoutedNav from '../RoutedNav/RoutedNav';
+
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import Entry from '../Entry/Entry';
 import FilterToolbar from '../FilterToolbar/FilterToolbar'
@@ -266,13 +269,14 @@ class Main extends Component {
     console.log(this.state.response);
 
     return (
-      <div className="logs" style={{
-        backgroundColor: 'black',
-        height: '500px'
+      <div className="rpi" style={{
       }}>
-          <NavBar/>
+          {
+              // <NavBar/>
+          }
+          <RoutedNav/>
           <div
-            className=""
+            className="logs"
             style={{
               backgroundColor: 'lightgrey',
             }}>
@@ -291,6 +295,7 @@ class Main extends Component {
               entries={this.state.response}
               viewDetail={this.viewDetail}
               searchText={this.state.searchText}
+              searchUpdate={this.searchUpdate.bind(this)}
               filterText={this.state.filterText}
               filterUpdate={this.filterUpdate.bind(this)}
               basicFilterUpdate={this.basicFilterUpdate.bind(this)}>

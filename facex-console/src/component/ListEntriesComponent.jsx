@@ -169,10 +169,13 @@ class ListEntriesComponent extends Component {
 
         return (
             <div>
-            <FilterToolbar options={this.state.entries} basicFilterUpdate={this.props.basicFilterUpdate.bind(this)} filterUpdate={this.props.filterUpdate.bind(this)}>
+            <FilterToolbar
+
+                searchText={this.state.searchText} searchUpdate={this.props.searchUpdate.bind(this)}
+                options={this.state.entries} filterUpdate={this.props.filterUpdate.bind(this)}>
             </FilterToolbar>
-                <Jumbotron>
-                <h1 style={{textAlign: 'center'}}>ENTRY LOGS</h1>
+            <Jumbotron>
+                    <h1 style={{textAlign: 'center'}}>ENTRY LOGS</h1>
                     <p style={{textAlign: 'center'}}>
                     View history of system entry. Click individual logs for entrant details.
                     {
