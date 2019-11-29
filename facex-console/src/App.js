@@ -29,11 +29,12 @@ import SidePanel from './SidePanel/SidePanel';
 import Info from './Info/Info';
 import axios from 'axios';
 import Main from './Main';
-// import Team from './Team/Team';
 import Team from './Team/Team';
-import Footer from './Footer/Footer';
 import About from './About/About';
+import Footer from './Footer/Footer';
 import rpi from "./rpi.jpg";
+import logo from "./facex.png";
+import VeryPretentiousComponent from "./VeryPretentious/VeryPretentious";
 
 const ORGANIZATION = 'edgewalk'
 const ORG_API_URL = 'http://localhost:8080'
@@ -130,8 +131,8 @@ class App extends Component {
 
       });
       // document.getElementById('button-team').addEventListener('click', () => {
-      //   clicked = true;
-      //   document.getElementById('banner').style.display = "none"
+        // clicked = true;
+        // document.getElementById('veryimportant').style.display = "none"
       //   console.log(`about`);
       //
       //
@@ -139,7 +140,9 @@ class App extends Component {
       //
       // });
       // document.getElementById('button-project').addEventListener('click', () => {
-      //   clicked = true;
+        // clicked = true;
+        // document.getElementById('veryimportant').style.display = "none"
+      // });
       //   document.getElementById('banner').style.display = "none"
       //   console.log(`about`);
       //   ReactDOM.render(<About title={`About Project FaceX`} imgsrc={rpi}/>, document.getElementById('container'));
@@ -154,7 +157,7 @@ class App extends Component {
       return (<Team title={`About Team Edgewalk`} />);
   }
   hideMe() {
-      document.getElementById('verypretentious').style.display = "none"
+      document.getElementById('dude').style.display = "none"
   }
 
     render() {
@@ -162,31 +165,18 @@ class App extends Component {
 
     return (
         <div>
-            <div id="verypretentious" fixed="bottom">
-                <Router>
-                    <Switch>
-                        <Route path="/logs" component={Main} />
-                        <Route path="/about" component={About} />
-                        <Route path="/team" component={Team} />
-                    </Switch>
-                    <Container id="dude" style={{textAlign: 'center', backgroundColor: 'transparent'}}>
-                        <div >
-                            <li className="nav-links" onClick={this.hideMe}>
-                                <Link id="veryimportant" to='/team'>
-                                    <li className="btn btn-outline-light bro" id="button-team" > Meet Team Edgewalk </li>
-                                </Link>
-
-                                <Link id="veryimportant" to='/about'>
-                                    <li className="btn btn-outline-light bro" id="button-project"> <img src={rpi} height="100px" width="150px" style={{opacity: 0.5}}/> About Project FaceX
-                                    </li>
-                                </Link>
-                            </li>
-                        </div>
-                    </Container>
-
-                </Router>
-            </div>
+            <VeryPretentiousComponent />
             <Footer title={"hi"}/>
+            <div style={{color: 'pink'}}>
+            {
+                    // hi
+                // <img
+                //     src={rpi} width="100px"
+                //     onMouseOver={e => (e.currentTarget.src = logo)}
+                // />
+            }
+
+            </div>
         </div>
 
     );
@@ -196,3 +186,4 @@ class App extends Component {
 
 
 export default App;
+// <img src={rpi} height="100px" width="150px" style={{opacity: 0.5}}/>
