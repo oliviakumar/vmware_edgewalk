@@ -1,0 +1,22 @@
+.Welcome ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.Welcome li {
+    display: inline-block;
+    margin: 20px;
+}
+
+.Welcome a {
+    text-decoration: none;
+    color: black;
+}
+
+.Welcome a:hover,
+.Welcome a:active {
+    color: #fa923f;
+}

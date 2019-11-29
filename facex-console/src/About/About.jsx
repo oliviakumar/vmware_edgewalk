@@ -6,6 +6,8 @@ import '../Team/Team.css';
 
 const About = (props) => {
   // document.getElementById('veryimportant').style.display = "none";
+  document.getElementById('banner').style.display = "none"
+  
   return (
     <div className='card text-center shadow Team'>
     <RoutedNav/>

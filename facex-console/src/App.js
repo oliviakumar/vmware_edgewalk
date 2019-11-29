@@ -35,6 +35,7 @@ import Footer from './Footer/Footer';
 import rpi from "./rpi.jpg";
 import logo from "./facex.png";
 import VeryPretentiousComponent from "./VeryPretentious/VeryPretentious";
+import Welcome from "./Welcome/Welcome";
 
 const ORGANIZATION = 'edgewalk'
 const ORG_API_URL = 'http://localhost:8080'
@@ -164,26 +165,22 @@ class App extends Component {
     // const { } = this.state;
 
     return (
-        <div>
-            <VeryPretentiousComponent />
-            <Footer title={"hi"}/>
-            <div style={{color: 'pink'}}>
-            {
-                    // hi
-                // <img
-                //     src={rpi} width="100px"
-                //     onMouseOver={e => (e.currentTarget.src = logo)}
-                // />
-            }
-
+        <Router>
+            <div className="App">
+                <Welcome />
+                <Footer title={"hi"}/>
+                {
+                // <VeryPretentiousComponent />
+                }
             </div>
-        </div>
-
+        </Router>
     );
   }
-
 }
-
 
 export default App;
 // <img src={rpi} height="100px" width="150px" style={{opacity: 0.5}}/>
+// <img
+//     src={rpi} width="100px"
+//     onMouseOver={e => (e.currentTarget.src = logo)}
+// />
