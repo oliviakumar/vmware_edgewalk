@@ -18,7 +18,7 @@ const About = (props) => {
   const info = ["Project FaceX Data Flow", "Project FaceX Architecture", "EdgeX Foundry Platform Architecture"]
 
   return (
-    <div >
+    <div className="rpi">
         <RoutedNav/>
 
         <CardColumns className="p-5 dawg">
