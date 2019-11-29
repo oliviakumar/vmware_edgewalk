@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 
-import VeryPretentiousComponent from "../VeryPretentious/VeryPretentious";
 import './Welcome.css';
 // import App from '../App';
 import Team from '../Team/Team';

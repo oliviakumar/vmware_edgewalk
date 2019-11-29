@@ -1,12 +1,26 @@
-
-
-
-body {
+.dawg {
     font-family: 'Khand', sans-serif;
     font-size: 100%;
     height: 100vh;
-    background: url('../rpi.jpg') no-repeat center center / cover;
+    /* background-image: url('../logos/rpi.jpg') #333 no-repeat center center / cover; */
     color: purple;
     /* overflow: hidden; */
 
+}
+body:after {
+    content: '';
+    /* background-image: url(../logos/rpi.jpg); */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: fixed;
+    display: block;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    visibility: visible;
+    opacity: 1;
 }

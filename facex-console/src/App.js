@@ -32,7 +32,6 @@ import Main from './Main';
 import Team from './Team/Team';
 import About from './About/About';
 import Footer from './Footer/Footer';
-import rpi from "./rpi.jpg";
 import logo from "./facex.png";
 import VeryPretentiousComponent from "./VeryPretentious/VeryPretentious";
 import Welcome from "./Welcome/Welcome";
@@ -150,23 +149,12 @@ class App extends Component {
       //
       // });
   }
-
-  renderFaceX() {
-      return (<About title={`About Project FaceX`} imgsrc={rpi}/>);
-  }
-  renderTeam() {
-      return (<Team title={`About Team Edgewalk`} />);
-  }
-  hideMe() {
-      document.getElementById('dude').style.display = "none"
-  }
-
     render() {
     // const { } = this.state;
 
     return (
         <Router>
-            <div className="App">
+            <div className="App" style={{backgroundImage: `url(${'./cam4.jpg'})`}}>
                 <Welcome />
                 <Footer title={"hi"}/>
                 {
