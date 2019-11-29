@@ -162,19 +162,21 @@ class ListEntriesComponent extends Component {
             font: 'inherit',
             border: '1x solid lightblue',
             padding: 'pointer',
-            hover: 'true'
+            hover: 'true',
+            opacity: '.9'
         };
         const images = require.context('../logos', true);
         const {entries, viewDetail, searchText, filterText} = this.props;
 
         return (
             <div>
-            <FilterToolbar
-
-                searchText={this.state.searchText} searchUpdate={this.props.searchUpdate.bind(this)}
-                options={this.state.entries} filterUpdate={this.props.filterUpdate.bind(this)}>
-            </FilterToolbar>
-            <Jumbotron>
+            <section>
+                <FilterToolbar
+                    searchText={this.state.searchText} searchUpdate={this.props.searchUpdate.bind(this)}
+                    options={this.state.entries} filterUpdate={this.props.filterUpdate.bind(this)}>
+                </FilterToolbar>
+            </section>
+            <Jumbotron style={{backgroundColor: '#cfcfdf', color: '#d1a7c8'}}>
                     <h1 style={{textAlign: 'center'}}>ENTRY LOGS</h1>
                     <p style={{textAlign: 'center'}}>
                     View history of system entry. Click individual logs for entrant details.
@@ -185,20 +187,9 @@ class ListEntriesComponent extends Component {
                     // </div>
                     }
                     </p>
-                <div className="">
+                <div>
                 <p>
-                    {
-                        // {this.state.isFiltering === 'true' ? 'worked!' : 'did not work!'} </p>
-                        //
-                        //
-
-                        // <Navbar variant="light" bg="light">
-                        //     <Filter options={this.state.entries}/>
-                        // </Navbar>
-
-                        // <Filter options={this.state.entries} onClick={() => this.filterHandler()}/>
-                    }
-                    <Table bordered hover>
+                    <Table bordered hover >
 {
                         //     <thead>
                         //     <tr className="Entry" onClick={this.onClickHandler()}>

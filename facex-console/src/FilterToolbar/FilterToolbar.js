@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { Button, CardBody, Card, Container, Row } from 'reactstrap';
+import { Button, CardBody, Card, Container, Row, Col } from 'reactstrap';
 import { Navbar, NavItem, NavDropdown, MenuItem, Nav, Form, FormControl } from 'react-bootstrap';
 import Filter from '../Filter/Filter';
 import Search from '../component/Search';
@@ -24,9 +24,16 @@ class FilterToolbar extends Component {
 
     render() {
       return (
-          <div style={{backgroundColor: 'pink'}}>
-            <Search searchText={this.props.searchText} searchUpdate={this.props.searchUpdate.bind(this)} />
-            <Filter options={this.props.options} filterUpdate={this.props.filterUpdate.bind(this)} />
+          <div>
+              <Row style={{backgroundColor: 'black', textAlign: 'center'}}>
+                <Col sm={{ size: 'auto', offset: 1 }}>
+                    <Search searchText={this.props.searchText} searchUpdate={this.props.searchUpdate.bind(this)} />
+                </Col>
+                <Col sm={{ size: 'auto', offset: 1 }}>
+                    <Filter options={this.props.options} filterUpdate={this.props.filterUpdate.bind(this)} />
+                </Col>
+
+              </Row>
           </div>
       );
     }

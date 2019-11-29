@@ -1,0 +1,5 @@
+.floating-label-field {
+  border-bottom: 3px solid rgba(white, .05);
+  background-color: transparent;
+  color: rgba(white, .75);
+}

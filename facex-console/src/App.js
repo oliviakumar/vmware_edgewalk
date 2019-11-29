@@ -155,7 +155,8 @@ class App extends Component {
     return (
         <Router>
             <div className="App" >
-                <Welcome />
+                <Welcome id="welcome"/>
+
                 <Footer title={"hi"}/>
                 {
                 // <VeryPretentiousComponent />

@@ -8,6 +8,8 @@ import ViewDetail from "../component/ViewDetail";
 import { Jumbotron, Button, Table, Panel, OverlayTrigger, Popover } from 'react-bootstrap';
 import '../App.css';
 import './Main.css';
+import '../About/About.css'
+import '../Team/Team.css'
 // import EntriesApp from './component/EntriesApp';
 import Search from '../component/Search';
 import ListEntriesComponent from '../component/ListEntriesComponent';
@@ -81,6 +83,7 @@ class Main extends Component {
   componentDidMount() {
       console.log(`main mounted`);
       document.getElementById('banner').style.display = "none"
+      // document.getElementById('root').style.display = "none"
 
       // axios.get(`${ORG_API_URL}/contentResponse`)
       // .then(
@@ -258,50 +261,29 @@ class Main extends Component {
   render() {
     const { error, isLoaded, response } = this.state;
 
-    const style = {
-      backgroundColor: 'lightgrey',
-      font: 'inherit',
-      border: 'solid lightblue',
-      padding: 'pointer'
-    };
     console.log('searchText', this.state.searchText);
     console.log('response');
     console.log(this.state.response);
+    // style={{backgroundColor: 'lavender', opacity: '.7'}}
 
     return (
-      <div className="rpi" style={{
-      }}>
-          {
-              // <NavBar/>
-          }
-          <RoutedNav/>
-          <div
-            className="logs"
-            style={{
-              backgroundColor: 'lightgrey',
-            }}>
-            <Search
-              searchText={this.state.searchText}
-              searchUpdate={this.searchUpdate.bind(this)} />
-              {
-            // <SidePanel />
-            // <button onClick={this.contentResponse.bind(this)}> click for content </button>
-            }
-            {
-            // <ViewEntry />
-            // {renderImage('http://localhost:8080/files/', '5dd5a21befe3b78e670e39ba')}
-            }
-            <ListEntriesComponent
-              entries={this.state.response}
-              viewDetail={this.viewDetail}
-              searchText={this.state.searchText}
-              searchUpdate={this.searchUpdate.bind(this)}
-              filterText={this.state.filterText}
-              filterUpdate={this.filterUpdate.bind(this)}
-              basicFilterUpdate={this.basicFilterUpdate.bind(this)}>
-              </ListEntriesComponent>
+      <div className="Team logs" style={{backgroundColor: 'lavender', opacity: '1'}}>
 
-          </div>
+          <RoutedNav/>
+
+            <div>
+
+                <ListEntriesComponent
+                  entries={this.state.response}
+                  viewDetail={this.viewDetail}
+                  searchText={this.state.searchText}
+                  searchUpdate={this.searchUpdate.bind(this)}
+                  filterText={this.state.filterText}
+                  filterUpdate={this.filterUpdate.bind(this)}
+                  basicFilterUpdate={this.basicFilterUpdate.bind(this)}>
+                  </ListEntriesComponent>
+
+              </div>
           <div>
             {
             // {console.log(`content call:`)}
