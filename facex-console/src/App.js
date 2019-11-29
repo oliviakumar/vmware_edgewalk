@@ -28,7 +28,7 @@ import ViewEntry from './SidePanel/ViewEntry';
 import SidePanel from './SidePanel/SidePanel';
 import Info from './Info/Info';
 import axios from 'axios';
-import Main from './Main';
+import Main from './Main/Main';
 import Team from './Team/Team';
 import About from './About/About';
 import Footer from './Footer/Footer';

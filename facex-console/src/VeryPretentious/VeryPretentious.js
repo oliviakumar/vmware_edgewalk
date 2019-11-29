@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import ReactDOM, {render} from 'react-dom';
 import { Navbar, Container } from 'react-bootstrap';
 import App from '../App';
-import Main from '../Main';
+import Main from '../Main/Main';
 import Team from '../Team/Team';
 import About from '../About/About';
 
