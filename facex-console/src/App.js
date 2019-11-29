@@ -154,7 +154,7 @@ class App extends Component {
 
     return (
         <Router>
-            <div className="App" style={{backgroundImage: `url(${'./cam4.jpg'})`}}>
+            <div className="App" >
                 <Welcome />
                 <Footer title={"hi"}/>
                 {

@@ -9,7 +9,7 @@ import About from '../About/About';
 class Welcome extends Component {
   render () {
     return (
-        <div className="Welcome">
+        <div className="Welcome" style={{backgroundImage: `url(require("./security.jpg"))`}}>
             <header>
                 <nav>
                     <ul>

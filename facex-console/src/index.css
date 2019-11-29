@@ -10,15 +10,12 @@ body {
     color: purple;
     overflow: hidden;
     background-color: #1e1f23;
-
 }
-
     body:after {
         content: '';
-        background-image: url(./security.jpg);
-        background-attachment: fixed;
+        background-image: url(./security.jpg) no-repeat fixed center;
         background-position: center;
-        background-repeat: no-repeat;
+        /* background-repeat: no-repeat; */
         background-size: cover;
         position: fixed;
         display: block;

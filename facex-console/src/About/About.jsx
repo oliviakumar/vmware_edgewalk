@@ -13,6 +13,8 @@ import edge from "../logos/edgex.png";
 const About = (props) => {
   // document.getElementById('veryimportant').style.display = "none";
   document.getElementById('banner').style.display = "none"
+  // document.body.style.backgroundImage = "../logos/rpi.jpg";
+
   const info = ["Project FaceX Data Flow", "Project FaceX Architecture", "EdgeX Foundry Platform Architecture"]
 
   return (
