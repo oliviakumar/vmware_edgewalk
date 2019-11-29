@@ -2,9 +2,9 @@ body {
     font-size: 100%;
     height: 100vh;
     color: purple;
-    /* background: url("./rpi.jpg") no-repeat fixed center; */
+    background: url("../logos/camera.jpg") no-repeat fixed center;
 }
 body:after {
     content: '';
-    /* background-image: url("./rpi.jpg") !important; */
+    background-image: url("./rpi.jpg") no-repeat fixed center;
 }
