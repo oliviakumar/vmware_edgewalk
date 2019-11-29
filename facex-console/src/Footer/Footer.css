@@ -1,24 +1,11 @@
-* {
- box-sizing: border-box;
-}
-*:before,
-*:after {
- box-sizing: border-box;
-}
-html,
-body {
- height: 100%;
- position: relative;
-}
-.main-container {
- min-height: 100vh; /* will cover the 100% of viewport */
- overflow: hidden;
- display: block;
- position: relative;
- padding-bottom: 100px; /* height of your footer */
-}
-footer {
- position: absolute;
- bottom: 0;
- width: 100%;
+
+#footer {
+    /* background-color: black; */
+    background-size: cover;
+    /* background-position: center center; */
+    background-repeat: no-repeat;
+    color: #d8d8d8;
+    /* padding: 5em 3em 3em 3em; */
+    text-align: center;
+    /* position: relative; */
 }

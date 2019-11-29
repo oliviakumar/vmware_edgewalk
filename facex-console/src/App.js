@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import ReactDOM, {render} from 'react-dom';
+import { Navbar } from 'react-bootstrap';
+
 // import {Router, Route} from 'react-router';
 import { Row } from 'reactstrap'
 
@@ -34,6 +36,7 @@ import Team from './Team/Team';
 import Footer from './Footer/Footer';
 import About from './About/About';
 import rpi from "./rpi.jpg";
+import './App.css';
 
 const ORGANIZATION = 'edgewalk'
 const ORG_API_URL = 'http://localhost:8080'
@@ -153,49 +156,35 @@ class App extends Component {
   renderTeam() {
       return (<Team title={`About Team Edgewalk`} />);
   }
+  hideMe() {
+      document.getElementById('verypretentious').style.display = "none"
+  }
 
     render() {
     // const { } = this.state;
 
     return (
         <div>
-        {
-                // <Router>
-                //         <Row style={{textAlign: 'center'}}>
-                //
-                //             <Route path="/facex" component={this.renderFaceX} />
-                //
-                //             <Route path="/team" component={this.renderTeam} />
-                //         </Row>
-                // </Router>
+            <Navbar id="verypretentious" fixed="bottom">
+                <Router>
+                    <Switch>
+                        <Route path="/logs" component={Main} />
+                        <Route path="/about" component={About} />
+                        <Route path="/team" component={Team} />
+                    </Switch>
 
-        }
-            <Router>
-                <Switch>
-                    <Route path="/logs" component={Main} />
-                    <Route path="/about" component={About} />
-                    <Route path="/team" component={Team} />
-                </Switch>
-                {
-                    // <Route path="/securityLog" component={Main} />
-                }
-            <nav>
-                {
-                    //<h3> LOGO </h3>
-                }
-                <ul className="nav-links">
-                    <Link to='/team'>
-                        <li className="btn btn-outline-light" id="button-team"> Meet Team Edgewalk </li>
-                    </Link>
-                    <span />
-                    <Link to='/facex'>
-                        <li className="btn btn-outline-light" id="button-project"> About Project FaceX </li>
-                    </Link>
-                </ul>
-            </nav>
-            </Router>
+                    <ul className="nav-links" onClick={this.hideMe}>
+                        <Link to='/team'>
+                            <li className="btn btn-outline-light" id="button-team"> Meet Team Edgewalk </li>
+                        </Link>
+                        <span />
+                        <Link to='/about'>
+                            <li className="btn btn-outline-light" id="button-project"> About Project FaceX </li>
+                        </Link>
+                    </ul>
+                </Router>
+            </Navbar>
             <Footer title={"hi"}/>
-            
 
         </div>
 

@@ -1,9 +1,10 @@
 import React from 'react';
+import './Footer.css';
 
 class Footer extends React.Component {
     render() {
         return (
-            <footer class="main-container">
+            <footer class="fixed-bottom" id="footer">
               <p>Team Edgewalk &copy; 2019</p>
             </footer>
 
