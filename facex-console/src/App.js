@@ -31,6 +31,7 @@ import axios from 'axios';
 import Main from './Main';
 // import Team from './Team/Team';
 import Team from './Team/Team';
+import Footer from './Footer/Footer';
 import About from './About/About';
 import rpi from "./rpi.jpg";
 
@@ -172,81 +173,30 @@ class App extends Component {
             <Router>
                 <Switch>
                     <Route path="/logs" component={Main} />
-                    <Route path="/facex" component={About} />
+                    <Route path="/about" component={About} />
                     <Route path="/team" component={Team} />
                 </Switch>
                 {
                     // <Route path="/securityLog" component={Main} />
                 }
             <nav>
-                <h3> LOGO </h3>
+                {
+                    //<h3> LOGO </h3>
+                }
                 <ul className="nav-links">
                     <Link to='/team'>
-                        <li className="btn btn-outline-light" id="button-team"> Team Edge yeet </li>
+                        <li className="btn btn-outline-light" id="button-team"> Meet Team Edgewalk </li>
                     </Link>
                     <span />
                     <Link to='/facex'>
-                        <li className="btn btn-outline-light" id="button-project"> Project FaceX yeet </li>
+                        <li className="btn btn-outline-light" id="button-project"> About Project FaceX </li>
                     </Link>
                 </ul>
             </nav>
             </Router>
+            <Footer title={"hi"}/>
+            
 
-            <button className="btn btn-outline-light" id="button-team"> Team Edgewalk </button>
-            <span />
-            <button className="btn btn-outline-light" id="button-project"> Project FaceX </button>
-
-            <nav>
-                <h3> LOGO </h3>
-                {
-                    // <p className="btn btn-outline-light" id="button-project"><a href="/facex">FaceX</a>
-                    // </p>
-                    // <p className="btn btn-outline-light" id="button-team"><a href="/team">Team</a>
-                    // </p>
-                    // <header>
-                //     <nav>
-                //         <ul>
-                //             <li className="btn btn-outline-light" id="button-project"><a href="/facex">FaceX</a>
-                //             </li>
-                //             <li className="btn btn-outline-light" id="button-team"><a href="/team">Team</a></li>
-                //         </ul>
-                //     </nav>
-                // </header>
-
-                    // <ul className="nav-links">
-                //     <Link to='/team' params={{ title: "About Team YEET"}}>
-                //         <li className="btn btn-outline-light" id="button-team"> Team Edge yeet </li>
-                //     </Link>
-                //     <span />
-                //     <Link to='/facex'>
-                //         <li className="btn btn-outline-light" id="button-project"> Project FaceX yeet </li>
-                //     </Link>
-                // </ul>
-                }
-            </nav>
-
-
-            // <button className="btn btn-outline-light" id="button-team"> Team Edgewalk </button>
-            // <span />
-            // <button className="btn btn-outline-light" id="button-project"> Project FaceX </button>
-            // <div id="app" style={{textAlign: 'center', fontSize: '40px'}}>
-            //     <header className="Cards" width="100%">
-            //         <nav>
-            //             <ul>
-            //                 <a href="/"> E N T E R </a>
-            //                 <a href="/about"> About </a>
-            //             </ul>
-            //         </nav>
-            //     </header>
-            // </div>
-            // <div style={{textAlign: 'center'}}>
-            //     <button> 1 </button>
-            //     <button> 2 </button>
-            //     <button> 3 </button>
-            //     <br />
-            //     <br />
-            // </div>
-            }
         </div>
 
     );

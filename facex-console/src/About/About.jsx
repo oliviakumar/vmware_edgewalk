@@ -1,12 +1,17 @@
 import React from "react";
 // import "./card-style.css";
+import rpi from "../rpi.jpg";
+import RoutedNav from '../RoutedNav/RoutedNav';
+import '../Team/Team.css';
 
 const About = props => {
   document.getElementById('banner').style.display = "none"
   return (
-    <div className='card text-center shadow'>
+    <div className='card text-center shadow Team'>
+    <RoutedNav/>
+
       <div className='overflow'>
-        <img src={props.imgsrc} alt='Image 1' className='card-img-top' />
+        <img src={rpi} alt='Image 1' className='card-img-top' />
       </div>
       <div className='card-body text-dark'>
         <h4 className='card-title'>{props.title}</h4>

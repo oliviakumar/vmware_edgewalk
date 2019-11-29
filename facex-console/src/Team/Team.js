@@ -9,6 +9,7 @@ import tanja from '../logos/Tanja.jpg';
 import liv from '../logos/Olivia.jpg';
 import mushahid from '../logos/Mushahid.jpg';
 import chris from '../logos/Chris.jpg';
+import RoutedNav from '../RoutedNav/RoutedNav';
 
 class Team extends Component {
     state = {
@@ -36,14 +37,7 @@ class Team extends Component {
         // })
         return (
             <div className="Team">
-                <header>
-                    <nav>
-                        <ul>
-                            <li><a href="/">Home</a></li>
-                            <li><a href="/new-entrant">New Entrant</a></li>
-                        </ul>
-                    </nav>
-                </header>
+                <RoutedNav/>
                 <section style={{backgroundColor: 'black'}}>
                     <h1 className="title"> TEAM EDGEWALK </h1>
 
