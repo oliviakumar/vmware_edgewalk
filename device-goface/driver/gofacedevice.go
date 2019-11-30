@@ -16,6 +16,7 @@ import (
 	"image/jpeg"
 	"image/png"
 	"os"
+	"io/ioutil"
 	"sync"
 	"time"
 
