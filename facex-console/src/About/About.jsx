@@ -18,7 +18,7 @@ const About = (props) => {
   const info = ["Project FaceX Data Flow", "Project FaceX Architecture", "EdgeX Foundry Platform Architecture"]
 
   return (
-    <div className="rpi">
+    <div className="rpi details">
         <RoutedNav/>
 
         <CardColumns className="p-5 dawg">
@@ -29,6 +29,37 @@ const About = (props) => {
             <InfoCard imgsrc={dataflow} name={dataflow} info={info[0]}/>
             <InfoCard imgsrc={edge} name={edge} info={info[2]}/>
         </CardColumns>
+
+
+        /* details section */
+        <div className="details">
+            <div  id="s1">
+              <h1>Section 1</h1>
+            </div>
+            <div  id="s2">
+              <h1>Section 2</h1>
+            </div>
+            <div  id="s3">
+              <h1>Section 3</h1>
+            </div>
+            <div  id="s4">
+              <h1>Section 4</h1>
+            </div>
+            <div  id="s5">
+              <h1>Section 5</h1>
+            </div>
+            <div  id="s6">
+              <h1>Section 6</h1>
+            </div>
+            <div  id="s7">
+              <h1>Section 7</h1>
+            </div>
+            <div  id="s8">
+              <h1>Section 8</h1>
+            </div>
+        </div>
+
+
     </div>
   );
 };

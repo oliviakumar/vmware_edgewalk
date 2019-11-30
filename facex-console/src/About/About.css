@@ -4,6 +4,7 @@ body {
     height: 300px;
     background: url('./rpi.jpg') no-repeat center center / cover;
     color: purple;
+    overflow: scroll;
 }
 
 body:after {
@@ -47,4 +48,8 @@ body:after {
     visibility: visible;
     opacity: 1;
     content: '';
+}
+
+.details {
+    overflow: hidden;
 }
