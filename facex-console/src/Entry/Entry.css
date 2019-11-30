@@ -1,8 +1,10 @@
 .Entry {
-    width: 60%;
+    width: 50%;
     margin: auto;
     border: 1px solid #eee;
     box-shadow: 0 2px 3px #ccc;
     padding: 16px;
     text-align: center;
+    /* font: inherit; */
+    font-family: 'Khand', sans-serif;
 }

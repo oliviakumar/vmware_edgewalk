@@ -3,3 +3,28 @@
   -webkit-box-shadow: 3px 3px 5px 6px #ccc;
   box-shadow:         3px 3px 5px 6px #ccc;
 }
+
+.ListEntryHead {
+    width: 60%;
+    margin: auto;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    padding: 16px;
+    text-align: center;
+    /* font: inherit; */
+    font-family: 'Khand', sans-serif;
+    font-size: 25px;
+}
+
+.ListEntryBod {
+    width: 60%;
+    margin: auto;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    padding: 16px;
+    text-align: center;
+    /* font: inherit; */
+    font-family: 'Khand', sans-serif;
+    font-size: 20px;
+
+}

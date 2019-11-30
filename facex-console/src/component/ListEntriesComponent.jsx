@@ -196,18 +196,19 @@ class ListEntriesComponent extends Component {
                 <p>
                     <Table bordered hover >
 {
-                        //     <thead>
-                        //     <tr className="Entry" onClick={this.onClickHandler()}>
-                        //         <th>#</th>
-                        //         <th>Name</th>
-                        //         <th>Location</th>
-                        //         <th>Time</th>
-                        //         <th>Status</th>
-                        //         <th>Details</th>
-                        //     </tr>
-                        // </thead>
+                        <thead style={{backgroundColor: 'lavender', border: 'none', font: 'inherit'}}>
+                            <tr className="ListEntryHead" onClick={this.onClickHandler()}>
+                                <th>NAME</th>
+                                <th>LOCATION</th>
+                                <th>TIME</th>
+                                {
+                                    // <th>STATUS</th>
+                                }
+                                <th>DETAILS</th>
+                            </tr>
+                        </thead>
 }
-                        <tbody className="collapse in shadow" style={style}>
+                        <tbody className="collapse in shadow ListEntryBod" style={{backgroundColor: 'white', boxShadow: '2px 0 grey, inset 2px 0 grey'}}>
                         {
                             this.state.entries
                                 .filter(entry => {

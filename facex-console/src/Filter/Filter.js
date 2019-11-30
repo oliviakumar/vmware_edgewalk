@@ -114,11 +114,63 @@ class Filter extends Component {
       // console.log('inside render()');
       // console.log(this.state.options);
     const { selectedOption } = this.state;
+    const style = {
+    control: (base, state) => ({
+      ...base,
+      background: "white",
+      // match with the menu
+      borderRadius: state.isFocused ? "3px 3px 0 0" : 3,
+      // Overwrittes the different states of border
+      // borderColor: state.isFocused ? "yellow" : "green",
+      // Removes weird border around container
+      boxShadow: state.isFocused ? null : null,
+      "&:hover": {
+        // Overwrittes the different states of border
+        // borderColor: state.isFocused ? "red" : "blue"
+      }
+    }),
+    menu: base => ({
+      ...base,
+      // override border radius to match the box
+      borderRadius: 0,
+      // beautify the word cut by adding a dash see https://caniuse.com/#search=hyphens for the compatibility
+      hyphens: "auto",
+      // kill the gap
+      marginTop: 0,
+      textAlign: "left",
+      // prevent menu to scroll y
+      wordWrap: "break-word"
+    }),
+    menuList: base => ({
+      ...base,
+      // kill the white space on first and last option
+      padding: 0
+    })
+  };
+    const customStyles = {
+      menu: (provided, state) => ({
+        ...provided,
+        borderBottom: '1px dotted pink',
+        color: state.selectProps.menuColor,
+      }),
+
+      control: (_, { selectProps: { width }}) => ({
+        width: width
+      }),
+
+      singleValue: (provided, state) => {
+        const opacity = state.isDisabled ? 0.5 : 1;
+        const transition = 'opacity 300ms';
+
+        return { ...provided, opacity, transition };
+      }
+    }
 
     return (
             <div className="filter">
                 {
                 <Select
+                  styles={style}
                   isMulti
                   placeholder={"Search By Location"}
                   filterOption={this.filterOption}

@@ -15,13 +15,10 @@ const Entry = (props) => {
 
     const successStyle = {
       backgroundColor: 'chartreuse',
-      width: '50px'
     }
 
     const failStyle = {
       backgroundColor: 'red',
-      width: '50px'
-
     }
 
     function renderColor(accepted) {
@@ -63,14 +60,16 @@ const Entry = (props) => {
       {
             // <td> {Math.random()} </td>
       }
-            <td> {props.entry.identity} </td>
-            <td> {props.entry.location} </td>
-            <td> {props.entry.attempted} </td>
-            <td> {renderColor(props.entry.accepted)} </td>
-            <Info idStr={props.idStr} />
+
+            <td> {renderColor(props.entry.accepted)} {props.entry.identity} </td>
+            <td> <td style={{border: 'transparent'}}></td> {props.entry.location} </td>
+            <td> <td style={{border: 'transparent'}}></td> {props.entry.attempted} </td>
+
+            <td style={{justifyContent: 'center'}}><Info idStr={props.idStr} /> </td>
             {
-            <ViewEntry idStr={props.entry.idString}/>
+            // <ViewEntry idStr={props.entry.idString}/>
             }
+
           </tr>
 // return ret + ' entry detail view '
 }
