@@ -24,32 +24,10 @@ class FilterToolbar extends Component {
 
     render() {
       return (
-          <div style={{textAlign: 'center'}}>
-  <div style={{backgroundColor: 'black'}}>
-  <Row>
-    <Col>1 of 3</Col>
-    <Col xs={6}>        <Search searchText={this.props.searchText} searchUpdate={this.props.searchUpdate.bind(this)} />
-</Col>
-    <Col>        <Filter options={this.props.options} filterUpdate={this.props.filterUpdate.bind(this)} />
-</Col>
-  </Row>
-  <Row>
-    <Col>1 of 3</Col>
-    <Col xs={5}>
-    </Col>
-    <Col xs={5}>
-
-    </Col>
-  </Row>
-</div>
-              <Row>
-                <Col>
-
-                </Col>
-                <Col >
-                </Col>
-
-              </Row>
+          <div style={{textAlign: 'right'}}>
+            <Filter options={this.props.options} filterUpdate={this.props.filterUpdate.bind(this)} />
+            <Search searchText={this.props.searchText} searchUpdate={this.props.searchUpdate.bind(this)} />
+            <br/>
           </div>
       );
     }

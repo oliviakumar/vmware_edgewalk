@@ -1,6 +1,6 @@
 import React, { Component, Link, FilterOptions, Input } from 'react';
 import {Route, IndexRoute} from 'react-router';
-import { Row } from 'reactstrap'
+import { Row, Col } from 'reactstrap'
 import EntryDataService from '../service/EntryDataService';
 import Toggle from './Toggle';
 import ViewDetail from './ViewDetail';
@@ -170,23 +170,28 @@ class ListEntriesComponent extends Component {
 
         return (
             <div>
-            <section>
+            <Jumbotron style={{backgroundColor: '#cfcfdf', color: '#d1a7c8'}}>
+            <div style={{textAlign: 'center'}}>
+                    <h1 style={{textAlign: 'center'}}>ENTRY LOGS</h1>
+                    <p style={{textAlign: 'center'}}></p>
+
+                    View history of system entry. Click individual logs for entrant details.
+            </div>
+            <br/>
+            <div style={{align: 'right', padding: '10'}} >
                 <FilterToolbar
                     searchText={this.state.searchText} searchUpdate={this.props.searchUpdate.bind(this)}
                     options={this.state.entries} filterUpdate={this.props.filterUpdate.bind(this)}>
                 </FilterToolbar>
-            </section>
-            <Jumbotron style={{backgroundColor: '#cfcfdf', color: '#d1a7c8'}}>
-                    <h1 style={{textAlign: 'center'}}>ENTRY LOGS</h1>
-                    <p style={{textAlign: 'center'}}>
-                    View history of system entry. Click individual logs for entrant details.
+            </div>
+
+
                     {
                         // <div>
                         // <p> searchText value is: {this.props.searchText} </p>
                         // <p> filterText value is: {this.props.filterText} </p>
                     // </div>
                     }
-                    </p>
                 <div>
                 <p>
                     <Table bordered hover >
