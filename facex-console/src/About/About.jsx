@@ -5,7 +5,7 @@ import '../Team/Team.css';
 import InfoCard from "./InfoCard/InfoCard";
 import "./About.css";
 import { Row } from 'reactstrap'
-import {CardColumns} from "react-bootstrap";
+import {CardColumns, Card} from "react-bootstrap";
 import dataflow from "../logos/data-flow.png";
 import arch from "../logos/architecture.png";
 import edge from "../logos/edgex.png";
@@ -18,10 +18,13 @@ const About = (props) => {
   const info = ["Project FaceX Data Flow", "Project FaceX Architecture", "EdgeX Foundry Platform Architecture"]
 
   return (
-    <div className="rpi details" style={{scrollBehavior: 'auto'}}>
+    <div className="rpi details">
         <RoutedNav/>
+        <Card style={{width: '100%', backgroundColor: 'transparent'}} className="p-3">
+            <InfoCard className="p-3" style={{margin: '10 10 10 10'}}/>
+        </Card>
 
-        <CardColumns className="p-5 dawg">
+        <CardColumns className="p-3">
         {
             // todo: map out
         }

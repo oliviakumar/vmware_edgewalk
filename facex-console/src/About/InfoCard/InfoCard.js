@@ -4,7 +4,7 @@ import "./InfoCard.css";
 const InfoCard = props => {
   return (
 
-    <div className='card text-center shadow'>
+    <div className='card text-center shadow' style={{width: '100%'}}>
 
       <div className='overflow'>
         <img src={props.imgsrc} alt={props.name} className='card-img-top' />
