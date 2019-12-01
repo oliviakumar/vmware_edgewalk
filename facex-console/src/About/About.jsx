@@ -20,9 +20,7 @@ const About = (props) => {
   return (
     <div className="rpi details">
         <RoutedNav/>
-        <Card style={{width: '100%', backgroundColor: 'transparent'}} className="p-3">
-            <InfoCard className="p-3" style={{margin: '10 10 10 10'}}/>
-        </Card>
+
 
         <CardColumns className="p-3">
         {
