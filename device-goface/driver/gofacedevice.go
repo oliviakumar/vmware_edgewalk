@@ -12,7 +12,6 @@ package driver
 import (
 	"bytes"
 	"fmt"
-	"github.com/edgexfoundry/vmware_edgewalk/model-goface/detect"
 	"image"
 	"image/jpeg"
 	"image/png"
@@ -25,8 +24,7 @@ import (
 	dsModels "github.com/edgexfoundry/device-sdk-go/pkg/models"
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	contract "github.com/edgexfoundry/go-mod-core-contracts/models"
-	// import goface functionality, to be called on by using "GF.funcName()"
-	// "github.com/oliviakumar/vmware_edgewalk/model-goface/detect"
+	detect "github.com/edgexfoundry/vmware_edgewalk/model-goface/detect"
 )
 
 // internal data struct for current device instance to be passed to functions
