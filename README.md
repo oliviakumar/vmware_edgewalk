@@ -45,11 +45,9 @@ For any more help, consider the tutorial at: https://docs.edgexfoundry.org/Ch-Ge
 
 ## Necessary Prerequisites  
 To be able to run go-face, or programs that use go-face, on your machine local machine, follow  
-these steps:  
+these steps on:  
 
-[Kagami go-face github][1]  
-[1]: github.com/Kagami/go-face
-
+[Kagami go-face github](https://www.github.com/Kagami/go-face)
   
 ## Go-face Usage  
 To use go-face in your go program:  
@@ -59,4 +57,6 @@ import "github.com/Kagami/go-face"
   
 ## Go-face Training and Inference  
 * Train()  
-** Traverses through a fixed directory called "trainImages" and trains for every folder found. 
+ - Traverses through a fixed directory called "trainImages" and trains the model for every folder found.  
+ - Adds directory name, image data, and indices of the samples to the models struct which is later used  
+   for inferencing.  
