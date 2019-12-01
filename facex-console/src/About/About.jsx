@@ -18,7 +18,7 @@ const About = (props) => {
   const info = ["Project FaceX Data Flow", "Project FaceX Architecture", "EdgeX Foundry Platform Architecture"]
 
   return (
-    <div className="rpi details">
+    <div className="rpi details" style={{scrollBehavior: 'auto'}}>
         <RoutedNav/>
 
         <CardColumns className="p-5 dawg">
@@ -32,7 +32,7 @@ const About = (props) => {
 
 
         /* details section */
-        <div className="details">
+        <div className="overflow">
             <div  id="s1">
               <h1>Section 1</h1>
             </div>

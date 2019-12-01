@@ -46,4 +46,6 @@ body:after {
     width: 100%;
     visibility: visible;
     content: '';
+    overflow-y: scroll;
+    
 }
