@@ -24,7 +24,7 @@ import (
 	dsModels "github.com/edgexfoundry/device-sdk-go/pkg/models"
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	contract "github.com/edgexfoundry/go-mod-core-contracts/models"
-	"github.com/edgexfoundry/vmware_edgewalk/model-goface/detect"
+	"github.com/vmware_edgewalk/model-goface/detect"
 )
 
 // internal data struct for current device instance to be passed to functions
