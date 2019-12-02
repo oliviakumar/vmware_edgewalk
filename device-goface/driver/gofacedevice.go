@@ -69,7 +69,7 @@ func getImageBytes(buf *bytes.Buffer) error {
 	if err != nil {
 		fmt.Println(err)
 	}
-	files, _ := ioutil.ReadDir(dir)
+	files, _ := ioutil.ReadDir(abspath)
 	var newestCapture string
 	var newestTime int64 = 0
 
@@ -87,7 +87,7 @@ func getImageBytes(buf *bytes.Buffer) error {
 		}
 	}
 	fmt.Println("The latest caputure is:" + newestCapture)
-	imgFile := filepath.Join(dir, newestCapture)
+	imgFile := filepath.Join(abspath, newestCapture)
 
 	// Read latest image from file
 	img, err := os.Open(imgFile)
