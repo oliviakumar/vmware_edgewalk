@@ -18,6 +18,7 @@ import (
 	"os"
 	"sync"
 	"time"
+	"io/ioutil"
 
 	dsModels "github.com/edgexfoundry/device-sdk-go/pkg/models"
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
@@ -132,7 +133,7 @@ func (s *GofaceDevice) HandleReadCommands(deviceName string, protocols map[strin
 	if reqs[0].DeviceResourceName == "goface" {
 		buf := new(bytes.Buffer)
 		s.mux.Lock()
-		getImageBytes("../../../model-goface/testImages/test1.jpg", buf)
+		getImageBytes("../../../model-goface/testImages/test4.jpg", buf)
 		cv, _ := dsModels.NewBinaryValue(reqs[0].DeviceResourceName, now, buf.Bytes())
 		s.mux.Unlock()
 		res[0] = cv

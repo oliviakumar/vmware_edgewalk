@@ -16,3 +16,5 @@ require (
 	github.com/ugorji/go v1.1.4
 	gopkg.in/yaml.v2 v2.2.2
 )
+
+replace github.com/hashicorp/consul => github.com/hashicorp/consul v1.5.2
