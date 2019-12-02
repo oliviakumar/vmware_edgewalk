@@ -24,7 +24,7 @@ import (
 	dsModels "github.com/edgexfoundry/device-sdk-go/pkg/models"
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	contract "github.com/edgexfoundry/go-mod-core-contracts/models"
-	"github.com/vmware_edgewalk/model-goface/detect"
+	"github.com/edgexfoundry/vmware_edgewalk/model-goface/detect"
 )
 
 // internal data struct for current device instance to be passed to functions
@@ -114,6 +114,43 @@ func getLastCapture() string {
 	return latestImgPath
 }
 
+// helper function to keep directory to 10 pictures max so the RPis SD card doesn't fill up
+func (s *GofaceDevice) cleanDir() {
+	dir := "model-goface/testImages"
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var oldestCapture string
+
+	var oldestTime = time.Now()
+	// through directory
+	for _, f := range files {
+		// check if there is more than 10 files in dir
+		if len(files) > 10 {
+			// compare timestamps and remove oldest
+			if f.Mode().IsRegular() && f.ModTime().Before(oldestTime) {
+				oldestCapture = f.Name()
+				oldestTime = f.ModTime()
+			}
+			removeErr:= os.Remove(oldestCapture)
+			if removeErr != nil {
+				fmt.Println(removeErr)
+				return
+			}
+			fileInfo, _ := os.Stat(oldestCapture)
+			if fileInfo == nil {
+				err = os.ErrNotExist
+				fmt.Println(err)
+				return
+
+			}
+		}
+	}
+}
+
+
 // device service method to operate the camera, gets called with current rec instance
 // returns the last path with a face in it
 func (s *GofaceDevice) OperateCamera() string {
@@ -140,16 +177,6 @@ func (s *GofaceDevice) OperateCamera() string {
 	}
 }
 
-/*
-// helper function to keep directory to 10 pictures max so the RPis SD card doesn't fill up
-func (s *GofaceDevice) cleanDir() {
-	dir := "model-goface/testImages"
-	files, _ := ioutil.ReadDir(dir)
-	for _, files := range files {
-	}
-
-}
-*/
 
 // HandleReadCommands triggers a protocol Read operation for the specified device.
 func (s *GofaceDevice) HandleReadCommands(deviceName string, protocols map[string]contract.ProtocolProperties, reqs []dsModels.CommandRequest) (res []*dsModels.CommandValue, err error) {
