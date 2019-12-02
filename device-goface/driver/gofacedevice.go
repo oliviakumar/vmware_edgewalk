@@ -62,7 +62,7 @@ func getImageBytes(buf *bytes.Buffer) error {
 	exec.Command("raspistill", args)
 
 	// get latest capture
-	dir := "model-goface/testImages"
+	dir := "../../model-goface/testImages"
 	// sets working directory in this func to given dir (ReadDir not working without it)
 	err := os.Chdir(dir)
 	files, _ := ioutil.ReadDir(dir)
