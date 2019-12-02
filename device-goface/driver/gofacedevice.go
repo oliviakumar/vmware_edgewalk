@@ -57,8 +57,8 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 func getImageBytes(buf *bytes.Buffer) error {
 
 	// capture command for RasPi
-	args := "-w 640 -h 480 -q 5 -o /model-goface/testImages/Test%04.jpg"
-	runner := exec.Command("raspistill", args)
+	//args := []string{"-t", "1000", "-w", "640", "-h", "480", "-q", "5", "-o", "../../../model-goface/testImages/Test%04.jpg"}
+	runner := exec.Command("raspistill", "-t", "1000", "-w", "640", "-h", "480", "-q", "5", "-o", "../../../model-goface/testImages/Test%04.jpg")
 	//runner.Start()
 	err := runner.Run()
 	if err != nil {
