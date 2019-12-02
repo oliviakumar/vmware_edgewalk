@@ -112,17 +112,20 @@ function init() {
     new TypeWriter(txtElement, words, wait);
 }
 
-function Example() {
-  const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
+let handleClose;
+let handleShow;
+
+function Example() {
+
+  const [show, setShow] = useState(false);
+  handleClose = () => setShow(false);
+  handleShow = () => setShow(true);
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
+
 
       <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
@@ -170,24 +173,20 @@ class App extends Component {
     componentDidMount() {
         document.getElementById('button-console').addEventListener('click', () => {
 //button-console
-        clicked = true;
-        document.getElementById('banner').style.display = "none"
-        ReactDOM.render(<StatusPopup />, document.getElementById('container'));
-        // ReactDOM.render(<Main />, document.getElementById('container'));
-        // ReactDOM.render(<Main />, document.getElementById('root'));
+            clicked = true;
+            document.getElementById('banner').style.display = "none"
+            ReactDOM.render(<StatusPopup />, document.getElementById('container'));
+            // ReactDOM.render(<Main />, document.getElementById('container'));
+            // ReactDOM.render(<Main />, document.getElementById('root'));
+        });
 
-
-      });
         document.getElementById('button-enter').addEventListener('click', () => {
-        clicked = true;
-        // console.log('clicked enter in appjs')
-        document.getElementById('banner').style.display = "none";
-        // <button >Open Modal</button>
-        this.handleOpenModel();
-        // ReactDOM.render(<Example />, document.getElementById('container'));
-        // ReactDOM.render(<StatusPopup id={'button-enter'}/>, document.getElementById('container'));
-
-      });
+            clicked = true;
+            document.getElementById('banner').style.display = "none";
+            // this.handleOpenModel();
+            ReactDOM.render(<Example />, document.getElementById('container'));
+            handleShow();
+        });
       // document.getElementById('button-team').addEventListener('click', () => {
       //   clicked = true;
       //   document.getElementById('veryimportant').style.display = "none"
