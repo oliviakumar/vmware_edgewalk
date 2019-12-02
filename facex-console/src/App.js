@@ -117,77 +117,102 @@ let handleShow;
 
 
 // export default const Example = (props) => {
-class Example extends Component {
+// class Example extends Component {
+//
+//
+//   _isMounted = false;
+//   // console.log(`props.getRecent():`, getRecent());
+//   constructor() {
+//       this.state = {
+//           isLoading: true,
+//           content: []
+//       }
+//       const [show, setShow] = useState(false);
+//       handleClose = () => setShow(false);
+//       handleShow = () => setShow(true);
+//     }
+//
+//   componentDidMount() {
+//       this._isMounted = true;
+//       fetch("http://localhost:8080/recent")
+//         .then(res => res.json())
+//         .then(
+//           (result) => {
+//               this.setState({
+//                   content: result,
+//               });
+//           },
+//           (error) => {
+//             console.log('no recent content');
+//             this.setState({
+//               error,
+//               // content: 'nada'
+//             });
+//           }
+//         )
+//   }
+//
+//   componentWillUnmount() {
+//       this._isMounted = false;
+//   }
+//
+//   render() {
+//       return (
+//         <>
+//           <Modal show={show} onHide={handleClose} animation={false}>
+//             <Modal.Header closeButton>
+//               <Modal.Title>Modal heading</Modal.Title>
+//             </Modal.Header>
+//             <Modal.Body>{this.state.content.accepted}</Modal.Body>
+//             <Modal.Footer>
+//               <Button variant="secondary" onClick={handleClose}>
+//                 Close
+//               </Button>
+//               <Button variant="primary" onClick={handleClose}>
+//                 Save Changes
+//               </Button>
+//             </Modal.Footer>
+//           </Modal>
+//         </>
+//       );
+//     }
+// }
 
+function Example(props) {
+  const [show, setShow] = useState(false);
 
-  _isMounted = false;
-  // console.log(`props.getRecent():`, getRecent());
-  constructor() {
-      this.state = {
-          isLoading: true,
-          content: []
-      }
-      const [show, setShow] = useState(false);
-      handleClose = () => setShow(false);
-      handleShow = () => setShow(true);
-    }
+  handleClose = () => setShow(false);
+  handleShow = () => setShow(true);
 
-  componentDidMount() {
-      this._isMounted = true;
-      fetch("http://localhost:8080/recent")
-        .then(res => res.json())
-        .then(
-          (result) => {
-              this.setState({
-                  content: result,
-              });
-          },
-          (error) => {
-            console.log('no recent content');
-            this.setState({
-              error,
-              // content: 'nada'
-            });
-          }
-        )
-  }
-
-  componentWillUnmount() {
-      this._isMounted = false;
-  }
-
-  render() {
-      return (
-        <>
-          <Modal show={show} onHide={handleClose} animation={false}>
-            <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{this.state.content.accepted}</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={handleClose}>
-                Save Changes
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </>
-      );
-    }
+  return (
+    <>
+      <Modal show={show} onHide={handleClose} animation={false}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you're reading this text in a modal! {props.content} </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
 }
 
-
-
-
 class App extends Component {
+    _isMounted = false;
 
     constructor(props) {
         super();
         this.state = {
             openModal: false,
-            content: [],
+            content: '',
+            isLoading: true
         }
         this.handleOpenModel = this.handleOpenModel.bind(this);
         this.handlModelClose = this.handlModelClose.bind(this);
@@ -212,9 +237,15 @@ class App extends Component {
           .then(res => res.json())
           .then(
             (result) => {
-                console.log(`RECENT-:`, result.accepted);
+                console.log(`RECENT-:`, result.accepted.toString());
+                // status = result.accepted;
+                // return <Example content={result.accepted.toString()}/>;
+                ReactDOM.render(<Example content={result.accepted.toString()}/>, document.getElementById('container'));
+                handleShow();
+
                 this.setState({
-                    content: result,
+                    isLoading: false,
+                    content: result.accepted.toString(),
                 });
                 console.log(`after fetch-:`, this.state.content);
 
@@ -238,7 +269,6 @@ class App extends Component {
               });
             }
           )
-
     }
 
 
@@ -256,10 +286,13 @@ class App extends Component {
             clicked = true;
             document.getElementById('banner').style.display = "none";
             // this.handleOpenModel();
+            this._isMounted = true;
+
             this.getRecent();
-            console.log(`before Example load:`, this.state.content);
-            ReactDOM.render(<Example getRecent={this.state.content.accepted}/>, document.getElementById('container'));
-            handleShow();
+            // console.log(`status y status: `, status);
+            // console.log(`before Example load:`, this.state.content);
+            // ReactDOM.render(<Example />, document.getElementById('container'));
+            // handleShow();
         });
       // document.getElementById('button-team').addEventListener('click', () => {
       //   clicked = true;
@@ -279,15 +312,19 @@ class App extends Component {
       //   ReactDOM.render(<About title={`About Project FaceX`} imgsrc={rpi}/>, document.getElementById('container'));
       //
       // });
-  }
+    }
+
+    componentWillUnmount() {
+      this._isMounted = false;
+    }
+
     render() {
     // const { } = this.state;
 
-    return (
+      return (
         <Router>
             <div className="App" >
                 <Welcome id="welcome"/>
-                // <Example />
 
                 <Footer title={"hi"}/>
                 {
@@ -295,6 +332,7 @@ class App extends Component {
                 // <button id="button-enter" onClick={this.handleOpenModel}>Open Modal</button>
 
                 }
+
 
                 <div
                     id="myModal"
