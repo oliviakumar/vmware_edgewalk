@@ -112,38 +112,73 @@ function init() {
     new TypeWriter(txtElement, words, wait);
 }
 
-
-
 let handleClose;
 let handleShow;
 
-function Example() {
 
-  const [show, setShow] = useState(false);
-  handleClose = () => setShow(false);
-  handleShow = () => setShow(true);
-
-  return (
-    <>
+// export default const Example = (props) => {
+class Example extends Component {
 
 
-      <Modal show={show} onHide={handleClose} animation={false}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
+  _isMounted = false;
+  // console.log(`props.getRecent():`, getRecent());
+  constructor() {
+      this.state = {
+          isLoading: true,
+          content: []
+      }
+      const [show, setShow] = useState(false);
+      handleClose = () => setShow(false);
+      handleShow = () => setShow(true);
+    }
+
+  componentDidMount() {
+      this._isMounted = true;
+      fetch("http://localhost:8080/recent")
+        .then(res => res.json())
+        .then(
+          (result) => {
+              this.setState({
+                  content: result,
+              });
+          },
+          (error) => {
+            console.log('no recent content');
+            this.setState({
+              error,
+              // content: 'nada'
+            });
+          }
+        )
+  }
+
+  componentWillUnmount() {
+      this._isMounted = false;
+  }
+
+  render() {
+      return (
+        <>
+          <Modal show={show} onHide={handleClose} animation={false}>
+            <Modal.Header closeButton>
+              <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{this.state.content.accepted}</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleClose}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </>
+      );
+    }
 }
+
+
 
 
 class App extends Component {
@@ -151,7 +186,8 @@ class App extends Component {
     constructor(props) {
         super();
         this.state = {
-            openModal: false
+            openModal: false,
+            content: [],
         }
         this.handleOpenModel = this.handleOpenModel.bind(this);
         this.handlModelClose = this.handlModelClose.bind(this);
@@ -170,6 +206,42 @@ class App extends Component {
     }
 
 
+    getRecent() {
+        console.log(`get recent reached`);
+        fetch("http://localhost:8080/recent")
+          .then(res => res.json())
+          .then(
+            (result) => {
+                console.log(`RECENT-:`, result.accepted);
+                this.setState({
+                    content: result,
+                });
+                console.log(`after fetch-:`, this.state.content);
+
+                // if (result.accepted == true) {
+                //     console.log('this shit is true');
+                //     this.setState({
+                //         content: 'true',
+                //     });
+                // } else {
+                //     console.log('this shit is false');
+                //     this.setState({
+                //         recent: 'false',
+                //     });
+                // }
+            },
+            (error) => {
+              console.log('no recent content');
+              this.setState({
+                error,
+                recent: 'nada'
+              });
+            }
+          )
+
+    }
+
+
     componentDidMount() {
         document.getElementById('button-console').addEventListener('click', () => {
 //button-console
@@ -184,7 +256,9 @@ class App extends Component {
             clicked = true;
             document.getElementById('banner').style.display = "none";
             // this.handleOpenModel();
-            ReactDOM.render(<Example />, document.getElementById('container'));
+            this.getRecent();
+            console.log(`before Example load:`, this.state.content);
+            ReactDOM.render(<Example getRecent={this.state.content.accepted}/>, document.getElementById('container'));
             handleShow();
         });
       // document.getElementById('button-team').addEventListener('click', () => {
@@ -213,7 +287,7 @@ class App extends Component {
         <Router>
             <div className="App" >
                 <Welcome id="welcome"/>
-                <Example />
+                // <Example />
 
                 <Footer title={"hi"}/>
                 {

@@ -33,7 +33,7 @@ class ListEntriesComponent extends Component {
         this.refreshEntries = this.refreshEntries.bind(this)
         this.getImage = this.getImage.bind(this);
         this.getContent = this.getContent.bind(this);
-        this.filterHandler = this.filterHandler.bind(this);
+        // this.filterHandler = this.filterHandler.bind(this);
         this.onClick = this.onClick.bind(this);
         // this.updateEntryClicked = this.updateEntryClicked.bind(this)
         // this.addEntryClicked = this.addEntryClicked.bind(this)
@@ -69,10 +69,10 @@ class ListEntriesComponent extends Component {
 
     }
 
-    filterHandler = () => {
-        // this.setState({isFiltering: true});
-        console.log('filter handler reached');
-    }
+    // filterHandler = () => {
+    //     // this.setState({isFiltering: true});
+    //     console.log('filter handler reached');
+    // }
 
     basicFilterUpdate() {
         const val = this.myValue.value;
