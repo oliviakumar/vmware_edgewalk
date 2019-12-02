@@ -56,7 +56,8 @@ class Main extends Component {
             isLoaded: false,
             response: [],
             content: [],
-            fetchId: ''
+            fetchId: '',
+            recent: '',
         };
     }
     contentResponse() {
@@ -83,6 +84,8 @@ class Main extends Component {
   componentDidMount() {
       console.log(`main mounted`);
       document.getElementById('banner').style.display = "none"
+
+
       // document.getElementById('root').style.display = "none"
 
       // axios.get(`${ORG_API_URL}/contentResponse`)
@@ -252,6 +255,37 @@ class Main extends Component {
       this.setState({basicFilterText: value});
   }
 
+  getRecent() {
+      fetch("http://localhost:8080/recent")
+        .then(res => res.json())
+        .then(
+          (result) => {
+              console.log(`RECENT-:`, result.accepted);
+              this.setState({
+                  content: result,
+              });
+              // if (result.accepted == true) {
+              //     console.log('this shit is true');
+              //     this.setState({
+              //         content: 'true',
+              //     });
+              // } else {
+              //     console.log('this shit is false');
+              //     this.setState({
+              //         recent: 'false',
+              //     });
+              // }
+          },
+          (error) => {
+            console.log('no recent content');
+            this.setState({
+              error,
+              recent: 'nada'
+            });
+          }
+        )
+  }
+
   onFileChange = (event) => {
     this.setState({
       file: event.target.files[0]
@@ -264,15 +298,15 @@ class Main extends Component {
     console.log('searchText', this.state.searchText);
     console.log('response');
     console.log(this.state.response);
+    this.getRecent();
+    console.log(`outcome:`, this.state.content.accepted)
     // style={{backgroundColor: 'lavender', opacity: '.7'}}
 
     return (
       <div className="Team logs" style={{backgroundColor: 'lavender', opacity: '1'}}>
 
           <RoutedNav/>
-
             <div>
-
                 <ListEntriesComponent
                   entries={this.state.response}
                   viewDetail={this.viewDetail}
@@ -280,9 +314,10 @@ class Main extends Component {
                   searchUpdate={this.searchUpdate.bind(this)}
                   filterText={this.state.filterText}
                   filterUpdate={this.filterUpdate.bind(this)}
-                  basicFilterUpdate={this.basicFilterUpdate.bind(this)}>
+                  basicFilterUpdate={this.basicFilterUpdate.bind(this)}
+                  recent={this.state.content.accepted}
+                  >
                   </ListEntriesComponent>
-
               </div>
           <div>
             {

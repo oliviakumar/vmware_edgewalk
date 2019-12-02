@@ -13,7 +13,6 @@ import Filter from '../Filter/Filter';
 import './ListEntriesComponent.css';
 import Search from './Search';
 
-
 const ORGANIZATION = 'edgewalk';
 
 class ListEntriesComponent extends Component {
@@ -29,7 +28,7 @@ class ListEntriesComponent extends Component {
             imgpath: '',
             isFiltering: false,
             searchText: '',
-
+            openModal: false
         }
         this.refreshEntries = this.refreshEntries.bind(this)
         this.getImage = this.getImage.bind(this);
@@ -38,6 +37,22 @@ class ListEntriesComponent extends Component {
         this.onClick = this.onClick.bind(this);
         // this.updateEntryClicked = this.updateEntryClicked.bind(this)
         // this.addEntryClicked = this.addEntryClicked.bind(this)
+
+        this.handleOpenModel = this.handleOpenModel.bind(this);
+        this.handlModelClose = this.handlModelClose.bind(this);
+    }
+
+
+    handleOpenModel() {
+        this.setState({
+            openModal: true,
+        })
+    }
+
+    handlModelClose() {
+        this.setState({
+            openModal: false,
+        })
     }
 
     componentDidMount() {
@@ -45,6 +60,8 @@ class ListEntriesComponent extends Component {
         this.refreshEntries();
         // this.getImage();
         this.getContent();
+        console.log(`parent state!`);
+        console.log(`parent state:`, this.props.recent);
     }
 
     onClick(e) {
@@ -166,7 +183,10 @@ class ListEntriesComponent extends Component {
             opacity: '.9'
         };
         const images = require.context('../logos', true);
-        const {entries, viewDetail, searchText, filterText} = this.props;
+        const {entries, viewDetail, searchText, filterText, recent} = this.props;
+
+        console.log(`outcome:-`, this.props.recent);
+        const retVal = this.props.recent;
 
         return (
             <div>
@@ -176,6 +196,11 @@ class ListEntriesComponent extends Component {
                     <p style={{textAlign: 'center'}}></p>
 
                     View history of system entry. Click individual logs for entrant details.
+
+                    { (this.props.recent == undefined ? <p> Loading... </p> : <p> {retVal} </p>)}
+                    Hello?
+
+
             </div>
             <br/>
             <div style={{align: 'right', padding: '10'}} >

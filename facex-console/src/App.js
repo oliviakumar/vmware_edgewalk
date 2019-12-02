@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import ReactDOM, {render} from 'react-dom';
-import { Navbar, Container } from 'react-bootstrap';
-
+import { Navbar, Container, Modal } from 'react-bootstrap';
+import StatusPopup from './StatusPopup/StatusPopup';
 // import {Router, Route} from 'react-router';
 import { Row } from 'reactstrap'
 
@@ -112,27 +112,85 @@ function init() {
     new TypeWriter(txtElement, words, wait);
 }
 
+function Example() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  return (
+    <>
+      <Button variant="primary" onClick={handleShow}>
+        Launch demo modal
+      </Button>
+
+      <Modal show={show} onHide={handleClose} animation={false}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+}
+
+
 class App extends Component {
 
     constructor(props) {
-        super(props);
+        super();
         this.state = {
-        };
+            openModal: false
+        }
+        this.handleOpenModel = this.handleOpenModel.bind(this);
+        this.handlModelClose = this.handlModelClose.bind(this);
     }
 
-  componentDidMount() {
-      document.getElementById('button-console').addEventListener('click', () => {
+    handleOpenModel() {
+        this.setState({
+            openModal: true,
+        })
+    }
 
+    handlModelClose() {
+        this.setState({
+            openModal: false,
+        })
+    }
+
+
+    componentDidMount() {
+        document.getElementById('button-console').addEventListener('click', () => {
+//button-console
         clicked = true;
         document.getElementById('banner').style.display = "none"
-        ReactDOM.render(<Main />, document.getElementById('container'));
+        ReactDOM.render(<StatusPopup />, document.getElementById('container'));
+        // ReactDOM.render(<Main />, document.getElementById('container'));
         // ReactDOM.render(<Main />, document.getElementById('root'));
 
 
       });
+        document.getElementById('button-enter').addEventListener('click', () => {
+        clicked = true;
+        // console.log('clicked enter in appjs')
+        document.getElementById('banner').style.display = "none";
+        // <button >Open Modal</button>
+        this.handleOpenModel();
+        // ReactDOM.render(<Example />, document.getElementById('container'));
+        // ReactDOM.render(<StatusPopup id={'button-enter'}/>, document.getElementById('container'));
+
+      });
       // document.getElementById('button-team').addEventListener('click', () => {
-        // clicked = true;
-        // document.getElementById('veryimportant').style.display = "none"
+      //   clicked = true;
+      //   document.getElementById('veryimportant').style.display = "none"
       //   console.log(`about`);
       //
       //
@@ -156,11 +214,25 @@ class App extends Component {
         <Router>
             <div className="App" >
                 <Welcome id="welcome"/>
+                <Example />
 
                 <Footer title={"hi"}/>
                 {
-                // <VeryPretentiousComponent />
+                // <VeryPretentiousComponent/>
+                // <button id="button-enter" onClick={this.handleOpenModel}>Open Modal</button>
+
                 }
+
+                <div
+                    id="myModal"
+                    className="modal"
+                    style={{ display: this.state.openModal ? 'block' : 'none' }}>
+                    <div className="modal-content">
+                        <span className="close" onClick={this.handlModelClose}>&times;</span>
+                        <p>Some text in the Modal...</p>
+                    </div>
+
+                </div>
             </div>
         </Router>
     );
