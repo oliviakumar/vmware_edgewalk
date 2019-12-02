@@ -17,6 +17,8 @@ import (
 	"image/png"
 	"io/ioutil"
 	"os"
+	"os/exec"
+
 	//"os/exec"
 	"sync"
 	"time"
@@ -48,14 +50,41 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	// start routine operating camera to check for faces with current rec instance
 	// OperateCamera will call on OperateGoface to recognize the faces
 	// OperateGoface will call on parseStruct to get the info of the recognized picture
-	//go s.OperateCamera()
+	// go s.OperateCamera()
 
 	return nil
 }
 
 // encode given image as a buffer to pass into HandleReadCommand
-func getImageBytes(imgFile string, buf *bytes.Buffer) error {
-	// Read existing image from file
+func getImageBytes(buf *bytes.Buffer) error {
+
+	// capture command for RasPi
+	args := "-w 640 -h 480 -q 5 -o /model-goface/testImages/Test%04.jpg"
+	exec.Command("raspistill", args)
+
+	// get latest capture
+	dir := "model-goface/testImages"
+	// sets working directory in this func to given dir (ReadDir not working without it)
+	err := os.Chdir(dir)
+	files, _ := ioutil.ReadDir(dir)
+	var newestCapture string
+	var newestTime int64 = 0
+
+	for _, f := range files {
+		fi, err := os.Stat(dir + f.Name())
+		if err != nil {
+			fmt.Println(err)
+		}
+		currentTime := fi.ModTime().Unix()
+		if currentTime > newestTime {
+			newestTime = currentTime
+			newestCapture = f.Name()
+		}
+	}
+	fmt.Println("The latest caputure is:" + newestCapture)
+	imgFile := dir + newestCapture
+
+	// Read latest image from file
 	img, err := os.Open(imgFile)
 	if err != nil {
 		fmt.Println(err)
@@ -74,15 +103,15 @@ func getImageBytes(imgFile string, buf *bytes.Buffer) error {
 	// Finished with file. Reset file pointer
 	_, err = img.Seek(0, 0)
 
-	// case handling of jpeg vs png, decides on which pipeline to encode
+	// case handling of jpeg vs jpg
 	if imageType == "jpeg" {
 		err = jpeg.Encode(buf, imageData, nil)
 		if err != nil {
 			fmt.Println(err)
 			return err
 		}
-	} else if imageType == "png" {
-		err = png.Encode(buf, imageData)
+	} else if imageType == "jpg" {
+		err = jpeg.Encode(buf, imageData, nil)
 		if err != nil {
 			fmt.Println(err)
 			return err
@@ -150,7 +179,6 @@ func getImageBytes(imgFile string, buf *bytes.Buffer) error {
 //	}
 //}
 
-
 // device service method to operate the camera, gets called with current rec instance
 // returns the last path with a face in it
 //func (s *GofaceDevice) OperateCamera() string {
@@ -177,7 +205,6 @@ func getImageBytes(imgFile string, buf *bytes.Buffer) error {
 //	}
 //}
 
-
 // HandleReadCommands triggers a protocol Read operation for the specified device.
 func (s *GofaceDevice) HandleReadCommands(deviceName string, protocols map[string]contract.ProtocolProperties, reqs []dsModels.CommandRequest) (res []*dsModels.CommandValue, err error) {
 	//fmt.Fprintf(os.Stdout,  "....... %s .......\n", reqs[0].DeviceResourceName)
@@ -194,7 +221,10 @@ func (s *GofaceDevice) HandleReadCommands(deviceName string, protocols map[strin
 	if reqs[0].DeviceResourceName == "goface" {
 		buf := new(bytes.Buffer)
 		s.mux.Lock()
-		getImageBytes("../../../model-goface/testImages/test4.jpg", buf)
+		err := getImageBytes(buf)
+		if err != nil {
+			fmt.Println("Error calling getImageBytes buffer", err)
+		}
 		cv, _ := dsModels.NewBinaryValue(reqs[0].DeviceResourceName, now, buf.Bytes())
 		s.mux.Unlock()
 		res[0] = cv
