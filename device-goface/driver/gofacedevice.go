@@ -15,24 +15,24 @@ import (
 	"image"
 	"image/jpeg"
 	"image/png"
+	"io/ioutil"
 	"os"
+	//"os/exec"
 	"sync"
 	"time"
-	"io/ioutil"
 
 	dsModels "github.com/edgexfoundry/device-sdk-go/pkg/models"
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	contract "github.com/edgexfoundry/go-mod-core-contracts/models"
-	// import goface functionality, to be called on by using "GF.funcName()"
-	// "github.com/oliviakumar/vmware_edgewalk/model-goface/detect"
+	//"github.com/edgexfoundry/vmware_edgewalk/model-goface/detect"
 )
 
-// internal data struct
+// internal data struct for current device instance to be passed to functions
 type GofaceDevice struct {
-	lc         logger.LoggingClient
-	asyncCh    chan<- *dsModels.AsyncValues
-	mux        sync.Mutex
-	imagePath	string
+	lc        logger.LoggingClient
+	asyncCh   chan<- *dsModels.AsyncValues
+	mux       sync.Mutex
+	imagePath string
 }
 
 func (s *GofaceDevice) DisconnectDevice(deviceName string, protocols map[string]contract.ProtocolProperties) error {
@@ -48,11 +48,12 @@ func (s *GofaceDevice) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	// start routine operating camera to check for faces with current rec instance
 	// OperateCamera will call on OperateGoface to recognize the faces
 	// OperateGoface will call on parseStruct to get the info of the recognized picture
-	// go s.OperateCamera()
+	//go s.OperateCamera()
 
 	return nil
 }
 
+// encode given image as a buffer to pass into HandleReadCommand
 func getImageBytes(imgFile string, buf *bytes.Buffer) error {
 	// Read existing image from file
 	img, err := os.Open(imgFile)
@@ -90,31 +91,91 @@ func getImageBytes(imgFile string, buf *bytes.Buffer) error {
 	return nil
 }
 
-// method that will be initialized in Init() but will run as a routine to constantly take in new image paths
+// helper funtion to get the last taken picture by timestamp
+//func getLastCapture() string {
+//	dir := "model-goface/testImages"
+//	files, _ := ioutil.ReadDir(dir)
+//	var newestCapture string
+//	var newestTime int64 = 0
+//
+//	for _, f := range files {
+//		fi, err := os.Stat(dir + f.Name())
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//		currentTime := fi.ModTime().Unix()
+//		if currentTime > newestTime {
+//			newestTime = currentTime
+//			newestCapture = f.Name()
+//		}
+//	}
+//	fmt.Println("The latest caputure is:" + newestCapture)
+//	latestImgPath := dir + newestCapture
+//	return latestImgPath
+//}
+
+// helper function to keep directory to 10 pictures max so the RPis SD card doesn't fill up
+//func (s *GofaceDevice) cleanDir() {
+//	dir := "model-goface/testImages"
+//	files, err := ioutil.ReadDir(dir)
+//	if err != nil {
+//		fmt.Println(err)
+//		return
+//	}
+//	var oldestCapture string
+//
+//	var oldestTime = time.Now()
+//	// through directory
+//	for _, f := range files {
+//		// check if there is more than 10 files in dir
+//		if len(files) > 10 {
+//			// compare timestamps and remove oldest
+//			if f.Mode().IsRegular() && f.ModTime().Before(oldestTime) {
+//				oldestCapture = f.Name()
+//				oldestTime = f.ModTime()
+//			}
+//			removeErr:= os.Remove(oldestCapture)
+//			if removeErr != nil {
+//				fmt.Println(removeErr)
+//				return
+//			}
+//			fileInfo, _ := os.Stat(oldestCapture)
+//			if fileInfo == nil {
+//				err = os.ErrNotExist
+//				fmt.Println(err)
+//				return
+//
+//			}
+//		}
+//	}
+//}
 
 
 // device service method to operate the camera, gets called with current rec instance
 // returns the last path with a face in it
-// func (s *GofaceDevice) OperateCamera() string {
-// 	// init path var that will be reused throughout the whole program
-
-// 	for {
-// 		/*args := "-o model-goface/testImages/Test%08.jpg"
-// 		exec.Command("raspistill", args)
-// 		*/
-
-// 		// testing with hardcoded image path
-// 		s.imagePath = "test1.jpg"
-// 		var hasFace = detect.TestForFace(s.imagePath)
-// 		if hasFace == true {
-// 			return s.imagePath
-// 		}
-// 		// then sleep for 1 sec
-// 		time.Sleep(1000 * time.Millisecond)
-// 		// path of last photo
-// 		return s.imagePath
-// 	}
-// }
+//func (s *GofaceDevice) OperateCamera() string {
+//
+//	// initialize camera timelapse capture every 3 seconds
+//	args := "-o -tl 3000 model-goface/testImages/Test%04.jpg"
+//	exec.Command("raspistill", args)
+//
+//	for {
+//		// init path var that will be reused throughout the whole program
+//		s.imagePath = getLastCapture()
+//		var hasFace = detect.TestForFace(s.imagePath)
+//		if hasFace == true {
+//			result := s.imagePath
+//			return result
+//		} else {
+//			result := "No face was detected"
+//			// @TODO check if sleep is necessary
+//			time.Sleep(1000 * time.Millisecond)
+//			return result
+//		}
+//		// cut directory content to 10 pictures
+//		cleanDir()
+//	}
+//}
 
 
 // HandleReadCommands triggers a protocol Read operation for the specified device.
@@ -187,77 +248,77 @@ func (s *GofaceDevice) RemoveDevice(deviceName string, protocols map[string]cont
 func (s *GofaceDevice) WriteConfiguration() {
 	edgeHub := GetEdgeHub()
 	config := "[Writable]\n" +
-	"LogLevel = 'INFO'\n" +
-	"\n" +
-	"[Service] \n" +
-	"Host = \"localhost\"\n" +
-	"Port = 45045\n" +
-	"ConnectRetries = 20\n" +
-	"Labels = []\n" +
-	"OpenMsg = \"device goface started\"\n" +
-	"MaxResultCount = 50000\n" +
-	"Timeout = 5000\n" +
-	"EnableAsyncReadings = true\n" +
-	"AsyncBufferSize = 16\n" +
-	"\n" +
-	"[Registry]\n" +
-	"Host = \"" + edgeHub + "\"\n" +
-	"Port = 8500\n" +
-	"CheckInterval = \"10s\"\n" +
-	"FailLimit = 3\n" +
-	"FailWaitTime = 10\n" +
-	"\n" +
-	"# Calls to other EdgeX components\n" +
-	"[Clients]\n" +
-	"	[Clients.Data]\n" +
-	"	Name = \"edgex-core-data\"\n" +
-	"	Protocol = \"http\"\n" +
-	"	Host = \"" + edgeHub + "\"\n" +
-	"	Port = 48080\n" +
-	"	Timeout = 5000\n" +
-	"\n" +
-	"	[Clients.Metadata]\n" +
-	"	Name = \"edgex-core-metadata\"\n" +
-	"	Protocol = \"http\"\n" +
-	"	Host = \"" + edgeHub + "\"\n" +
-	"	Port = 48081\n" +
-	"	Timeout = 5000\n" +
-	"\n" +
-	" 	[Clients.Logging]\n" +
-	"	Name = \"edgex-support-logging\"\n" +
-	"	Protocol = \"http\"\n" +
-	"	Host = \"" + edgeHub + "\"\n" +
-	"	Port = 48061\n" +
-	"\n" +
-	"[Device]\n" +
-	"	DataTransform = true\n" +
-	"	InitCmd = \"\"\n" +
-	"	InitCmdArgs = \"\"\n" +
-	"	MaxCmdOps = 128\n" +
-	"	MaxCmdValueLen = 256\n" +
-	"	RemoveCmd = \"\"\n" +
-	"	RemoveCmdArgs = \"\"\n" +
-	"	ProfilesDir = \"./res\"\n" +
-	"\n" +
-	"# enable the logging and define the level\n" +
-	"[Logging]\n" +
-	"EnableRemote = false\n" +
-	"File = \"./device-goface.log\"\n" +
-	"\n" +
-	"# Pre-define Devices - use Name for API calls\n" +
-	"[[DeviceList]]\n" +
-	"	Name = \"device-goface-01\"\n" +
-	"	Profile = \"device-goface\"\n" +
-	"	Description = \"Goface Recognizer Device\"\n" +
-	"	Labels = [ \"IoT\" ]\n" +
-	"	[DeviceList.Protocols]\n" +
-	"		[DeviceList.Protocols.Other]\n" +
-	"			Address = \"goface01\"\n" +
-	"			Port = \"300\"\n" +
-	"		[[DeviceList.AutoEvents]]\n" +
-	"			Frequency = \"1s\"\n" +
-	"			OnChange = false\n" +
-	"			Resource = \"goface\"\n"
+		"LogLevel = 'INFO'\n" +
+		"\n" +
+		"[Service] \n" +
+		"Host = \"localhost\"\n" +
+		"Port = 45045\n" +
+		"ConnectRetries = 20\n" +
+		"Labels = []\n" +
+		"OpenMsg = \"device goface started\"\n" +
+		"MaxResultCount = 50000\n" +
+		"Timeout = 5000\n" +
+		"EnableAsyncReadings = true\n" +
+		"AsyncBufferSize = 16\n" +
+		"\n" +
+		"[Registry]\n" +
+		"Host = \"" + edgeHub + "\"\n" +
+		"Port = 8500\n" +
+		"CheckInterval = \"10s\"\n" +
+		"FailLimit = 3\n" +
+		"FailWaitTime = 10\n" +
+		"\n" +
+		"# Calls to other EdgeX components\n" +
+		"[Clients]\n" +
+		"	[Clients.Data]\n" +
+		"	Name = \"edgex-core-data\"\n" +
+		"	Protocol = \"http\"\n" +
+		"	Host = \"" + edgeHub + "\"\n" +
+		"	Port = 48080\n" +
+		"	Timeout = 5000\n" +
+		"\n" +
+		"	[Clients.Metadata]\n" +
+		"	Name = \"edgex-core-metadata\"\n" +
+		"	Protocol = \"http\"\n" +
+		"	Host = \"" + edgeHub + "\"\n" +
+		"	Port = 48081\n" +
+		"	Timeout = 5000\n" +
+		"\n" +
+		" 	[Clients.Logging]\n" +
+		"	Name = \"edgex-support-logging\"\n" +
+		"	Protocol = \"http\"\n" +
+		"	Host = \"" + edgeHub + "\"\n" +
+		"	Port = 48061\n" +
+		"\n" +
+		"[Device]\n" +
+		"	DataTransform = true\n" +
+		"	InitCmd = \"\"\n" +
+		"	InitCmdArgs = \"\"\n" +
+		"	MaxCmdOps = 128\n" +
+		"	MaxCmdValueLen = 256\n" +
+		"	RemoveCmd = \"\"\n" +
+		"	RemoveCmdArgs = \"\"\n" +
+		"	ProfilesDir = \"./res\"\n" +
+		"\n" +
+		"# enable the logging and define the level\n" +
+		"[Logging]\n" +
+		"EnableRemote = false\n" +
+		"File = \"./device-goface.log\"\n" +
+		"\n" +
+		"# Pre-define Devices - use Name for API calls\n" +
+		"[[DeviceList]]\n" +
+		"	Name = \"device-goface-01\"\n" +
+		"	Profile = \"device-goface\"\n" +
+		"	Description = \"Goface Recognizer Device\"\n" +
+		"	Labels = [ \"IoT\" ]\n" +
+		"	[DeviceList.Protocols]\n" +
+		"		[DeviceList.Protocols.Other]\n" +
+		"			Address = \"goface01\"\n" +
+		"			Port = \"300\"\n" +
+		"		[[DeviceList.AutoEvents]]\n" +
+		"			Frequency = \"1s\"\n" +
+		"			OnChange = false\n" +
+		"			Resource = \"goface\"\n"
 	bytes := []byte(config)
 	err := ioutil.WriteFile("res/configuration.toml", bytes, 0644)
 	if err != nil {
@@ -265,9 +326,9 @@ func (s *GofaceDevice) WriteConfiguration() {
 	}
 }
 
-func GetEdgeHub() string  {
+func GetEdgeHub() string {
 	edgeHub := os.Getenv("EDGEHUB")
-	if (edgeHub == "") {
+	if edgeHub == "" {
 		edgeHub = "localhost"
 	}
 	return edgeHub
