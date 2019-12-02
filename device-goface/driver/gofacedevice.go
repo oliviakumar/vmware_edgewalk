@@ -58,7 +58,12 @@ func getImageBytes(buf *bytes.Buffer) error {
 
 	// capture command for RasPi
 	args := "-w 640 -h 480 -q 5 -o /model-goface/testImages/Test%04.jpg"
-	exec.Command("raspistill", args)
+	runner := exec.Command("raspistill", args)
+	//runner.Start()
+	err := runner.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	// get latest capture
 	dir := "../../../model-goface/testImages"
