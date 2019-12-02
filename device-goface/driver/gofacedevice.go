@@ -64,11 +64,7 @@ func getImageBytes(buf *bytes.Buffer) error {
 	dir := "../../../model-goface/testImages"
 	abspath, patherr := filepath.Abs(dir)
 	fmt.Println(abspath, patherr)
-	// sets working directory in this func to given dir (ReadDir not working without it)
-	err := os.Chdir(dir)
-	if err != nil {
-		fmt.Println(err)
-	}
+
 	files, _ := ioutil.ReadDir(abspath)
 	var newestCapture string
 	var newestTime int64 = 0
