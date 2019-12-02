@@ -188,9 +188,16 @@ function Example(props) {
     <>
       <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>{props.identity ? 'ACCESS GRANTED' : 'ACCESS DENIED'}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal! {props.content} </Modal.Body>
+
+        <div>
+              <Modal.Body>
+                <b>{props.identity ? 'Welcome, ' + `${props.identity}`  + '!'  : 'Identity unknown.'}</b>
+              </Modal.Body>
+        </div>
+
+
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
@@ -237,10 +244,11 @@ class App extends Component {
           .then(res => res.json())
           .then(
             (result) => {
-                console.log(`RECENT-:`, result.accepted.toString());
+                console.log(`RECENT-:`, result);
                 // status = result.accepted;
                 // return <Example content={result.accepted.toString()}/>;
-                ReactDOM.render(<Example content={result.accepted.toString()}/>, document.getElementById('container'));
+                // ReactDOM.render(<Example content={result.accepted.toString()}/>, document.getElementById('container'));
+                ReactDOM.render(<Example content={result.accepted.toString()} identity={result.identity}/>, document.getElementById('container'));
                 handleShow();
 
                 this.setState({
