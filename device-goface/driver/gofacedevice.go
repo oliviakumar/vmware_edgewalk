@@ -71,9 +71,9 @@ func getImageBytes(buf *bytes.Buffer) error {
 
 	for _, f := range files {
 		fi, err := os.Stat(f.Name())
-		fmt.Println(fi)
-		fmt.Println(fi.IsDir())
+		fmt.Println("This is fi: ", fi)
 		if err != nil {
+			fmt.Println("os.Stat error: ")
 			fmt.Println(err)
 		}
 		currentTime := fi.ModTime().Unix()
