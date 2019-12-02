@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import ReactDOM, {render} from 'react-dom';
 import { Navbar, Container, Modal } from 'react-bootstrap';
-import StatusPopup from './StatusPopup/StatusPopup';
+// import StatusPopup from './StatusPopup/StatusPopup';
 // import {Router, Route} from 'react-router';
 import { Row } from 'reactstrap'
 
@@ -116,8 +116,8 @@ let handleClose;
 let handleShow;
 
 
-// export default const Example = (props) => {
-// class Example extends Component {
+// export default const StatusPopup = (props) => {
+// class StatusPopup extends Component {
 //
 //
 //   _isMounted = false;
@@ -178,7 +178,7 @@ let handleShow;
 //     }
 // }
 
-function Example(props) {
+function Popup(props) {
   const [show, setShow] = useState(false);
 
   handleClose = () => setShow(false);
@@ -186,27 +186,29 @@ function Example(props) {
 
   return (
     <>
-      <Modal show={show} onHide={handleClose} animation={false}>
-        <Modal.Header closeButton>
-          <Modal.Title>{props.identity ? 'ACCESS GRANTED' : 'ACCESS DENIED'}</Modal.Title>
-        </Modal.Header>
+        <div style={{justifyContent: 'center'}}>
+          <Modal className='text-center' style={{align: 'center'}} show={show} onHide={handleClose} animation={false}>
+            <Modal.Header closeButton>
+              <Modal.Title style={{align: 'center', margin: '0 0 auto'}} className={props.accepted ? 'accepted' : 'denied'}> {props.accepted ? 'ACCESS GRANTED' : 'ACCESS DENIED'} </Modal.Title>
+            </Modal.Header>
 
-        <div>
-              <Modal.Body>
-                <b>{props.identity ? 'Welcome, ' + `${props.identity}`  + '!'  : 'Identity unknown.'}</b>
-              </Modal.Body>
-        </div>
+            <div>
+                  <Modal.Body style={{textAlign: 'center'}}>
+                    <b>{props.accepted ? 'Welcome, ' + `${props.identity}`  + '!'  : 'Identity unknown.'}</b>
+                  </Modal.Body>
+            </div>
 
 
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+            <Modal.Footer style={{textAlign: 'center'}}>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleClose}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+      </div>
     </>
   );
 }
@@ -246,9 +248,9 @@ class App extends Component {
             (result) => {
                 console.log(`RECENT-:`, result);
                 // status = result.accepted;
-                // return <Example content={result.accepted.toString()}/>;
-                // ReactDOM.render(<Example content={result.accepted.toString()}/>, document.getElementById('container'));
-                ReactDOM.render(<Example content={result.accepted.toString()} identity={result.identity}/>, document.getElementById('container'));
+                // return <StatusPopup content={result.accepted.toString()}/>;
+                // ReactDOM.render(<StatusPopup content={result.accepted.toString()}/>, document.getElementById('container'));
+                ReactDOM.render(<Popup content={result.accepted.toString()} identity={result.identity}/>, document.getElementById('container'));
                 handleShow();
 
                 this.setState({
@@ -271,9 +273,9 @@ class App extends Component {
             },
             (error) => {
               console.log('no recent content');
+
               this.setState({
                 error,
-                recent: 'nada'
               });
             }
           )
@@ -285,7 +287,7 @@ class App extends Component {
 //button-console
             clicked = true;
             document.getElementById('banner').style.display = "none"
-            ReactDOM.render(<StatusPopup />, document.getElementById('container'));
+            ReactDOM.render(<Popup />, document.getElementById('container'));
             // ReactDOM.render(<Main />, document.getElementById('container'));
             // ReactDOM.render(<Main />, document.getElementById('root'));
         });
@@ -298,8 +300,8 @@ class App extends Component {
 
             this.getRecent();
             // console.log(`status y status: `, status);
-            // console.log(`before Example load:`, this.state.content);
-            // ReactDOM.render(<Example />, document.getElementById('container'));
+            // console.log(`before StatusPopup load:`, this.state.content);
+            // ReactDOM.render(<StatusPopup />, document.getElementById('container'));
             // handleShow();
         });
       // document.getElementById('button-team').addEventListener('click', () => {

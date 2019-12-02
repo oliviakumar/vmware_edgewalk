@@ -6,6 +6,7 @@ import './Welcome.css';
 import Team from '../Team/Team';
 import About from '../About/About';
 import Main from '../Main/Main';
+import Popup from '../App.js';
 
 class Welcome extends Component {
   render () {
@@ -14,10 +15,11 @@ class Welcome extends Component {
             {
                 <header>
                 <nav>
-                    <ul>
+                    <ul className="select" style={{color: 'white'}}>
                         <li><Link to="/team">Team</Link></li>
                         <li><Link to="/about">About</Link></li>
                         <li><Link to="/logs">Logs</Link></li>
+                        <li><Link to="/status">Status</Link></li>
                     </ul>
                 </nav>
             </header>
@@ -28,6 +30,7 @@ class Welcome extends Component {
             <Route path="/team" exact component={Team} />
             <Route path="/about" exact component={About} />
             <Route path="/logs" exact component={Main} />
+            <Route path="/status" exact component={Popup} />
         </div>
     );
   }

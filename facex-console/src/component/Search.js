@@ -21,7 +21,7 @@ class Search extends Component {
                         size="30"
                         type="text"
                         ref={ (value) => {this.myValue = value} }
-                        placeholder="search entries..."
+                        placeholder="Search By Entrant"
                         onChange={this.filterUpdate.bind(this)}/>
 
                 </form>

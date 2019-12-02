@@ -10,7 +10,19 @@
     margin: 0;
     width: 10em;
 } */
+.accepted {
+    background-color: green;
+    justify-content: center;
+    align: center;
+    text-align: center;
+}
 
+.denied {
+    background-color: red;
+    justify-content: center;
+    align: center;
+    text-align: center;
+}
 
 #verypretentious {
     position: fixed;

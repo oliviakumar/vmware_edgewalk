@@ -190,7 +190,7 @@ class ListEntriesComponent extends Component {
 
         return (
             <div>
-            <Jumbotron style={{backgroundColor: '#cfcfdf', color: '#d1a7c8'}}>
+            <Jumbotron style={{backgroundColor: 'lightblue', color: '#d1a7c8'}}>
             <div style={{textAlign: 'center'}}>
                     <h1 style={{textAlign: 'center'}}>ENTRY LOGS</h1>
                     <p style={{textAlign: 'center'}}></p>
@@ -198,7 +198,6 @@ class ListEntriesComponent extends Component {
                     View history of system entry. Click individual logs for entrant details.
 
                     { (this.props.recent == undefined ? <p> Loading... </p> : <p> {retVal} </p>)}
-                    Hello?
 
 
             </div>
@@ -217,11 +216,11 @@ class ListEntriesComponent extends Component {
                         // <p> filterText value is: {this.props.filterText} </p>
                     // </div>
                     }
-                <div>
+                <div style={{backgroundColor: 'white'}}>
                 <p>
                     <Table bordered hover >
 {
-                        <thead style={{backgroundColor: 'lavender', border: 'none', font: 'inherit'}}>
+                        <thead style={{backgroundColor: 'lightgrey', border: 'none', font: 'inherit'}}>
                             <tr className="ListEntryHead" onClick={this.onClickHandler()}>
                                 <th>NAME</th>
                                 <th>LOCATION</th>

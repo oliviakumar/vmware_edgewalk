@@ -31,34 +31,35 @@ const About = (props) => {
             <InfoCard imgsrc={edge} name={edge} info={info[2]}/>
         </CardColumns>
 
-
-        /* details section */
-        <div className="overflow">
-            <div  id="s1">
-              <h1>Section 1</h1>
-            </div>
-            <div  id="s2">
-              <h1>Section 2</h1>
-            </div>
-            <div  id="s3">
-              <h1>Section 3</h1>
-            </div>
-            <div  id="s4">
-              <h1>Section 4</h1>
-            </div>
-            <div  id="s5">
-              <h1>Section 5</h1>
-            </div>
-            <div  id="s6">
-              <h1>Section 6</h1>
-            </div>
-            <div  id="s7">
-              <h1>Section 7</h1>
-            </div>
-            <div  id="s8">
-              <h1>Section 8</h1>
-            </div>
-        </div>
+{
+        // /* details section */
+        // <div className="overflow">
+        //     <div  id="s1">
+        //       <h1>Section 1</h1>
+        //     </div>
+        //     <div  id="s2">
+        //       <h1>Section 2</h1>
+        //     </div>
+        //     <div  id="s3">
+        //       <h1>Section 3</h1>
+        //     </div>
+        //     <div  id="s4">
+        //       <h1>Section 4</h1>
+        //     </div>
+        //     <div  id="s5">
+        //       <h1>Section 5</h1>
+        //     </div>
+        //     <div  id="s6">
+        //       <h1>Section 6</h1>
+        //     </div>
+        //     <div  id="s7">
+        //       <h1>Section 7</h1>
+        //     </div>
+        //     <div  id="s8">
+        //       <h1>Section 8</h1>
+        //     </div>
+        // </div>
+  }
 
 
     </div>

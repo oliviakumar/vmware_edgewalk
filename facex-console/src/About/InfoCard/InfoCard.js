@@ -15,7 +15,7 @@ const InfoCard = props => {
           {props.info}
         </p>
         <a href='#' className='btn btn-outline-success'>
-          Go Anywhere
+          READ MORE
         </a>
       </div>
     </div>
