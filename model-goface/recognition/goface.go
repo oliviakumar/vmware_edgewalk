@@ -176,15 +176,15 @@ func Infer(edgexcontext *appcontext.Context, params ...interface{}) (bool, inter
 
     if testPic == nil {
         Benchmark("Inference", start)
-        return false, errors.New("cannot read image/metadata")
+        return false, send.Imagepath
     }
 
     picID := rec.ClassifyThreshold(testPic.Descriptor, 0.4)
     if picID < 0 {
         Benchmark("Inference", start)
         return true, send
-    } 
-    
+    }
+
     approved = true
     var person string
     for i := 0; i < len(Model); i++ {

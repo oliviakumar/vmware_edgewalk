@@ -13,6 +13,7 @@ import (
 	"strings"
 	"path/filepath"
 	"os/exec"
+	"reflect"
 
 	"github.com/edgexfoundry/app-functions-sdk-go/pkg/transforms"
 	"github.com/edgexfoundry/app-functions-sdk-go/appcontext"
@@ -51,7 +52,6 @@ func main() {
 		transforms.NewFilter(deviceNames).FilterByDeviceName,
 		SaveImage,
 		recognition.Infer,
-		//GetDataFromJSON,
 		SendData,
 		SendImage,
 	)
@@ -100,9 +100,14 @@ func SendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, in
 	if len(params) < 1 {
 		return false, errors.New("No data recevied")
 	}
+	if reflect.TypeOf(params[0]).Name() == "string" {
+		DeleteFile(params[0].(string))
+		return false, errors.New("No face was detected/image metadata cannot be read")
+	}
 	send := params[0].(dModels.SendingData)
 	data, err := json.Marshal(send)
 	if err != nil {
+		DeleteFile(send.Imagepath)
 		fmt.Println(err)
 		return false, errors.New("Could not convert to json")
 	}
@@ -110,11 +115,13 @@ func SendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, in
 	host := "http://" + exportHost + ":8080/edge/api"
 	resp, err := http.Post(host, "application/json", bytes.NewReader(data))
 	if err != nil {
+		DeleteFile(send.Imagepath)
 		fmt.Println(err)
 		return false, errors.New("Error posting data")
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		DeleteFile(send.Imagepath)
 		return false, fmt.Errorf("export failed with %d HTTP status code", resp.StatusCode)
 	}
 	return true, send
@@ -130,6 +137,7 @@ func SendImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, i
 		file, err := os.Open(imgPath)
 		if err != nil {
 			fmt.Println(err)
+			DeleteFile(send.Imagepath)
 			return false, errors.New("Image could not be opened")
 		}
 		values := map[string] io.Reader {
@@ -139,12 +147,16 @@ func SendImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, i
 		err = Upload(values)
 		if err != nil {
 			fmt.Println(err)
+			DeleteFile(send.Imagepath)
 			return false, errors.New("Error posting image data")
 		}
-		return true, nil
-	} else {
-		return true, "No image path was given"
 	}
+	str := ""
+	if send.Imagepath == "" {
+		str = "No image path was given"
+	}
+	DeleteFile(send.Imagepath)
+	return true, str
 }
 
 func Upload(values map[string] io.Reader) (err error) {
@@ -194,5 +206,13 @@ func GetExportHost() string  {
 		exportHost = "localhost"
 	}
 	return exportHost
+}
+
+func DeleteFile(path string) error {
+	if path != "" {
+		cmd := exec.Command("rm", filepath.Join("../../model-goface/testImages", path))
+		return cmd.Run()
+	}
+	return nil
 }
 
