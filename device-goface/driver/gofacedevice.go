@@ -14,7 +14,6 @@ import (
 	"fmt"
 	"image"
 	"image/jpeg"
-	"image/png"
 	"io/ioutil"
 	"os"
 	"os/exec"
