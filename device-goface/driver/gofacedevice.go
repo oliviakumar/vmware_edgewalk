@@ -17,8 +17,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
-
-	//"os/exec"
+	"path/filepath"
 	"sync"
 	"time"
 
@@ -63,8 +62,13 @@ func getImageBytes(buf *bytes.Buffer) error {
 
 	// get latest capture
 	dir := "../../model-goface/testImages"
+	abspath, patherr := filepath.Abs(dir)
+	fmt.Println(abspath, patherr)
 	// sets working directory in this func to given dir (ReadDir not working without it)
 	err := os.Chdir(dir)
+	if err != nil {
+		fmt.Println(err)
+	}
 	files, _ := ioutil.ReadDir(dir)
 	var newestCapture string
 	var newestTime int64 = 0
