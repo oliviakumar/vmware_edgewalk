@@ -74,18 +74,20 @@ func getImageBytes(buf *bytes.Buffer) error {
 	var newestTime int64 = 0
 
 	for _, f := range files {
-		fi, err := os.Stat(dir + f.Name())
+		fi, err := os.Stat(f.Name())
+		fmt.Println(fi)
+		fmt.Println(fi.IsDir())
 		if err != nil {
 			fmt.Println(err)
 		}
 		currentTime := fi.ModTime().Unix()
 		if currentTime > newestTime {
 			newestTime = currentTime
-			newestCapture = f.Name()
+			newestCapture = fi.Name()
 		}
 	}
 	fmt.Println("The latest caputure is:" + newestCapture)
-	imgFile := dir + newestCapture
+	imgFile := filepath.Join(dir, newestCapture)
 
 	// Read latest image from file
 	img, err := os.Open(imgFile)
