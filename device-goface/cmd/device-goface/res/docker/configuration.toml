@@ -60,12 +60,8 @@ File = ".edgex/logs/device-goface.log"
   [DeviceList.Protocols]
     [DeviceList.Protocols.Other]
       Address = "goface01"
-      Port = "300"
-  [[DeviceList.AutoEvents]]
-    Frequency = "10s"
-    OnChange = false
-    Resource = "Switch"    
+      Port = "300" 
   [[DeviceList.AutoEvents]]
     OnChange = false
-    Frequency = "1s"
+    Frequency = "30s"
     Resource = "goface"
