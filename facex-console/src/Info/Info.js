@@ -2,6 +2,7 @@ import React from 'react';
 // import './App.css';
 // import noauth from '../unauth.png';
 import noauth from "../unauthId.png";
+import Zoom from "./Zoom/Zoom";
 
 const successStyle = {
   backgroundColor: 'chartreuse',
@@ -16,6 +17,14 @@ function renderImage(host, id) {
   const c = host + id
   return (
       <img src={c} onerror="this.src={noauth}" height="50" width="50"/>
+    );
+}
+
+function renderImageZoom(host, id) {
+  console.log(`renderImage id:`, id);
+  const c = host + id
+  return (
+      <img src={c} onerror="this.src={noauth}" height="200" width="200"/>
     );
 }
 

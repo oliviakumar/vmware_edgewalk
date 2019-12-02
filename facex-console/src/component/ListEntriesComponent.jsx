@@ -20,9 +20,9 @@ class ListEntriesComponent extends Component {
         super(props)
         this.state = {
             entries: [
-                { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: true },
-                { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: true },
-                { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: false }
+                // { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: true },
+                // { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: true },
+                // { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: false }
             ],
             message: null,
             imgpath: '',
@@ -197,7 +197,7 @@ class ListEntriesComponent extends Component {
 
                     View history of system entry. Click individual logs for entrant details.
 
-                    { (this.props.recent == undefined ? <p> Loading... </p> : <p> {retVal} </p>)}
+                    { (this.props.recent == undefined ? <p style={{backgroundColor: 'white', color: '#d1a7c8'}}> Loading... </p> : <p> {retVal} </p>)}
 
 
             </div>
@@ -252,12 +252,7 @@ class ListEntriesComponent extends Component {
 
                     </Table>
                 </p>
-                <Row>
-                    <Button variant="primary">Learn more</Button>
-                    <div className="row">
-                        <button className="btn btn-success" onClick={this.addEntryClicked}>Return to Dashboard</button>
-                    </div>
-                </Row>
+                
                 </div>
                 </Jumbotron>
 
@@ -267,3 +262,10 @@ class ListEntriesComponent extends Component {
 }
 
 export default ListEntriesComponent;
+
+// <Row>
+// <Button variant="primary">Learn more</Button>
+// <div className="row">
+//     <button className="btn btn-success" onClick={this.addEntryClicked}>Return to Dashboard</button>
+// </div>
+// </Row>
