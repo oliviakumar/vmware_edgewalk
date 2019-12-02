@@ -173,7 +173,7 @@ func (s *GofaceDevice) OperateCamera() string {
 			return result
 		}
 		// cut directory content to 10 pictures
-
+		cleanDir()
 	}
 }
 
