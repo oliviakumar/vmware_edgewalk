@@ -3,6 +3,8 @@ import React from 'react';
 // import noauth from '../unauth.png';
 import noauth from "../unauthId.png";
 import Zoom from "./Zoom/Zoom";
+import ImageModal from "./ImageModal/ImageModal";
+import StatusPopup from "../StatusPopup/StatusPopup";
 
 const successStyle = {
   backgroundColor: 'chartreuse',
@@ -24,7 +26,7 @@ function renderImageZoom(host, id) {
   console.log(`renderImage id:`, id);
   const c = host + id
   return (
-      <img src={c} onerror="this.src={noauth}" height="200" width="200"/>
+      c
     );
 }
 
@@ -45,6 +47,22 @@ function renderColor(accepted) {
 }
 
 const temp = 'http://localhost:8080/files/';
+const Modal = ({ handleClose, show, children }) => {
+  const showHideClassName = show ? 'modal display-block' : 'modal display-none';
+
+  return (
+    <div className={showHideClassName}>
+      <section className='modal-main'>
+        {children}
+        <button
+          onClick={handleClose}
+        >
+          Close
+        </button>
+      </section>
+    </div>
+  );
+};
 
 class Info extends React.Component {
   constructor(props) {
@@ -53,7 +71,23 @@ class Info extends React.Component {
       error: null,
       isLoaded: false,
       response: [],
+      show: false,
+      isOpen: false
     };
+  }
+
+  handleShowDialog = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+    console.log("clicked");
+  };
+
+
+  showModal = () => {
+    this.setState({ show: true });
+  }
+
+  hideModal = () => {
+    this.setState({ show: false });
   }
 
   componentDidMount() {
@@ -110,6 +144,7 @@ class Info extends React.Component {
             }
           )
   }
+  // const c = 'http://localhost:8080/files/' + {this.props.idStr}
 
   render() {
       // console.log(`this.state.error: `, this.state.error)
@@ -117,10 +152,41 @@ class Info extends React.Component {
       console.log(`infojs this.state.response: `, this.state.response)
           return (
               <div>
-                {renderImage('http://localhost:8080/files/', this.props.idStr)}
+              {
+                // {renderImage('http://localhost:8080/files/', this.props.idStr)}
+            }
+                {
+                    // <ImageModal />
+                // <Zoom buttonLabel="test"/>
+                }
+                <div>
+                  <img
+                    className="small"
+                    src={'http://localhost:8080/files/' + `${this.props.idStr}`}
+                    width="50"
+                    onClick={this.handleShowDialog}
+                    alt="no image"
+                  />
+                  {this.state.isOpen && (
+                    <dialog
+                      className="dialog"
+                      style={{ position: "absolute" }}
+                      open
+                      onClick={this.handleShowDialog}
+                    >
+                      <img
+                        className="image"
+                        src={'http://localhost:8080/files/' + `${this.props.idStr}`}
+                        onClick={this.handleShowDialog}
+                        alt="no image"
+                      />
+                    </dialog>
+                  )}
+                </div>
               </div>
           );
       }
+
   }
 
 
@@ -129,3 +195,48 @@ export default Info;
 /*
     <img src={noauth}/>
 */
+
+/*
+
+    state = { show: false }
+
+    showModal = () => {
+      this.setState({ show: true });
+    }
+
+    hideModal = () => {
+      this.setState({ show: false });
+    }
+
+    render() {
+      return (
+        <main>
+          <h1>React Modal</h1>
+          <Modal show={this.state.show} handleClose={this.hideModal} >
+            <p>Modal</p>
+            <p>Data</p>
+          </Modal>
+          <button type='button' onClick={this.showModal}>Open</button>
+        </main>
+      )
+    }
+  }
+
+  const Modal = ({ handleClose, show, children }) => {
+    const showHideClassName = show ? 'modal display-block' : 'modal display-none';
+
+    return (
+      <div className={showHideClassName}>
+        <section className='modal-main'>
+          {children}
+          <button
+            onClick={handleClose}
+          >
+            Close
+          </button>
+        </section>
+      </div>
+    );
+  };
+
+  */

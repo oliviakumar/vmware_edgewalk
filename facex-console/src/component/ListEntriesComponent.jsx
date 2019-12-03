@@ -1,10 +1,11 @@
 import React, { Component, Link, FilterOptions, Input } from 'react';
 import {Route, IndexRoute} from 'react-router';
-import { Row, Col } from 'reactstrap'
+import { Row, Col, Card, CardImg } from 'reactstrap'
 import EntryDataService from '../service/EntryDataService';
 import Toggle from './Toggle';
 import ViewDetail from './ViewDetail';
 import { Jumbotron, Button, Table } from 'react-bootstrap';
+import Image from 'react-bootstrap/Image'
 import FilterToolbar from '../FilterToolbar/FilterToolbar'
 import Entry from '../Entry/Entry'
 import '../Entry/Entry.css';
@@ -12,6 +13,8 @@ import '../App.css';
 import Filter from '../Filter/Filter';
 import './ListEntriesComponent.css';
 import Search from './Search';
+import img from '../logos/facex.png';
+import Zoom from '../Info/Zoom/Zoom'
 
 const ORGANIZATION = 'edgewalk';
 
@@ -20,9 +23,9 @@ class ListEntriesComponent extends Component {
         super(props)
         this.state = {
             entries: [
-                // { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: true },
-                // { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: true },
-                // { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: false }
+                { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: true },
+                { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: true },
+                { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: false }
             ],
             message: null,
             imgpath: '',
@@ -196,7 +199,14 @@ class ListEntriesComponent extends Component {
                     <p style={{textAlign: 'center'}}></p>
 
                     View history of system entry. Click individual logs for entrant details.
-
+                    <div>
+{                        // <Card>
+                        //     <CardImg bottom width="100%" src={img} alt="Card image cap" />
+                        // </Card>
+}
+                        <Image src={img} fluid />
+                        <Zoom />
+                    </div>
                     { (this.props.recent == undefined ? <p style={{backgroundColor: 'white', color: '#d1a7c8'}}> Loading... </p> : <p> {retVal} </p>)}
 
 
