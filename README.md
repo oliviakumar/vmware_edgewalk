@@ -55,4 +55,7 @@ For any more help, consider the tutorial at: https://docs.edgexfoundry.org/Ch-Ge
 			boolean - true or false depending on whether the face matches  
 			interface - contains the data of matched person, or default values for anonymous
 
-
+	- Takes in the edgex event instance and the data interface from the app sdk and populates the data interface according 
+	to the results of the facial recognition  
+	- If face matched, returns true and populates the data interface according accordingly. If face not recognized,  
+	returns false and populates the data interface with default information.
