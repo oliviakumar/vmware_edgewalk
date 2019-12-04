@@ -41,22 +41,18 @@ Watch the logs in the terminal to see if it works and check in Postman or browse
 
 For any more help, consider the tutorial at: https://docs.edgexfoundry.org/Ch-GettingStartedSDK-Go.html  
 
-# Goface  
-
-## Necessary Prerequisites  
-To be able to run go-face, or programs that use go-face, on your machine local machine, follow  
-these steps on:  
-
-[Kagami go-face github](https://www.github.com/Kagami/go-face)
-  
-## Go-face Usage  
-To use go-face in your go program:  
-```
-import "github.com/Kagami/go-face"  
-```  
-  
-## Go-face Training and Inference  
 * Train()  
   - Traverses through a fixed directory called "trainImages" and trains the model for every folder found.  
-  - Adds directory name, image data, and indices of the samples to the models struct which is later used  
-   for inferencing.  
+  - Adds the directory name, image data, and indices of the samples to the Models struct, which is later used for inferencing.  
+
+* Infer()  
+	- Parameters:   
+
+			edgexcontext - edgex event instance
+			params - parameters of the data interface that will be populated 
+	- Returns:   
+	
+			boolean - true or false depending on whether the face matches  
+			interface - contains the data of matched person, or default values for anonymous
+
+
