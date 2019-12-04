@@ -5,8 +5,8 @@
 ## Requirements
 This can be run on a freshly flashed raspberry pi, however, it does require an internet connectionso please connect through ethernet for the time being. This setup script will connect to wifi and allow you to ssh into the device. Essentially, all you need is an internet connection.
 
-* Raspberry Pi 3B+
-* Micro SD card (we used a 16GB card)
+* Raspberry Pi 3B or higher (preferably RPi 4)
+* Micro SD card (we used a 32GB card)
 * Ethernet cable
 
 Either of the following 2 options (Both options are ways to access the pi):
@@ -101,10 +101,12 @@ You should see the boot squence.
 ### 1. Getting the script
 Either clone script into local machine or use wget to just get the script
 
-```git clone https://github.com/oliviakumar/vmware_edgewalk.git```
+```
+git clone https://github.com/oliviakumar/vmware_edgewalk.git
+```
 
 ```
-wget https://raw.githubusercontent.com/oliviakumar/vmware_edgewalk/master/pisetup/setup.sh?token=AHPIDWCVD6UCW5E2NPDO4S25TEXLK
+wget https://raw.githubusercontent.com/oliviakumar/vmware_edgewalk/master/pisetup/setup.sh
 ```
 
 If the script was acquired through wget then the following command will need to completed.
@@ -151,7 +153,7 @@ docker --version
 If the repository was cloned then the ```docker-compose.yml``` is available if it was not cloned then the ```docker-compose.yml``` will need to retrieved through the following command.
 
 ```
-wget https://raw.githubusercontent.com/oliviakumar/vmware_edgewalk/task/refactoring/pisetup/docker-compose.yml?token=AHPIDWE34653QUMRENTFF5C53O5JG
+wget https://raw.githubusercontent.com/oliviakumar/vmware_edgewalk/task/refactoring/pisetup/docker-compose.yml
 ```
 
 Once the file is on the Raspberry Pi, the following command will need to be run after you change to the directory the file is in.
@@ -160,7 +162,7 @@ Once the file is on the Raspberry Pi, the following command will need to be run 
 sudo docker-compose up -d
 ```
 
-You can then check if the Edgex Foundry containers are running.
+You can then check if the EdgeX Foundry containers are running.
 
 ```
 sudo docker ps -a
