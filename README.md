@@ -44,7 +44,7 @@ For any more help, consider the tutorial at: https://docs.edgexfoundry.org/Ch-Ge
 # Goface  
 
 ## Necessary Prerequisites  
-To be able to run go-face, or programs that use go-face, on your machine local machine, follow  
+To be able to run go-face, or programs that use go-face, on your local machine, follow  
 these steps on:  
 
 [Kagami go-face github](https://www.github.com/Kagami/go-face)
