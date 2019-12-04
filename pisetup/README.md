@@ -135,6 +135,9 @@ sender_port = 587
 recipient_address = "<receiver email address>"
 ```
 
+*Note: You will need to allow third party applications to use your account if it is a GMail account.*
+
+
 ### 5. Sets Scripts to Run on Startup
 These instructions are repeated in the script before you can do the next part incase you did't read this README. You will have 15 seconds to read and copy the following commands. You will need these once the next section of the script activates. If you read this before running the script, good on you, you are prepared and have 15 seconds to relax. Just paste the following lines at the end of the file, then save and exit.
 ```
