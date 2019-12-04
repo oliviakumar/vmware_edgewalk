@@ -22,14 +22,6 @@ function renderImage(host, id) {
     );
 }
 
-function renderImageZoom(host, id) {
-  console.log(`renderImage id:`, id);
-  const c = host + id
-  return (
-      c
-    );
-}
-
 function renderType(type) {
   if (type == 'O') {
     return (<td>Outgoing</td>);
@@ -46,7 +38,6 @@ function renderColor(accepted) {
   }
 }
 
-const temp = 'http://localhost:8080/files/';
 const Modal = ({ handleClose, show, children }) => {
   const showHideClassName = show ? 'modal display-block' : 'modal display-none';
 
@@ -91,39 +82,20 @@ class Info extends React.Component {
   }
 
   componentDidMount() {
-{
-      // console.log(`'info cdm'`, this.props.idStr);
-}
       let url = 'http://localhost:8080/' + this.props.idStr;
       fetch(url)
         .then(res => res.json())
         .then(
           (result) => {
-              // console.log('content call');
               console.log(`result:`, result);
-            //   this.setState({
-            //       isLoaded: true,
-            //       response: result,
-            // });
           },
           (error) => {
-            // this.setState({
-            //   isLoaded: true,
-            //   error
-            // });
-            // console.log('error');
           }
         )
   }
 
   getInfo() {
-      // console.log(`getInfo id:`, id);
-      /*
-      backend.js:6 Uncaught RangeError: Maximum call stack size exceeded
-          at Set.has (<anonymous>)
-      */
     let suffix = this.props.idStr; /*"5ddc6a0ae695521851756eb2"; */
-    // console.log(`suffix:`,suffix);
     let fetchUrl = "http://localhost:8080/all";
         fetch(fetchUrl)
           .then(res => res.json())
@@ -140,18 +112,16 @@ class Info extends React.Component {
                 isLoaded: true,
                 error
               });
-              // console.log('error');
             }
           )
   }
-  // const c = 'http://localhost:8080/files/' + {this.props.idStr}
 
   render() {
           return (
               <div>
               {
                 // {renderImage('http://localhost:8080/files/', this.props.idStr)}
-            }
+              }
                 {
                     // <ImageModal />
                 // <Zoom buttonLabel="test"/>
@@ -167,7 +137,7 @@ class Info extends React.Component {
                   {this.state.isOpen && (
                     <dialog
                       className="dialog"
-                      style={{ position: "absolute" }}
+                      style={{ position: "fixed", top: '0'}}
                       open
                       onClick={this.handleShowDialog}
                     >

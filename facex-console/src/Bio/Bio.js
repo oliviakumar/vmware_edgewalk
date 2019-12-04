@@ -7,7 +7,7 @@ const bio = (props) => (
         <img className="img" src={require(`../logos/${props.name}.jpg`)}></img>
         <h1 className="name">{props.name}</h1>
         <div className="Info">
-            <div className="Member">Member</div>
+            <div className="Member">Member {props.content}</div>
         </div>
     </article>
 );

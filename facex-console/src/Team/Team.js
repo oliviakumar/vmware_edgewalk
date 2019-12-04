@@ -14,7 +14,7 @@ import RoutedNav from '../RoutedNav/RoutedNav';
 class Team extends Component {
     state = {
         names: ["Mushahid", "Tanja", "Olivia", "Chris"],
-        content: []
+        content: ["m_content", "t_content", "o_content", "c_content"]
     }
 
     componentDidMount() {
@@ -38,13 +38,16 @@ class Team extends Component {
         return (
             <div className="Team rpi">
                 <RoutedNav/>
-                <section style={{backgroundColor: 'black'}}>
+                {
+                    // style={{backgroundColor: 'black', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center'}}
+                }
+                <section>
                     <h1 className="title"> TEAM EDGEWALK </h1>
 
-                    <section className="Bios">
-                        {this.state.names.map(name => {
-                            console.log(name + `.jpg`);
-                            return <Bio name={name} imgsrc={name}/>;
+                    <section className="Bios" style={{backgroundColor: 'black'}}>
+                        {this.state.names.map((name, i) => {
+                            // console.log(name + `.jpg`);
+                            return <Bio name={name} imgsrc={name} content={this.state.content[i]}/>;
                         })
                         }
 

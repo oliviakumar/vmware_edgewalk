@@ -69,6 +69,11 @@ class ListEntriesComponent extends Component {
         console.log(`parent state:`, this.props.recent);
     }
 
+    componentDidUpdate() {
+        // window.location.reload(false);
+        this.refreshEntries();
+    }
+
     onClick(e) {
         console.log('onClick reached');
 
@@ -200,9 +205,8 @@ class ListEntriesComponent extends Component {
         return (
 
             <div>
-            <div>
-              <button onClick={refreshPage}>Click to reload!</button>
-            </div>            <Jumbotron style={{backgroundColor: 'lightblue', color: '#d1a7c8'}}>
+
+            <Jumbotron style={{backgroundColor: 'lightblue', color: '#d1a7c8'}}>
             <div style={{textAlign: 'center'}}>
                     <h1 style={{textAlign: 'center'}}>ENTRY LOGS</h1>
                     <p style={{textAlign: 'center'}}></p>
