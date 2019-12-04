@@ -9,9 +9,16 @@ import noauth from "../unauthId.png";
 import './Entry.css';
 
 const Entry = (props) => {
+
     const [isOpen, setIsOpen] = useState(false);
 
     const toggle = () => setIsOpen(!isOpen);
+
+    const milli = props.entry.attempted;
+    const time = {
+        dt: new Date(+milli)
+    };
+    console.log(`time:`, time.dt);
 
     const successStyle = {
       backgroundColor: 'chartreuse',
@@ -22,7 +29,6 @@ const Entry = (props) => {
     }
 
     function renderColor(accepted) {
-        console.log(`accepted, rendercolor:`, accepted)
       if (accepted === true) {
         return <td style={successStyle}></td>
       } else {
@@ -30,47 +36,30 @@ const Entry = (props) => {
       }
     }
 
-    // viewDetailHandler = (i) => {
-      // console.log('from entry: ' + i);
-      // const entries = this.state.entries;
-      // entries.push(i, 0, <tr> details... </tr>);
-      // this.setState({entries: entries});
-    // }
-    // const popover = (
-    //   <Popover id="popover-basic">
-    //     <Popover.Title as="h3">Popover right</Popover.Title>
-    //     <Popover.Content>
-    //       And here's some <strong>amazing</strong> content. It's very engaging.
-    //       right?
-    //     </Popover.Content>
-    //   </Popover>
-    // );
-    //
-    // const Example = () => (
-    //   <OverlayTrigger trigger="click" placement="right" overlay={popover}>
-    //     <Button variant="success">Click me to see</Button>
-    //   </OverlayTrigger>
-    // );
-    //
-    // ReactDOM.render(<Example />);
-    // console.log(`props.details:`, props.index);
-    // console.log(`state from LEC:`, props.state.entries);
-        // const ret =
-      return <tr href="#" className="Entry" onClick={props.onClick}>
-      {
-            // <td> {Math.random()} </td>
-      }
+    function renderTime(attempted) {
+      console.log(`time-:`, new Date(attempted));
+    }
 
-            <td> {renderColor(props.entry.accepted)} {props.entry.identity} </td>
-            <td> <td style={{border: 'transparent'}}></td> {props.entry.location} </td>
-            <td> <td style={{border: 'transparent'}}></td> {props.entry.attempted} </td>
+  return <tr href="#" className="Entry" onClick={props.onClick}>
 
-            <td style={{justifyContent: 'center'}}><Info idStr={props.idStr} /> </td>
-            {
-            // <ViewEntry idStr={props.entry.idString}/>
-            }
+  {
+        // <td> {Math.random()} </td>
+  }
 
-          </tr>
+        {
+
+        }
+
+        <td> {renderColor(props.entry.accepted)} {props.entry.identity} </td>
+        <td> <td style={{border: 'transparent'}}></td> {props.entry.location} </td>
+        <td> <td style={{border: 'transparent'}}></td> {props.entry.attempted} </td>
+
+        <td style={{justifyContent: 'center'}}><Info idStr={props.idStr} /> </td>
+        {
+        // <ViewEntry idStr={props.entry.idString}/>
+        }
+
+      </tr>
 // return ret + ' entry detail view '
 }
 

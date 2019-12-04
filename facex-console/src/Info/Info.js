@@ -147,9 +147,6 @@ class Info extends React.Component {
   // const c = 'http://localhost:8080/files/' + {this.props.idStr}
 
   render() {
-      // console.log(`this.state.error: `, this.state.error)
-      // console.log(`this.state.isLoaded: `, this.state.isLoaded)
-      console.log(`infojs this.state.response: `, this.state.response)
           return (
               <div>
               {

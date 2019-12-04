@@ -1,0 +1,38 @@
+.NoData {
+    width: auto;
+    height: 100px;
+    padding: 16px;
+    text-align: center;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    margin: 10px;
+    box-sizing: border-box;
+    box-shadow: border-box;
+    cursor: pointer;
+    background-color: #4455;
+    /* color: black; */
+}
+
+.img {
+    width: 150px;
+    height: 150px;
+    border: 1px solid white;
+
+    box-shadow: 0 2px 3px #ccc
+}
+.name {
+    /* color: #9bbf80; */
+    color: #80b1bf;
+    /* font-size: 12px; */
+    padding: 20px;
+
+}
+.NoData:hover,
+.NoData:active {
+    background-color: #f5ebfc;
+}
+
+.Member {
+    margin: 16px 0;
+    color: #80b1bf;
+}

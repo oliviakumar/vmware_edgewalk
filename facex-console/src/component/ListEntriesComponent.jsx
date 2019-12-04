@@ -14,7 +14,8 @@ import Filter from '../Filter/Filter';
 import './ListEntriesComponent.css';
 import Search from './Search';
 import img from '../logos/facex.png';
-import Zoom from '../Info/Zoom/Zoom'
+import Zoom from '../Info/Zoom/Zoom';
+import NoData from '../NoData/NoData';
 
 const ORGANIZATION = 'edgewalk';
 
@@ -31,7 +32,8 @@ class ListEntriesComponent extends Component {
             imgpath: '',
             isFiltering: false,
             searchText: '',
-            openModal: false
+            openModal: false,
+            time: []
         }
         this.refreshEntries = this.refreshEntries.bind(this)
         this.getImage = this.getImage.bind(this);
@@ -70,6 +72,10 @@ class ListEntriesComponent extends Component {
     onClick(e) {
         console.log('onClick reached');
 
+    }
+
+    refreshPage() {
+      window.location.reload(false);
     }
 
     // filterHandler = () => {
@@ -192,8 +198,11 @@ class ListEntriesComponent extends Component {
         const retVal = this.props.recent;
 
         return (
+
             <div>
-            <Jumbotron style={{backgroundColor: 'lightblue', color: '#d1a7c8'}}>
+            <div>
+              <button onClick={refreshPage}>Click to reload!</button>
+            </div>            <Jumbotron style={{backgroundColor: 'lightblue', color: '#d1a7c8'}}>
             <div style={{textAlign: 'center'}}>
                     <h1 style={{textAlign: 'center'}}>ENTRY LOGS</h1>
                     <p style={{textAlign: 'center'}}></p>
@@ -204,7 +213,6 @@ class ListEntriesComponent extends Component {
                         //     <CardImg bottom width="100%" src={img} alt="Card image cap" />
                         // </Card>
 }
-                        <Image src={img} fluid />
                         <Zoom />
                     </div>
                     { (this.props.recent == undefined ? <p style={{backgroundColor: 'white', color: '#d1a7c8'}}> Loading... </p> : <p> {retVal} </p>)}
@@ -217,6 +225,7 @@ class ListEntriesComponent extends Component {
                     searchText={this.state.searchText} searchUpdate={this.props.searchUpdate.bind(this)}
                     options={this.state.entries} filterUpdate={this.props.filterUpdate.bind(this)}>
                 </FilterToolbar>
+
             </div>
 
 
@@ -229,7 +238,7 @@ class ListEntriesComponent extends Component {
                 <div style={{backgroundColor: 'white'}}>
                 <p>
                     <Table bordered hover >
-{
+                        {
                         <thead style={{backgroundColor: 'lightgrey', border: 'none', font: 'inherit'}}>
                             <tr className="ListEntryHead" onClick={this.onClickHandler()}>
                                 <th>NAME</th>
@@ -241,9 +250,12 @@ class ListEntriesComponent extends Component {
                                 <th>DETAILS</th>
                             </tr>
                         </thead>
-}
-                        <tbody className="collapse in shadow ListEntryBod" style={{backgroundColor: 'white', boxShadow: '2px 0 grey, inset 2px 0 grey'}}>
+                        }
+
+                        {this.state.entries == 0 ? (<td colSpan="4"> <NoData /> </td>) :
+                        (<tbody className="collapse in shadow ListEntryBod" style={{backgroundColor: 'white', boxShadow: '2px 0 grey, inset 2px 0 grey'}}>
                         {
+
                             this.state.entries
                                 .filter(entry => {
                                     return entry.identity.toLowerCase().indexOf(searchText.toLowerCase()) >= 0;
@@ -254,15 +266,18 @@ class ListEntriesComponent extends Component {
                                     return entry.location.toLowerCase().indexOf(filterText.toLowerCase()) >= 0;
                                 })
                                 .map((entry, i) => {
-                                    // console.log(`entry.idString:`, entry.idString);
-                                    return <Entry entry={entry} idStr={entry.idString} onClick={() => this.viewDetailHandler(i)} />
+                                    // this.setState({time: new Date(entry.attempted[0])});
+                                    console.log(new Date(entry.attempted));
+
+                                    return <Entry entry={entry} time={new Date(entry.attempted)} idStr={entry.idString} onClick={() => this.viewDetailHandler(i)} />
                             })
                         }
-                        </tbody>
+                        </tbody>)
+                        }
 
                     </Table>
                 </p>
-                
+
                 </div>
                 </Jumbotron>
 
