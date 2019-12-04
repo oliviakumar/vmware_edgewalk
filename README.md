@@ -57,6 +57,6 @@ import "github.com/Kagami/go-face"
   
 ## Go-face Training and Inference  
 * Train()  
- - Traverses through a fixed directory called "trainImages" and trains the model for every folder found.  
- - Adds directory name, image data, and indices of the samples to the models struct which is later used  
+  - Traverses through a fixed directory called "trainImages" and trains the model for every folder found.  
+  - Adds directory name, image data, and indices of the samples to the models struct which is later used  
    for inferencing.  
