@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import ReactDOM from 'react-dom';
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
 import { Jumbotron, Table, Panel, OverlayTrigger, Popover } from 'react-bootstrap';
@@ -9,10 +10,16 @@ import noauth from "../unauthId.png";
 import './Entry.css';
 
 const Entry = (props) => {
-
     const [isOpen, setIsOpen] = useState(false);
-
     const toggle = () => setIsOpen(!isOpen);
+
+    const [posts, setPost] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(10);
+    // state = {
+    //     posts: []
+    // }
 
     const milli = props.entry.attempted;
     const time = {
@@ -28,6 +35,10 @@ const Entry = (props) => {
       backgroundColor: 'red',
     }
 
+    useEffect(() => {
+        // const fetchPosts = async
+    });
+
     function renderColor(accepted) {
       if (accepted === true) {
         return <td style={successStyle}></td>
@@ -42,9 +53,9 @@ const Entry = (props) => {
 
   return <tr href="#" className="Entry" onClick={props.onClick}>
 
-  {
+        {
         // <td> {Math.random()} </td>
-  }
+        }
 
         {
 

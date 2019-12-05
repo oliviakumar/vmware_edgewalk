@@ -16,24 +16,60 @@ import Search from './Search';
 import img from '../logos/facex.png';
 import Zoom from '../Info/Zoom/Zoom';
 import NoData from '../NoData/NoData';
+import StatusPopup from '../StatusPopup/StatusPopup';
 
 const ORGANIZATION = 'edgewalk';
-
+// function Popup(props) {
+//   const [show, setShow] = useState(false);
+//
+//   handleClose = () => setShow(false);
+//   handleShow = () => setShow(true);
+//
+//   return (
+//     <>
+//         <div style={{justifyContent: 'center'}}>
+//           <Modal className='text-center' style={{align: 'center'}} show={show} onHide={handleClose} animation={false}>
+//             <Modal.Header closeButton>
+//               <Modal.Title style={{align: 'center', margin: '0 0 auto'}} className={props.accepted ? 'accepted' : 'denied'}> {props.accepted ? 'ACCESS GRANTED' : 'ACCESS DENIED'} </Modal.Title>
+//             </Modal.Header>
+//
+//             <div>
+//                   <Modal.Body style={{textAlign: 'center'}}>
+//                     <b>{props.accepted ? 'Welcome, ' + `${props.identity}`  + '!'  : 'Identity unknown.'}</b>
+//                   </Modal.Body>
+//             </div>
+//
+//
+//             <Modal.Footer style={{textAlign: 'center'}}>
+//               <Button variant="secondary" onClick={handleClose}>
+//                 Close
+//               </Button>
+//               <Button variant="primary" onClick={handleClose}>
+//                 Save Changes
+//               </Button>
+//             </Modal.Footer>
+//           </Modal>
+//       </div>
+//     </>
+//   );
+// }
 class ListEntriesComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
             entries: [
-                { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: true },
-                { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: true },
-                { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: false }
+                // { id: '0', identity: 'Olivia', attempted: '3:45', location: 'front door', accepted: true },
+                // { id: '1', identity: 'Doug', attempted: '4:20', location: 'back door', accepted: true },
+                // { id: '2', identity: 'Kevin', attempted: '9:00', location: 'front door', accepted: false }
             ],
             message: null,
             imgpath: '',
             isFiltering: false,
             searchText: '',
             openModal: false,
-            time: []
+            time: [],
+            totalResults: 0,
+            currentPage: 1
         }
         this.refreshEntries = this.refreshEntries.bind(this)
         this.getImage = this.getImage.bind(this);
@@ -45,6 +81,10 @@ class ListEntriesComponent extends Component {
 
         this.handleOpenModel = this.handleOpenModel.bind(this);
         this.handlModelClose = this.handlModelClose.bind(this);
+    }
+
+    nextPage = (pageNumber) => {
+
     }
 
 
@@ -189,7 +229,6 @@ class ListEntriesComponent extends Component {
 
     render() {
         const style = {
-            backgroundColor: 'white',
             font: 'inherit',
             border: '1x solid lightblue',
             padding: 'pointer',
@@ -201,30 +240,33 @@ class ListEntriesComponent extends Component {
 
         console.log(`outcome:-`, this.props.recent);
         const retVal = this.props.recent;
-
+        // const indexLastEntry = currPage * entriesPerPage;
+        // const indexFirstEntry = indexLastEntry - entriesPerPage;
+        // const currEntries = this.state.entries.slice(indexFirstEntry, indexLastEntry);
+        // #d1a7c8
         return (
-
             <div>
-
-            <Jumbotron style={{backgroundColor: 'lightblue', color: '#d1a7c8'}}>
+            <Jumbotron style={{backgroundColor: '#80b1bf', color: '#506a98'}}>
             <div style={{textAlign: 'center'}}>
                     <h1 style={{textAlign: 'center'}}>ENTRY LOGS</h1>
-                    <p style={{textAlign: 'center'}}></p>
+                    <p style={{textAlign: 'center', color: 'black'}}>
 
-                    View history of system entry. Click individual logs for entrant details.
+                    View history of system entry. Click individual entrant images to zoom.
+                    </p>
                     <div>
 {                        // <Card>
                         //     <CardImg bottom width="100%" src={img} alt="Card image cap" />
                         // </Card>
+                        // <Popup/>
 }
                         <Zoom />
                     </div>
-                    { (this.props.recent == undefined ? <p style={{backgroundColor: 'white', color: '#d1a7c8'}}> Loading... </p> : <p> {retVal} </p>)}
+                    { (this.props.recent == undefined ? <p style={{backgroundColor: '', color: '#d1a7c8'}}> Loading... </p> : <p> {retVal} </p>)}
 
 
             </div>
             <br/>
-            <div style={{align: 'right', padding: '10'}} >
+            <div style={{align: 'right', padding: '10', backgroundColor: 'white'}} >
                 <FilterToolbar
                     searchText={this.state.searchText} searchUpdate={this.props.searchUpdate.bind(this)}
                     options={this.state.entries} filterUpdate={this.props.filterUpdate.bind(this)}>

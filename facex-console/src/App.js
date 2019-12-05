@@ -302,6 +302,7 @@ class App extends Component {
             // console.log(`status y status: `, status);
             // console.log(`before StatusPopup load:`, this.state.content);
             // ReactDOM.render(<StatusPopup />, document.getElementById('container'));
+            ReactDOM.render(<Main />, document.getElementById('container'));
             // handleShow();
         });
       // document.getElementById('button-team').addEventListener('click', () => {

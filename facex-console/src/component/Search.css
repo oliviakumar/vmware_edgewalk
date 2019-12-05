@@ -16,14 +16,26 @@ body {
   transform: translate(-50%, -50%);
 }
 
+.round {
+    border: 1px solid lightgrey;
+    height: 38px;
+    border-radius: 5px;
+    width: auto;
+    justify-content: center;
+    float: right;
+
+}
+
 .search {
   background: transparent;
-  outline:none;
+  outline: none;
+  /* border: 1 1 1 1; */
   border: none;
   height: auto;
-  font-size: 2em;
+  font-family: 'Khand', sans-serif;
+  font-size: 20px;
   /* position: auto; */
-  border-bottom: 2px dotted grey;
+  border-bottom: 2px grey;
   width: 175px;
   padding-right: 70px;
 }

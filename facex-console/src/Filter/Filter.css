@@ -1,7 +1,11 @@
 .filter {
+    background: transparent;
+
     width: 200px;
     text-align: center;
     float: right;
     /* opacity: 0.5; */
     /* background-color: inherit; */
+    font-family: 'Khand', sans-serif;
+    font-size: 20px;
 }

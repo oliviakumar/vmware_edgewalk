@@ -10,7 +10,8 @@ class Filter extends Component {
     this.state = {
       hasExtraValue: false,
       options: [
-          {label: '', value: ''}
+          {label: 'Front Door', value: 'Front Door'},
+          {label: 'Back Door', value: 'Back Door'},
       ],
       selectedOption: '',
       filterText: null,
@@ -117,8 +118,10 @@ class Filter extends Component {
     const style = {
     control: (base, state) => ({
       ...base,
-      background: "white",
+      background: "transparent",
+      height: "35px",
       // match with the menu
+      // border: "none"
       borderRadius: state.isFocused ? "3px 3px 0 0" : 3,
       // Overwrittes the different states of border
       // borderColor: state.isFocused ? "yellow" : "green",
