@@ -19,7 +19,7 @@ deviceCommands:
         name: "goface"
         get:
             -
-                { operation: "get", object: "goface" }
+                { operation: "get", deviceResource: "goface" }
 
 coreCommands:
   -

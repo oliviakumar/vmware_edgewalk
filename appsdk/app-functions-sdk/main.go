@@ -9,29 +9,24 @@ import (
 	"bytes"
 	"mime/multipart"
 	"io"
+	"io/ioutil"
 	"strings"
-
-	"github.com/vmware-edgewalk/facex/device-goface/driver"
+	"path/filepath"
+	"os/exec"
+	"reflect"
 
 	"github.com/edgexfoundry/app-functions-sdk-go/pkg/transforms"
 	"github.com/edgexfoundry/app-functions-sdk-go/appcontext"
 	"github.com/edgexfoundry/app-functions-sdk-go/appsdk"
 	"github.com/edgexfoundry/go-mod-core-contracts/models"
+
+	"github.com/oliviakumar/vmware_edgewalk/model-goface/recognition"
+	dModels"github.com/oliviakumar/vmware_edgewalk/models"
 )
 
 const (
 	serviceKey = "imageWebService"
 )
-
-type SendingData struct {
-	Identity  string `json:"identity"`
-	Accepted  bool `json:"accepted"`
-	Location  string `json:"location"`
-	Entrytype string `json:"type"`
-	Device string `json:"device"`
-	Edgexid string `json:"edgexId"`
-	Imagepath string
-}
 
 func main() {
 
@@ -49,11 +44,14 @@ func main() {
 	// like to search for, we'll go ahead and define that now.
 	deviceNames := []string{"device-goface-01"}
 
+	recognition.Train()
+
 	// 4) This is our pipeline configuration, the collection of functions to
 	// execute every time an event is triggered.
 	edgexSdk.SetFunctionsPipeline(
 		transforms.NewFilter(deviceNames).FilterByDeviceName,
-		GetDataFromJSON,
+		SaveImage,
+		recognition.Infer,
 		SendData,
 		SendImage,
 	)
@@ -67,29 +65,33 @@ func main() {
 	os.Exit(0)
 }
 
-func GetDataFromJSON(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
+func SaveImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
 	if len(params) < 1 {
 		return false, errors.New("No data received")
 	}
 	model := params[0].(models.Event)
 	for _, reading := range model.Readings {
-		b := []byte(reading.Value)
-		data := driver.NewData()
-		err := json.Unmarshal(b, &data)
+		if (len(reading.BinaryValue) == 0) {
+			return false, errors.New("No file received")
+		}
+		out, err := exec.Command("uuidgen").Output()
 		if err != nil {
 			fmt.Println(err)
-			return false, errors.New("Could not unpack data")
+			return false, errors.New("error generating uuid")
 		}
-		send := SendingData{
-			Identity: data.Identity,
-			Accepted: data.Accepted,
-			Location: data.Location,
-			Entrytype: data.Entrytype,
+		uuid := strings.TrimSuffix(string(out), "\n")
+		imgName := uuid + ".jpg"
+		fpath := "../../model-goface/testImages/" + imgName
+		if err != nil {
+			return false, errors.New("Cannot find path")
+		}
+		err = ioutil.WriteFile(fpath, reading.BinaryValue, 0755)
+		send := dModels.SendingData {
 			Device: reading.Device,
-			Edgexid: reading.Id,
-			Imagepath: data.Imagepath,
+			Edgexid: uuid,
+			Imagepath: imgName,
 		}
-		return true, send;
+		return true, send
 	}
 	return false, errors.New("No readings received")
 }
@@ -98,9 +100,14 @@ func SendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, in
 	if len(params) < 1 {
 		return false, errors.New("No data recevied")
 	}
-	send := params[0].(SendingData)
+	if reflect.TypeOf(params[0]).Name() == "string" {
+		DeleteFile(params[0].(string))
+		return false, errors.New("No face was detected/image metadata cannot be read")
+	}
+	send := params[0].(dModels.SendingData)
 	data, err := json.Marshal(send)
 	if err != nil {
+		DeleteFile(send.Imagepath)
 		fmt.Println(err)
 		return false, errors.New("Could not convert to json")
 	}
@@ -108,11 +115,13 @@ func SendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, in
 	host := "http://" + exportHost + ":8080/edge/api"
 	resp, err := http.Post(host, "application/json", bytes.NewReader(data))
 	if err != nil {
+		DeleteFile(send.Imagepath)
 		fmt.Println(err)
 		return false, errors.New("Error posting data")
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		DeleteFile(send.Imagepath)
 		return false, fmt.Errorf("export failed with %d HTTP status code", resp.StatusCode)
 	}
 	return true, send
@@ -122,11 +131,13 @@ func SendImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, i
 	if len(params) < 1 {
 		return false, errors.New("No data recevied")
 	}
-	send := params[0].(SendingData)
+	send := params[0].(dModels.SendingData)
 	if send.Imagepath != "" {
-		file, err := os.Open(send.Imagepath)
+		imgPath := filepath.Join("../../model-goface/testImages", send.Imagepath)
+		file, err := os.Open(imgPath)
 		if err != nil {
 			fmt.Println(err)
+			DeleteFile(send.Imagepath)
 			return false, errors.New("Image could not be opened")
 		}
 		values := map[string] io.Reader {
@@ -136,12 +147,16 @@ func SendImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, i
 		err = Upload(values)
 		if err != nil {
 			fmt.Println(err)
+			DeleteFile(send.Imagepath)
 			return false, errors.New("Error posting image data")
 		}
-		return true, nil
-	} else {
-		return true, "No image path was given"
 	}
+	str := ""
+	if send.Imagepath == "" {
+		str = "No image path was given"
+	}
+	DeleteFile(send.Imagepath)
+	return true, str
 }
 
 func Upload(values map[string] io.Reader) (err error) {
@@ -191,5 +206,13 @@ func GetExportHost() string  {
 		exportHost = "localhost"
 	}
 	return exportHost
+}
+
+func DeleteFile(path string) error {
+	if path != "" {
+		cmd := exec.Command("rm", filepath.Join("../../model-goface/testImages", path))
+		return cmd.Run()
+	}
+	return nil
 }
 
