@@ -266,7 +266,7 @@ class ListEntriesComponent extends Component {
 
             </div>
             <br/>
-            <div style={{align: 'right', padding: '10', backgroundColor: 'white'}} >
+            <div style={{align: 'right', padding: '10', backgroundColor: 'lightgrey'}} >
                 <FilterToolbar
                     searchText={this.state.searchText} searchUpdate={this.props.searchUpdate.bind(this)}
                     options={this.state.entries} filterUpdate={this.props.filterUpdate.bind(this)}>
@@ -281,7 +281,7 @@ class ListEntriesComponent extends Component {
                         // <p> filterText value is: {this.props.filterText} </p>
                     // </div>
                     }
-                <div style={{backgroundColor: 'white'}}>
+                <div style={{backgroundColor: 'lightgrey'}}>
                 <p>
                     <Table bordered hover >
                         {
