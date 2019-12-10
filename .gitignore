@@ -14,7 +14,7 @@
 */target/
 */logs/
 */bin/
-model-goface/testImages/
+*/testImages/
 
 # Don't track these files
 *.class
