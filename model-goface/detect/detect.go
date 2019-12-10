@@ -16,7 +16,6 @@ func TestForFace(imgPath string) bool {
     dataDir := "../../../model-goface/testImages"
 
     imgPath = filepath.Join(dataDir, imgPath)
-    // fmt.Println(imgPath)
     faces, err := rec.RecognizeFile(imgPath)
     if (err != nil) {
         log.Fatalf("Unable to open file.")

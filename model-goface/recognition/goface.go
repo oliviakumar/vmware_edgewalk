@@ -16,7 +16,7 @@ import (
     "github.com/oliviakumar/vmware_edgewalk/models"
 )
 
-//Struct for storing individual samples, id, and name
+//Struct for storing individual samples, id, and name. Used for retrieving info from inference
 type TrainStruct struct {
     Data []face.Descriptor
     Index []int32
@@ -32,6 +32,7 @@ var dataRoot = "../../model-goface"
 //Map that contains all the trained entries, makes it easier to retrieve info
 var Model map[int]TrainStruct
 
+//Local variable that update for every person trained
 var samples []face.Descriptor
 var indSamples []face.Descriptor
 var tracker []int32
@@ -94,6 +95,7 @@ func DirTraverse(file string) {
 
         //Updating count, which will be used as id
         if (valid == true) {
+            //Calling populateDescriptor
             PopulateDescriptor(pathSplit[len(pathSplit) - 1])
         }
     //If the file given is a regular file
@@ -105,7 +107,7 @@ func DirTraverse(file string) {
                 log.Fatalf("Can't recognize image")
             }
 
-            //Calling populateDescriptor
+            //Checks to see if any faces are found in the picture
             if (len(faces) >= 1) {
                 valid = true
                 samples = append(samples, faces[0].Descriptor)
@@ -146,7 +148,9 @@ func Train() {
         log.Fatalf("Error opening directory.")
     }
 
+    //Traversing directory
     DirTraverse(dataDir)
+    //Benchmarking
     Benchmark("Training", start)
 }
 
@@ -179,6 +183,7 @@ func Infer(edgexcontext *appcontext.Context, params ...interface{}) (bool, inter
         return false, send.Imagepath
     }
 
+    //Inference with a threshold. Lower the threshold, the stricter it is
     picID := rec.ClassifyThreshold(testPic.Descriptor, 0.4)
     if picID < 0 {
         Benchmark("Inference", start)
@@ -187,6 +192,7 @@ func Infer(edgexcontext *appcontext.Context, params ...interface{}) (bool, inter
 
     approved = true
     var person string
+    //Finding the name of the person that matches the picture metadata
     for i := 0; i < len(Model); i++ {
         var arr []int32 = Model[i].Index
         if (int32(picID) >= arr[0] && int32(picID) <= arr[(len(arr) - 1)]) {
@@ -195,6 +201,7 @@ func Infer(edgexcontext *appcontext.Context, params ...interface{}) (bool, inter
         }
     }
 
+    //Returns the person's info if facial recognition approves
     if (approved) {
         location := "Front Door"
         entryType := "I"
@@ -209,6 +216,7 @@ func Infer(edgexcontext *appcontext.Context, params ...interface{}) (bool, inter
     return true, send
 }
 
+//Benchmarks for train and inference
 func Benchmark(funcName string, start time.Time) {
     elapsed := time.Since(start)
     log.Printf("%s took: %s", funcName, elapsed)
