@@ -1,5 +1,6 @@
 package models
 
+//Edgex info that gets sent
 type SendingData struct {
 	Identity  string `json:"identity"`
 	Accepted  bool `json:"accepted"`

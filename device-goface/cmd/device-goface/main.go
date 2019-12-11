@@ -14,10 +14,12 @@ import (
 	"github.com/oliviakumar/vmware_edgewalk/device-goface/driver"
 )
 
+//Naming the device service
 const (
 	serviceName string = "device-goface"
 )
 
+//Calls the gofacedevice to start the facial recognition
 func main() {
 	sd := driver.GofaceDevice{}
 	sd.WriteConfiguration()

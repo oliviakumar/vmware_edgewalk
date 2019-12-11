@@ -65,6 +65,7 @@ func main() {
 	os.Exit(0)
 }
 
+//Saves the image in the edgex instance, so it can be deleted locally
 func SaveImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
 	if len(params) < 1 {
 		return false, errors.New("No data received")
@@ -96,6 +97,7 @@ func SaveImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, i
 	return false, errors.New("No readings received")
 }
 
+//Sends data struct to the web service
 func SendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
 	if len(params) < 1 {
 		return false, errors.New("No data recevied")
@@ -127,6 +129,7 @@ func SendData(edgexcontext *appcontext.Context, params ...interface{}) (bool, in
 	return true, send
 }
 
+//Sends the inference image to the web service
 func SendImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, interface{}) {
 	if len(params) < 1 {
 		return false, errors.New("No data recevied")
@@ -159,6 +162,7 @@ func SendImage(edgexcontext *appcontext.Context, params ...interface{}) (bool, i
 	return true, str
 }
 
+//Handles the conversion of image toa multipart request
 func Upload(values map[string] io.Reader) (err error) {
 	b := new(bytes.Buffer)
 	w := multipart.NewWriter(b)
@@ -200,6 +204,7 @@ func Upload(values map[string] io.Reader) (err error) {
 	return
 }
 
+//Returns the exporthost
 func GetExportHost() string  {
 	exportHost := os.Getenv("EXPORTHOST")
 	if (exportHost == "") {
@@ -208,6 +213,7 @@ func GetExportHost() string  {
 	return exportHost
 }
 
+//Deletes the files after it has been sent to edgex
 func DeleteFile(path string) error {
 	if path != "" {
 		cmd := exec.Command("rm", filepath.Join("../../model-goface/testImages", path))

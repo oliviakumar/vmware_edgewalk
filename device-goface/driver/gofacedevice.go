@@ -123,91 +123,6 @@ func getImageBytes(buf *bytes.Buffer) error {
 	return nil
 }
 
-// helper funtion to get the last taken picture by timestamp
-//func getLastCapture() string {
-//	dir := "model-goface/testImages"
-//	files, _ := ioutil.ReadDir(dir)
-//	var newestCapture string
-//	var newestTime int64 = 0
-//
-//	for _, f := range files {
-//		fi, err := os.Stat(dir + f.Name())
-//		if err != nil {
-//			fmt.Println(err)
-//		}
-//		currentTime := fi.ModTime().Unix()
-//		if currentTime > newestTime {
-//			newestTime = currentTime
-//			newestCapture = f.Name()
-//		}
-//	}
-//	fmt.Println("The latest caputure is:" + newestCapture)
-//	latestImgPath := dir + newestCapture
-//	return latestImgPath
-//}
-
-// helper function to keep directory to 10 pictures max so the RPis SD card doesn't fill up
-//func (s *GofaceDevice) cleanDir() {
-//	dir := "model-goface/testImages"
-//	files, err := ioutil.ReadDir(dir)
-//	if err != nil {
-//		fmt.Println(err)
-//		return
-//	}
-//	var oldestCapture string
-//
-//	var oldestTime = time.Now()
-//	// through directory
-//	for _, f := range files {
-//		// check if there is more than 10 files in dir
-//		if len(files) > 10 {
-//			// compare timestamps and remove oldest
-//			if f.Mode().IsRegular() && f.ModTime().Before(oldestTime) {
-//				oldestCapture = f.Name()
-//				oldestTime = f.ModTime()
-//			}
-//			removeErr:= os.Remove(oldestCapture)
-//			if removeErr != nil {
-//				fmt.Println(removeErr)
-//				return
-//			}
-//			fileInfo, _ := os.Stat(oldestCapture)
-//			if fileInfo == nil {
-//				err = os.ErrNotExist
-//				fmt.Println(err)
-//				return
-//
-//			}
-//		}
-//	}
-//}
-
-// device service method to operate the camera, gets called with current rec instance
-// returns the last path with a face in it
-//func (s *GofaceDevice) OperateCamera() string {
-//
-//	// initialize camera timelapse capture every 3 seconds
-//	args := "-o -tl 3000 model-goface/testImages/Test%04.jpg"
-//	exec.Command("raspistill", args)
-//
-//	for {
-//		// init path var that will be reused throughout the whole program
-//		s.imagePath = getLastCapture()
-//		var hasFace = detect.TestForFace(s.imagePath)
-//		if hasFace == true {
-//			result := s.imagePath
-//			return result
-//		} else {
-//			result := "No face was detected"
-//			// @TODO check if sleep is necessary
-//			time.Sleep(1000 * time.Millisecond)
-//			return result
-//		}
-//		// cut directory content to 10 pictures
-//		cleanDir()
-//	}
-//}
-
 // HandleReadCommands triggers a protocol Read operation for the specified device.
 func (s *GofaceDevice) HandleReadCommands(deviceName string, protocols map[string]contract.ProtocolProperties, reqs []dsModels.CommandRequest) (res []*dsModels.CommandValue, err error) {
 	//fmt.Fprintf(os.Stdout,  "....... %s .......\n", reqs[0].DeviceResourceName)
@@ -359,6 +274,7 @@ func (s *GofaceDevice) WriteConfiguration() {
 	}
 }
 
+//Returns the edgehub environment variable
 func GetEdgeHub() string {
 	edgeHub := os.Getenv("EDGEHUB")
 	if edgeHub == "" {
